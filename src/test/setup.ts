@@ -1,0 +1,1 @@
+// Configuração dos testes do Vitest. Imports globais de teste entram aqui.
