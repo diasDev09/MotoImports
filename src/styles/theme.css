@@ -1,0 +1,202 @@
+/* cores, fontes e medidas do site inteiro ficam aqui */
+:root {
+  /* paleta do documento: fundo #0B192C e destaque #0084D1 */
+  --navy-ink: #0B192C;
+  --azul: #0084D1;
+
+  /* apoio: tons derivados dos dois acima */
+  --navy-deep: #112340;
+  --navy: #173257;
+  --azul-claro: #4FB3F5;
+  --ice: #EAF4FF;
+  --ice-muted: #A9BDE6;
+  --line: #2F3C4E;
+
+  --estoque-verde: #3DDC84;
+  --estoque-amarelo: #FFC53D;
+  --estoque-azul: #4DA3FF;
+
+  --fonte-titulo: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --fonte-texto: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --raio: 10px;
+  --largura-max: 1120px;
+  --altura-navbar: 68px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--altura-navbar) + 12px);
+}
+
+body {
+  margin: 0;
+  background: var(--navy-ink);
+  color: var(--ice);
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 4.2vw, 2.9rem);
+}
+
+h3 {
+  font-size: 1.4rem;
+}
+
+p {
+  margin: 0 0 1em;
+  max-width: 62ch;
+}
+
+a {
+  color: var(--azul-claro);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 3px solid var(--azul);
+  outline-offset: 3px;
+}
+
+/* limita a largura do conteúdo e centraliza */
+.container {
+  width: min(100% - 2.5rem, var(--largura-max));
+  margin-inline: auto;
+}
+
+.secao {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+/* botões: usar .btn junto com .btn-primario ou .btn-contorno */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--raio);
+  border: 2px solid #0084D1;
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-primario {
+  background: var(--azul);
+  color: #FFFFFF;
+}
+
+.btn-primario:hover {
+  background: var(--azul-claro);
+  color: var(--navy-ink);
+}
+
+.btn-contorno {
+  background: none;
+  color: var(--ice);
+  border-color: var(--line);
+}
+
+.btn-contorno:hover {
+  border-color: var(--azul);
+  color: var(--azul-claro);
+}
+
+/* campo de formulário: label em cima, input embaixo */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.campo label {
+  font-weight: 600;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--raio);
+  border: 1px solid var(--line);
+  background: var(--navy-deep);
+  color: var(--ice);
+  font: inherit;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 3px solid var(--azul);
+  outline-offset: 1px;
+  border-color: var(--azul);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.sr-only:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  clip: auto;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: var(--raio);
+  background: var(--azul);
+  color: #FFFFFF;
+}
