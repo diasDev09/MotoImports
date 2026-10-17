@@ -3,6 +3,8 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Placeholder from './components/Placeholder.jsx'
 import Home from './pages/Home.jsx'
+import PosVenda from './pages/PosVenda.jsx'
+import Boutique from './pages/Boutique.jsx'
 
 // Cada colega troca o <Placeholder /> da sua rota pela página real.
 // Exemplo: import Catalogo from './pages/Catalogo.jsx'
@@ -34,12 +36,17 @@ export default function App() {
           />
           <Route
             path="/checkout"
-            element={<Placeholder titulo="Reserva e retirada" />}
+            element={<PosVenda />}
           />
           <Route
             path="/pos-venda"
-            element={<Placeholder titulo="Pós-venda e boutique" />}
+            element={<PosVenda />}
           />
+
+          <Route 
+            path="/boutique" 
+            element={<Boutique />} 
+            />
 
           <Route
             path="*"

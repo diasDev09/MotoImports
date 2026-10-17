@@ -1,0 +1,692 @@
+
+/* ==========================================
+   MOTOIMPORTS — PÓS-VENDA E BOUTIQUE
+   Identidade azul | Design profissional
+   Responsivo para computador, tablet e celular
+========================================== */
+
+.pos-venda {
+  --pv-azul-escuro: #0b2545;
+  --pv-azul: #123b66;
+  --pv-azul-medio: #245b91;
+  --pv-azul-destaque: #76a9df;
+  --pv-azul-claro: #eaf4ff;
+  --pv-azul-suave: #f5f9ff;
+  --pv-branco: #ffffff;
+  --pv-texto: #183653;
+  --pv-texto-suave: #60758b;
+  --pv-borda: #d5e5f5;
+
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 64px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  background: var(--pv-azul);
+  color: var(--pv-texto);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ==========================================
+   BANNER PRINCIPAL
+========================================== */
+
+.pos-venda .pos-venda-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 76px 8%;
+  background: linear-gradient(
+    120deg,
+    #081d36 0%,
+    #0b2545 55%,
+    #164675 100%
+  );
+  color: var(--pv-branco);
+}
+
+.pos-venda .pos-venda-banner::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -170px;
+  right: -70px;
+  width: 430px;
+  height: 430px;
+  border: 1px solid rgba(180, 216, 255, 0.25);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 45px rgba(180, 216, 255, 0.05),
+    0 0 0 90px rgba(180, 216, 255, 0.035);
+  pointer-events: none;
+}
+
+.pos-venda .pos-venda-etiqueta {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: #b9dcff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  line-height: 1.6;
+}
+
+.pos-venda .pos-venda-banner h1 {
+  max-width: 760px;
+  margin: 0 0 20px;
+  color: #ffffff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -1.2px;
+}
+
+.pos-venda .pos-venda-banner p {
+  max-width: 580px;
+  margin: 0;
+  color: #d8e8fa;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.pos-venda .pos-venda-conteudo {
+  width: min(100% - 48px, 1000px);
+  margin: 0 auto;
+}
+
+.pos-venda .pos-venda-introducao {
+  padding: 52px 0 28px;
+}
+
+.pos-venda .pos-venda-sobretitulo {
+  display: block;
+  margin-bottom: 12px;
+  color: #c4e0ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.pos-venda .pos-venda-introducao h2 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.pos-venda .pos-venda-introducao p {
+  max-width: 620px;
+  margin: 0;
+  color: #dceaff;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ==========================================
+   FORMULÁRIO E SEÇÕES
+========================================== */
+
+.pos-venda .agendamento-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.pos-venda .agendamento-secao {
+  min-width: 0;
+  margin: 0;
+  padding: 30px;
+  border: 1px solid var(--pv-borda);
+  border-radius: 12px;
+  background: var(--pv-azul-suave);
+  box-shadow: 0 8px 24px rgba(4, 22, 43, 0.12);
+}
+
+.pos-venda .agendamento-secao legend {
+  max-width: 100%;
+  padding: 0 12px 0 0;
+  color: var(--pv-azul-escuro);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   CARTÕES DE SERVIÇOS
+========================================== */
+
+.pos-venda .servicos-grade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.pos-venda .servico-opcao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  min-height: 150px;
+  padding: 22px;
+  border: 1px solid var(--pv-borda);
+  border-radius: 9px;
+  background: #ffffff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pos-venda .servico-opcao:hover {
+  border-color: var(--pv-azul-destaque);
+  box-shadow: 0 5px 18px rgba(18, 59, 102, 0.09);
+}
+
+.pos-venda .servico-opcao.selecionado {
+  border-color: var(--pv-azul-medio);
+  background: var(--pv-azul-claro);
+  box-shadow: inset 0 0 0 1px var(--pv-azul-medio);
+}
+
+.pos-venda .servico-opcao input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0 0 2px;
+  accent-color: var(--pv-azul-medio);
+  cursor: pointer;
+}
+
+.pos-venda .servico-nome {
+  color: var(--pv-azul-escuro);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.pos-venda .servico-descricao {
+  color: var(--pv-texto-suave);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.pos-venda .servico-duracao {
+  margin-top: auto;
+  color: var(--pv-azul-medio);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   CAMPOS DO FORMULÁRIO
+========================================== */
+
+.pos-venda .agendamento-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 20px;
+  margin-top: 18px;
+}
+
+.pos-venda .campo-agendamento {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  color: var(--pv-texto);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.pos-venda .campo-completo {
+  grid-column: 1 / -1;
+}
+
+.pos-venda .campo-agendamento input,
+.pos-venda .campo-agendamento select,
+.pos-venda .campo-agendamento textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 13px 14px;
+  border: 1px solid #cddded;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  color: var(--pv-azul-escuro);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pos-venda .campo-agendamento textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.pos-venda .campo-agendamento input::placeholder,
+.pos-venda .campo-agendamento textarea::placeholder {
+  color: #899caf;
+  opacity: 1;
+}
+
+.pos-venda .campo-agendamento input:focus,
+.pos-venda .campo-agendamento select:focus,
+.pos-venda .campo-agendamento textarea:focus {
+  border-color: var(--pv-azul-medio);
+  box-shadow: 0 0 0 3px rgba(118, 169, 223, 0.24);
+}
+
+.pos-venda .campo-agendamento input:focus-visible,
+.pos-venda .campo-agendamento select:focus-visible,
+.pos-venda .campo-agendamento textarea:focus-visible {
+  outline: 2px solid var(--pv-azul-medio);
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   BOTÕES
+========================================== */
+
+.pos-venda .botao-agendar,
+.pos-venda .botao-limpar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 15px 24px;
+  border: 1px solid var(--pv-azul-escuro);
+  border-radius: 7px;
+  background: var(--pv-azul-escuro);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pos-venda .botao-agendar:hover,
+.pos-venda .botao-limpar:hover {
+  border-color: var(--pv-azul-medio);
+  background: var(--pv-azul-medio);
+}
+
+.pos-venda .botao-agendar:focus-visible,
+.pos-venda .botao-limpar:focus-visible {
+  outline: 3px solid var(--pv-azul-destaque);
+  outline-offset: 3px;
+}
+
+.pos-venda .agendamento-aviso {
+  margin: -6px 0 0;
+  color: #e0edfc;
+  font-size: 12px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ==========================================
+   CONFIRMAÇÃO DO AGENDAMENTO
+========================================== */
+
+.pos-venda .agendamento-confirmacao {
+  margin-top: 28px;
+  padding: 30px;
+  border: 1px solid #b9d8f7;
+  border-radius: 12px;
+  background: #f5f9ff;
+  box-shadow: 0 8px 28px rgba(4, 22, 43, 0.12);
+}
+
+.pos-venda .agendamento-confirmacao h2 {
+  margin: 0 0 12px;
+  color: var(--pv-azul-escuro);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.pos-venda .agendamento-confirmacao p {
+  color: var(--pv-texto-suave);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.pos-venda .agendamento-confirmacao ul {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pos-venda .agendamento-confirmacao li {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--pv-borda);
+  color: var(--pv-texto);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.pos-venda .agendamento-confirmacao li strong {
+  color: var(--pv-azul-escuro);
+}
+
+.pos-venda .botao-limpar {
+  margin-top: 20px;
+}
+
+/* ==========================================
+   TABLETS
+========================================== */
+
+@media (max-width: 768px) {
+  .pos-venda {
+    padding-bottom: 40px;
+  }
+
+  .pos-venda .pos-venda-banner {
+    padding: 56px 6%;
+  }
+
+  .pos-venda .pos-venda-banner::before {
+    top: -120px;
+    right: -220px;
+    width: 350px;
+    height: 350px;
+  }
+
+  .pos-venda .pos-venda-conteudo {
+    width: calc(100% - 36px);
+  }
+
+  .pos-venda .pos-venda-introducao {
+    padding-top: 38px;
+  }
+
+  .pos-venda .agendamento-secao {
+    padding: 24px;
+  }
+
+  .pos-venda .servico-opcao {
+    padding: 18px;
+  }
+}
+
+/* ==========================================
+   CELULARES
+========================================== */
+
+@media (max-width: 520px) {
+  .pos-venda {
+    padding-bottom: 30px;
+  }
+
+  .pos-venda .pos-venda-banner {
+    padding: 42px 22px 46px;
+  }
+
+  .pos-venda .pos-venda-banner h1 {
+    font-size: 34px;
+    letter-spacing: -0.7px;
+  }
+
+  .pos-venda .pos-venda-banner p {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .pos-venda .pos-venda-etiqueta {
+    margin-bottom: 17px;
+    font-size: 10px;
+    letter-spacing: 1.7px;
+  }
+
+  .pos-venda .pos-venda-conteudo {
+    width: calc(100% - 28px);
+  }
+
+  .pos-venda .pos-venda-introducao {
+    padding: 32px 0 22px;
+  }
+
+  .pos-venda .pos-venda-introducao h2 {
+    font-size: 29px;
+  }
+
+  .pos-venda .pos-venda-introducao p {
+    font-size: 14px;
+  }
+
+  .pos-venda .agendamento-formulario {
+    gap: 14px;
+  }
+
+  .pos-venda .agendamento-secao {
+    padding: 20px 16px;
+    border-radius: 9px;
+  }
+
+  .pos-venda .agendamento-secao legend {
+    font-size: 15px;
+  }
+
+  .pos-venda .servicos-grade {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .pos-venda .servico-opcao {
+    min-height: auto;
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .pos-venda .servico-nome {
+    font-size: 14px;
+  }
+
+  .pos-venda .servico-descricao {
+    font-size: 13px;
+  }
+
+  .pos-venda .agendamento-campos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin-top: 16px;
+  }
+
+  .pos-venda .campo-completo {
+    grid-column: auto;
+  }
+
+  .pos-venda .campo-agendamento input,
+  .pos-venda .campo-agendamento select,
+  .pos-venda .campo-agendamento textarea {
+    font-size: 16px;
+  }
+
+  .pos-venda .botao-agendar,
+  .pos-venda .botao-limpar {
+    min-height: 52px;
+    padding: 14px 16px;
+  }
+
+  .pos-venda .agendamento-aviso {
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .pos-venda .agendamento-confirmacao {
+    margin-top: 20px;
+    padding: 22px 18px;
+  }
+
+  .pos-venda .agendamento-confirmacao h2 {
+    font-size: 24px;
+  }
+}
+
+/* ==========================================
+   CELULARES MUITO ESTREITOS
+========================================== */
+
+@media (max-width: 360px) {
+  .pos-venda .pos-venda-banner {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .pos-venda .pos-venda-banner h1 {
+    font-size: 30px;
+  }
+
+  .pos-venda .pos-venda-conteudo {
+    width: calc(100% - 22px);
+  }
+
+  .pos-venda .agendamento-secao {
+    padding: 17px 12px;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .pos-venda *,
+  .pos-venda *::before,
+  .pos-venda *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+
+/* Tipografia mais moderna */
+.pos-venda {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Cartões em cinza claro, sem branco puro */
+.agendamento-secao {
+  background: #e9edf3;
+  border: 1px solid #cbd7e5;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(4, 24, 48, 0.12);
+}
+
+/* Títulos das etapas */
+.agendamento-secao legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 0 16px;
+  color: #17395d;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Quadrado com o número da etapa */
+.etapa-numero {
+  display: inline-flex;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid #9bbfe5;
+  border-radius: 10px;
+  background: #d5e7fa;
+  color: #123b66;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Opções de serviço */
+.servico-opcao {
+  background: #f0f2f6;
+  border: 1px solid #d1dbe7;
+  border-radius: 12px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.servico-opcao:hover {
+  background: #e0ebf8;
+  border-color: #80a9d5;
+}
+
+/* Destaque do serviço selecionado */
+.servico-opcao:has(input[type="radio"]:checked) {
+  background: #dceafa;
+  border-color: #3978b8;
+  box-shadow: 0 0 0 2px rgba(57, 120, 184, 0.12);
+}
+
+/* Campos com contraste suave */
+.pos-venda input,
+.pos-venda select,
+.pos-venda textarea {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+/* Melhor leitura em celulares */
+@media (max-width: 520px) {
+  .agendamento-secao {
+    padding: 18px 14px;
+    border-radius: 13px;
+  }
+
+  .agendamento-secao legend {
+    gap: 9px;
+    font-size: 16px;
+  }
+
+  .etapa-numero {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+  }
+}
+
+/* Desce o título e o número das etapas */
+.pos-venda .agendamento-secao legend {
+  position: relative;
+  top: 24px;
+}
