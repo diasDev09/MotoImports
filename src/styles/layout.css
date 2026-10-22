@@ -1,3 +1,4 @@
+
 /* barra fixa no topo */
 .navbar {
   position: sticky;
@@ -51,6 +52,36 @@
   border-bottom-color: var(--azul);
 }
 
+/* ícone do carrinho de compras */
+.menu a.navbar-carrinho {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+  border-bottom: none;
+  padding: 0.35rem;
+}
+
+.menu a.navbar-carrinho:hover {
+  color: var(--azul-claro);
+}
+
+/* contador de produtos no carrinho */
+.navbar-carrinho-contador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background: #245b91;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .menu-botao {
   display: none;
   background: #0B192C;
@@ -90,6 +121,14 @@
     display: block;
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--line);
+  }
+
+  /* mantém o carrinho alinhado no menu do celular */
+  .menu li a.navbar-carrinho {
+    display: inline-flex;
+    margin: 0 1rem;
+    padding: 0.75rem 0;
+    border-bottom: none;
   }
 }
 
