@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-
+import { useApp } from '../context/AppContext.jsx'
 
 const links = [
   { para: '/catalogo', texto: 'Catálogo' },
@@ -13,10 +13,10 @@ const links = [
 
 export default function Navbar() {
   const [aberto, setAberto] = useState(false)
+  const { acessorios, motoSelecionada } = useApp()
 
-  // Temporariamente, o contador começa em zero.
-  // Depois vamos conectá-lo ao carrinho da Boutique.
-  const quantidadeCarrinho = 0
+  // Quantidade total de itens em andamento para reserva/carrinho
+  const quantidadeCarrinho = (acessorios?.length || 0) + (motoSelecionada ? 1 : 0)
 
   return (
     <header className="navbar">
@@ -71,6 +71,20 @@ export default function Navbar() {
             >
               Sobre nós
             </Link>
+          </li>
+
+          <li>
+            <NavLink
+              to="/checkout"
+              onClick={() => setAberto(false)}
+              className="navbar-carrinho"
+              aria-label={`Reserva com ${quantidadeCarrinho} itens`}
+            >
+              🛒 Reserva
+              {quantidadeCarrinho > 0 && (
+                <span className="navbar-carrinho-contador">{quantidadeCarrinho}</span>
+              )}
+            </NavLink>
           </li>
         </ul>
       </nav>

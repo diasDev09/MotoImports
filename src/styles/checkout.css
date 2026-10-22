@@ -1,0 +1,477 @@
+/* ==========================================================================
+   MOTOIMPORTS — ESTILOS DO CHECKOUT & VOUCHER [RF-08]
+   Responsável: Santos
+   Tema: Deep Navy (#0B192C) & Electric Accent (#0084D1)
+   ========================================================================== */
+
+.checkout-page {
+  padding-block: 2.5rem 5rem;
+  background: var(--navy-ink);
+  color: var(--ice);
+  min-height: calc(100vh - var(--altura-navbar));
+}
+
+.checkout-header {
+  margin-bottom: 2rem;
+}
+
+.checkout-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--azul-claro);
+  background: rgba(0, 132, 209, 0.15);
+  border: 1px solid rgba(0, 132, 209, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.checkout-grade {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.checkout-card {
+  background: var(--navy-deep);
+  border: 1px solid var(--line);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.checkout-card-titulo {
+  font-size: 1.25rem;
+  color: var(--ice);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lojas de Retirada */
+.checkout-lojas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.checkout-loja-opcao {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem;
+  background: var(--navy);
+  border: 1px solid var(--line);
+  border-radius: var(--raio);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkout-loja-opcao:hover {
+  border-color: var(--azul-claro);
+}
+
+.checkout-loja-opcao.selecionada {
+  border-color: var(--azul);
+  background: rgba(0, 132, 209, 0.12);
+  box-shadow: 0 0 10px rgba(0, 132, 209, 0.25);
+}
+
+.checkout-loja-opcao input[type="radio"] {
+  margin-top: 0.25rem;
+  accent-color: var(--azul);
+}
+
+.checkout-loja-detalhes {
+  flex: 1;
+}
+
+.checkout-loja-nome {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ice);
+  margin-bottom: 0.25rem;
+}
+
+.checkout-loja-endereco {
+  font-size: 0.85rem;
+  color: var(--ice-muted);
+  line-height: 1.4;
+}
+
+.checkout-loja-prazo {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--estoque-verde);
+  background: rgba(61, 220, 132, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Formas de Pagamento */
+.checkout-formas-pagamento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.checkout-forma-btn {
+  padding: 0.85rem 0.5rem;
+  background: var(--navy);
+  border: 1px solid var(--line);
+  border-radius: var(--raio);
+  color: var(--ice);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.checkout-forma-btn:hover {
+  border-color: var(--azul);
+}
+
+.checkout-forma-btn.ativo {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 132, 209, 0.3);
+}
+
+/* Formulário de Dados */
+.checkout-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.checkout-erro-msg {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.checkout-lgpd-box {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--raio);
+  font-size: 0.85rem;
+  color: var(--ice-muted);
+}
+
+.checkout-lgpd-box input[type="checkbox"] {
+  margin-top: 0.2rem;
+  accent-color: var(--azul);
+}
+
+/* Resumo do Pedido */
+.checkout-resumo-sticky {
+  position: sticky;
+  top: calc(var(--altura-navbar) + 1.5rem);
+}
+
+.checkout-moto-resumo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.checkout-moto-foto {
+  width: 90px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--navy);
+}
+
+.checkout-moto-info h4 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+
+.checkout-moto-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ice-muted);
+}
+
+.checkout-itens-carrinho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.checkout-item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.checkout-btn-remover-item {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.checkout-btn-finalizar {
+  width: 100%;
+  padding: 1.1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--azul);
+  border: none;
+  border-radius: var(--raio);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 132, 209, 0.35);
+}
+
+.checkout-btn-finalizar:hover {
+  background: var(--azul-claro);
+  color: var(--navy-ink);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   VOUCHER DE RESERVA OFICIAL [RF-08]
+   ========================================================================== */
+
+.voucher-container {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.voucher-alerta-ficticio {
+  background: rgba(255, 197, 61, 0.15);
+  border: 1px solid var(--estoque-amarelo);
+  color: #ffe89e;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--raio);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.voucher-card {
+  background: #ffffff;
+  color: #0b192c;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  border: 2px solid #0084D1;
+  position: relative;
+}
+
+.voucher-header {
+  background: linear-gradient(135deg, #0B192C, #173257);
+  color: #ffffff;
+  padding: 1.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voucher-marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.voucher-marca span {
+  color: #0084D1;
+}
+
+.voucher-codigo-box {
+  text-align: right;
+}
+
+.voucher-codigo-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #A9BDE6;
+  letter-spacing: 0.05em;
+}
+
+.voucher-codigo {
+  font-size: 1.35rem;
+  font-family: monospace;
+  font-weight: 700;
+  color: #4FB3F5;
+  letter-spacing: 0.08em;
+}
+
+.voucher-status-badge {
+  background: #22c55e;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.voucher-corpo {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.voucher-grid-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.voucher-secao h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #60758b;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.35rem;
+}
+
+.voucher-secao p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.voucher-secao strong {
+  color: #0b192c;
+}
+
+.voucher-resumo-financeiro {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.voucher-valor-destaque {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0084D1;
+  font-family: var(--fonte-titulo);
+}
+
+.voucher-rodape-autenticacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.25rem;
+  border-top: 2px dashed #cbd5e1;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.voucher-codigo-barras {
+  letter-spacing: 0.3em;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+}
+
+.voucher-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   ESTILOS DE IMPRESSÃO (@media print)
+   ========================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .navbar,
+  .rodape,
+  .voucher-acoes,
+  .voucher-alerta-ficticio,
+  .simulador-tag,
+  .checkout-tag {
+    display: none !important;
+  }
+
+  .checkout-page {
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .voucher-card {
+    box-shadow: none !important;
+    border: 1px solid #000000 !important;
+  }
+}
+
+/* Responsividade do Checkout */
+@media (max-width: 850px) {
+  .checkout-grade {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .voucher-grid-info {
+    grid-template-columns: 1fr;
+  }
+
+  .voucher-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .voucher-codigo-box {
+    text-align: left;
+  }
+}

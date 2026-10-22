@@ -23,6 +23,9 @@ export function AppProvider({ children }) {
     [acessorios],
   )
 
+  const [simulacao, setSimulacao] = useState(null)
+  const [voucherReserva, setVoucherReserva] = useState(null)
+
   const value = {
     motoSelecionada,
     selecionarMoto: setMotoSelecionada,
@@ -34,6 +37,10 @@ export function AppProvider({ children }) {
     totalAcessorios,
     lead,
     registrarLead: setLead,
+    simulacao,
+    salvarSimulacao: setSimulacao,
+    voucherReserva,
+    salvarVoucherReserva: setVoucherReserva,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
