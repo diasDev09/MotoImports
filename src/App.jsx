@@ -5,6 +5,7 @@ import Placeholder from './components/Placeholder.jsx'
 import Home from './pages/Home.jsx'
 import PosVenda from './pages/PosVenda.jsx'
 import Boutique from './pages/Boutique.jsx'
+import Contato from './pages/Contato.jsx'
 
 // Cada colega troca o <Placeholder /> da sua rota pela página real.
 // Exemplo: import Catalogo from './pages/Catalogo.jsx'
@@ -26,10 +27,7 @@ export default function App() {
             path="/moto/:id"
             element={<Placeholder titulo="Detalhes da moto" />}
           />
-          <Route
-            path="/contato"
-            element={<Placeholder titulo="Fale com a equipe" />}
-          />
+          <Route path="/contato" element={<Contato />} />
           <Route
             path="/simulador"
             element={<Placeholder titulo="Simulador de financiamento" />}

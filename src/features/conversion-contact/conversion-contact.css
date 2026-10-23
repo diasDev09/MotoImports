@@ -1,0 +1,335 @@
+/*
+  Estilos isolados da feature de contato.
+  Nenhum seletor global é alterado. As variáveis usam o tema do projeto quando
+  existirem e possuem fallback apenas para manter o componente utilizável.
+*/
+.mi-contact-card {
+  --mi-contact-navy: var(--mi-navy, var(--color-primary, #0b2a4a));
+  --mi-contact-blue: var(--mi-blue, var(--color-secondary, #123c6b));
+  --mi-contact-accent: var(--mi-accent, var(--color-accent, #22d3ee));
+  --mi-contact-surface: var(--mi-surface, var(--color-surface, #ffffff));
+  --mi-contact-text: var(--mi-text, var(--color-text, #162033));
+  --mi-contact-muted: var(--mi-muted, #64748b);
+  --mi-contact-border: var(--mi-border, #d8e2ea);
+  --mi-contact-danger: #b42318;
+  --mi-contact-success: #067647;
+
+  width: 100%;
+  color: var(--mi-contact-text);
+  font: inherit;
+}
+
+.mi-contact-card *,
+.mi-contact-card *::before,
+.mi-contact-card *::after,
+.mi-contact-modal *,
+.mi-contact-modal *::before,
+.mi-contact-modal *::after {
+  box-sizing: border-box;
+}
+
+.mi-contact-form {
+  width: 100%;
+  border: 1px solid var(--mi-contact-border);
+  border-radius: 14px;
+  background: var(--mi-contact-surface);
+  padding: 24px;
+  box-shadow: 0 12px 28px rgb(15 42 74 / 8%);
+}
+
+.mi-contact-form__header h2,
+.mi-contact-modal__header h2 {
+  margin: 0;
+  color: var(--mi-contact-navy);
+  font: inherit;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.mi-contact-form__header p,
+.mi-contact-modal__header p {
+  margin: 6px 0 0;
+  color: var(--mi-contact-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.mi-contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.mi-contact-field {
+  min-width: 0;
+}
+
+.mi-contact-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--mi-contact-navy);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.mi-contact-field input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--mi-contact-border);
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 0 12px;
+  color: var(--mi-contact-text);
+  font: inherit;
+  font-size: 0.94rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.mi-contact-field input::placeholder {
+  color: #94a3b8;
+}
+
+.mi-contact-field input:focus {
+  border-color: var(--mi-contact-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mi-contact-accent) 22%, transparent);
+}
+
+.mi-contact-field input[aria-invalid='true'] {
+  border-color: var(--mi-contact-danger);
+}
+
+.mi-contact-error {
+  display: block;
+  margin-top: 5px;
+  color: var(--mi-contact-danger);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.mi-contact-button {
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, filter 150ms ease, opacity 150ms ease;
+}
+
+.mi-contact-button:hover:not(:disabled),
+.mi-contact-action:hover {
+  filter: brightness(0.97);
+  transform: translateY(-1px);
+}
+
+.mi-contact-button:focus-visible,
+.mi-contact-close:focus-visible,
+.mi-contact-action:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--mi-contact-accent) 30%, transparent);
+  outline-offset: 2px;
+}
+
+.mi-contact-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.mi-contact-button--primary {
+  border: 1px solid var(--mi-contact-accent);
+  background: var(--mi-contact-accent);
+  color: var(--mi-contact-navy);
+}
+
+.mi-contact-button--secondary {
+  border: 1px solid rgb(255 255 255 / 35%);
+  background: var(--mi-contact-blue);
+  color: #fff;
+}
+
+.mi-contact-form__submit {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.mi-contact-success {
+  margin: 10px 0 0;
+  color: var(--mi-contact-success);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.mi-contact-card__video-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.mi-contact-card__proposal {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.mi-contact-card__proposal span {
+  color: var(--mi-contact-muted);
+  font-size: 0.8rem;
+}
+
+.mi-contact-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background: rgb(5 20 38 / 78%);
+  padding: 20px;
+  backdrop-filter: blur(3px);
+}
+
+.mi-contact-modal {
+  --mi-contact-navy: var(--mi-navy, var(--color-primary, #0b2a4a));
+  --mi-contact-blue: var(--mi-blue, var(--color-secondary, #123c6b));
+  --mi-contact-accent: var(--mi-accent, var(--color-accent, #22d3ee));
+  --mi-contact-surface: var(--mi-surface, var(--color-surface, #ffffff));
+  --mi-contact-text: var(--mi-text, var(--color-text, #162033));
+  --mi-contact-muted: var(--mi-muted, #64748b);
+  --mi-contact-border: var(--mi-border, #d8e2ea);
+
+  width: min(820px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  border: 1px solid var(--mi-contact-border);
+  border-radius: 14px;
+  background: var(--mi-contact-surface);
+  padding: 20px;
+  color: var(--mi-contact-text);
+  box-shadow: 0 28px 80px rgb(1 17 33 / 35%);
+  font: inherit;
+}
+
+.mi-contact-proposal-modal {
+  width: min(620px, 100%);
+}
+
+.mi-contact-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mi-contact-close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--mi-contact-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--mi-contact-navy);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mi-contact-video-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-top: 16px;
+  border-radius: 10px;
+  background: #071a2f;
+}
+
+.mi-contact-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.mi-contact-proposal-preview {
+  margin-top: 18px;
+  border: 1px solid var(--mi-contact-border);
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 14px;
+}
+
+.mi-contact-proposal-preview strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--mi-contact-navy);
+  font-size: 0.88rem;
+}
+
+.mi-contact-proposal-preview p {
+  margin: 0;
+  white-space: pre-line;
+  color: #475569;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.mi-contact-proposal-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.mi-contact-action {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 150ms ease, filter 150ms ease;
+}
+
+.mi-contact-action--whatsapp {
+  border: 1px solid #159447;
+  background: #159447;
+  color: #fff;
+}
+
+.mi-contact-action--email {
+  border: 1px solid var(--mi-contact-navy);
+  background: var(--mi-contact-navy);
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .mi-contact-form {
+    padding: 18px;
+  }
+
+  .mi-contact-form__grid,
+  .mi-contact-proposal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .mi-contact-card__video-action,
+  .mi-contact-card__proposal {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .mi-contact-card__video-action .mi-contact-button,
+  .mi-contact-card__proposal .mi-contact-button {
+    width: 100%;
+  }
+}
