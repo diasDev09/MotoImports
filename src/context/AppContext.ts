@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react'
 import type { Moto } from '../data/motos.ts'
 import type { LeadRegistrado } from '../domain/lead.ts'
 import type { simularOperacao } from '../domain/financing.ts'
+import type { VoucherReserva } from '../domain/reservation.ts'
 
 // Estado que as partes do grupo dividem: moto escolhida, acessórios e lead.
 // (porte da v1, da Emilly; o componente Provider ficou em AppProvider.tsx)
@@ -28,6 +29,8 @@ export interface AppContextValue {
     registrarLead: (lead: LeadRegistrado | null) => void
     simulacao: Simulacao | null
     salvarSimulacao: (simulacao: Simulacao | null) => void
+    voucherReserva: VoucherReserva | null
+    salvarVoucherReserva: (voucher: VoucherReserva | null) => void
 }
 
 export const AppContext = createContext<AppContextValue | null>(null)

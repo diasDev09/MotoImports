@@ -2,14 +2,24 @@ import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Moto } from '../data/motos.ts'
 import type { LeadRegistrado } from '../domain/lead.ts'
+import type { VoucherReserva } from '../domain/reservation.ts'
 import { AppContext } from './AppContext.ts'
 import type { Acessorio, AppContextValue, Simulacao } from './AppContext.ts'
 
-export function AppProvider({ children }: { children: ReactNode }) {
-    const [motoSelecionada, setMotoSelecionada] = useState<Moto | null>(null)
-    const [acessorios, setAcessorios] = useState<Acessorio[]>([])
-    const [lead, setLead] = useState<LeadRegistrado | null>(null)
-    const [simulacao, setSimulacao] = useState<Simulacao | null>(null)
+// valores de partida: servem para os testes começarem com o app já em um estado (ex.: moto escolhida)
+export interface EstadoInicial {
+    moto?: Moto | null
+    acessorios?: Acessorio[]
+    lead?: LeadRegistrado | null
+    simulacao?: Simulacao | null
+}
+
+export function AppProvider({ children, inicial = {} }: { children: ReactNode; inicial?: EstadoInicial }) {
+    const [motoSelecionada, setMotoSelecionada] = useState<Moto | null>(inicial.moto ?? null)
+    const [acessorios, setAcessorios] = useState<Acessorio[]>(inicial.acessorios ?? [])
+    const [lead, setLead] = useState<LeadRegistrado | null>(inicial.lead ?? null)
+    const [simulacao, setSimulacao] = useState<Simulacao | null>(inicial.simulacao ?? null)
+    const [voucherReserva, setVoucherReserva] = useState<VoucherReserva | null>(null)
 
     // não deixa adicionar o mesmo acessório duas vezes
     function adicionarAcessorio(item: Acessorio) {
@@ -39,6 +49,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         registrarLead: setLead,
         simulacao,
         salvarSimulacao: setSimulacao,
+        voucherReserva,
+        salvarVoucherReserva: setVoucherReserva,
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

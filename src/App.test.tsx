@@ -62,6 +62,16 @@ describe('Navbar (menu no celular)', () => {
         expect(screen.getByRole('link', { name: 'Ir para o conteúdo' })).toHaveAttribute('href', '#conteudo')
     })
 
+    it('RF-11: o link Reserva mostra quantos acessórios já estão na reserva', async () => {
+        const user = userEvent.setup()
+        abrir('/simulador?moto=yamaha-mt-07')
+        const menu = screen.getByRole('navigation', { name: 'Principal' })
+        expect(within(menu).getByRole('link', { name: 'Reserva' })).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /adicionar protetor de motor/i }))
+        expect(within(menu).getByRole('link', { name: 'Reserva, 1 acessório' })).toBeInTheDocument()
+    })
+
     it('"Sobre nós" aponta para a âncora da Home', () => {
         abrir('/')
         const links = screen.getAllByRole('link', { name: 'Sobre nós' })

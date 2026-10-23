@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useApp } from '../context/AppContext.ts'
 
 interface ItemMenu {
     para: string
@@ -22,6 +23,9 @@ export default function Navbar() {
     // controla o menu no celular: aberto ou fechado
     const [aberto, setAberto] = useState(false)
     const fechar = () => setAberto(false)
+    // RF-11: quantos acessórios já estão na reserva
+    const { acessorios } = useApp()
+    const itens = acessorios.length
 
     return (
         <header className="sticky top-0 z-50 border-b border-musgo-200 bg-musgo-50/95 backdrop-blur">
@@ -68,6 +72,21 @@ export default function Navbar() {
                             </NavLink>
                         </li>
                     ))}
+                    <li>
+                        <NavLink
+                            to="/checkout"
+                            onClick={fechar}
+                            aria-label={itens > 0 ? `Reserva, ${itens} ${itens === 1 ? 'acessório' : 'acessórios'}` : 'Reserva'}
+                            className={({ isActive }) => `${estiloLink} ${isActive ? 'bg-musgo-200 font-semibold' : ''}`}
+                        >
+                            Reserva
+                            {itens > 0 && (
+                                <span aria-hidden="true" className="ml-2 rounded-full bg-musgo-900 px-2 py-0.5 text-xs text-white">
+                                    {itens}
+                                </span>
+                            )}
+                        </NavLink>
+                    </li>
                     {/* "Sobre nós" é uma seção da Home, por isso usa âncora e não uma rota */}
                     <li>
                         <Link to="/#sobre" onClick={fechar} className={estiloLink}>
