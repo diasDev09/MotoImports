@@ -7,6 +7,7 @@ import Catalogo from './pages/Catalogo.tsx'
 import Contato from './pages/Contato.tsx'
 import Simulador from './pages/Simulador.tsx'
 import Checkout from './pages/Checkout.tsx'
+import PosVenda from './pages/PosVenda.tsx'
 
 // Cada colega troca o <Placeholder /> da sua rota pela página real.
 
@@ -22,7 +23,7 @@ export default function App() {
           <Route path="/contato" element={<Contato />} />
           <Route path="/simulador" element={<Simulador />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/pos-venda" element={<Placeholder titulo="Pós-venda e boutique" />} />
+          <Route path="/pos-venda" element={<PosVenda />} />
           <Route
             path="*"
             element={<Placeholder titulo="Página não encontrada" mensagem="Não achamos essa página." />}
