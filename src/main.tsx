@@ -4,14 +4,17 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { AppProvider } from './context/AppProvider.tsx'
+import { AuthProvider } from './auth/AuthProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* O Router vem por fora para o AppProvider e todas as páginas poderem usar rotas */}
     <BrowserRouter>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <AuthProvider>
+        <AppProvider>
+          <App />
+        </AppProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -1,3 +1,4 @@
+import ExigeLogin from '../auth/ExigeLogin.tsx'
 import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { DayPicker } from 'react-day-picker'
@@ -121,181 +122,183 @@ export default function PosVenda() {
             </div>
 
             <div className="mx-auto max-w-3xl px-6 py-12">
-                <h2 className="text-4xl">Agende seu serviço</h2>
-                <p className="mt-2 text-suave">
-                    Escolha o serviço, informe os dados da sua moto e selecione a data desejada.
-                </p>
-
-                <form
-                    className="mt-8 flex flex-col gap-6"
-                    noValidate
-                    onSubmit={handleSubmit((dados) => {
-                        reservarHorario({ data: dados.data, horario: dados.horario })
-                        setAgendado(dados)
-                    })}
-                >
-                    <Etapa numero="01" titulo="Escolha o serviço desejado">
-                        <div className="grid gap-3 sm:grid-cols-2">
-                            {SERVICOS.map((servico) => (
-                                <label
-                                    key={servico.id}
-                                    className="opcao has-checked:opcao-card-marcada flex cursor-pointer flex-col gap-1 p-4 text-sm has-focus-visible:outline-3 has-focus-visible:outline-offset-3 has-focus-visible:outline-tinta"
-                                >
-                                    <input type="radio" value={servico.id} className="sr-only" {...register('servico')} />
-                                    <span className="font-bold">{servico.nome}</span>
-                                    <span>{servico.descricao}</span>
-                                    <span className="text-xs text-suave">{servico.duracao}</span>
-                                </label>
-                            ))}
-                        </div>
-                        {errors.servico && (
-                            <p role="alert" className="mt-2 text-sm font-medium text-erro">
-                                {errors.servico.message}
-                            </p>
-                        )}
-                    </Etapa>
-
-                    <Etapa numero="02" titulo="Dados do cliente e da moto">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <Campo id="nome" rotulo="Nome completo" erro={errors.nome?.message}>
-                                <input id="nome" type="text" autoComplete="name" placeholder="Digite seu nome" className={campo} {...acessivel('nome')} {...register('nome')} />
-                            </Campo>
-                            <Campo id="telefone" rotulo="Telefone" erro={errors.telefone?.message}>
-                                <input
-                                    id="telefone"
-                                    type="tel"
-                                    autoComplete="tel"
-                                    placeholder="(81) 99999-9999"
-                                    className={campo}
-                                    {...acessivel('telefone')}
-                                    {...register('telefone', {
-                                        onChange: (e: ChangeEvent<HTMLInputElement>) => {
-                                            e.target.value = formatarTelefone(e.target.value)
-                                        },
-                                    })}
-                                />
-                            </Campo>
-                            <Campo id="moto" rotulo="Modelo da moto" erro={errors.moto?.message} largo>
-                                <input id="moto" type="text" placeholder="Ex.: Honda CG 160, ano 2024" className={campo} {...acessivel('moto')} {...register('moto')} />
-                            </Campo>
-                        </div>
-                    </Etapa>
-
-                    <Etapa numero="03" titulo="Data e horário">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <div className="flex flex-col gap-1 sm:col-span-2">
-                                <p id="data-rotulo" className="text-sm">Data desejada</p>
-                                <input type="hidden" {...register('data')} />
-                                <div role="group" aria-labelledby="data-rotulo" className="folha w-fit border-2 border-tinta p-2">
-                                    <DayPicker
-                                        mode="single"
-                                        locale={ptBR}
-                                        weekStartsOn={0}
-                                        selected={dataEscolhida ? new Date(`${dataEscolhida}T00:00:00`) : undefined}
-                                        onSelect={(dia) => {
-                                            setValue('data', dia ? dataIsoLocal(dia) : '', { shouldValidate: true, shouldDirty: true })
-                                            resetField('horario') // o horário escolhido pode estar ocupado no novo dia
-                                        }}
-                                        disabled={{ before: new Date(`${hoje}T00:00:00`) }}
-                                        style={{
-                                            '--rdp-accent-color': 'var(--color-tinta)',
-                                            '--rdp-accent-background-color': 'var(--color-fita)',
-                                        } as CSSProperties}
-                                    />
-                                </div>
-                                {errors.data && (
-                                    <p id="data-erro" role="alert" className="text-sm font-medium text-erro">
-                                        {errors.data.message}
-                                    </p>
-                                )}
-                            </div>
-                            <Campo id="horario" rotulo="Horário desejado" erro={errors.horario?.message}>
-                                <select
-                                    id="horario"
-                                    className={campo}
-                                    disabled={!dataEscolhida}
-                                    {...acessivel('horario')}
-                                    {...register('horario')}
-                                >
-                                    <option value="">{dataEscolhida ? 'Selecione um horário' : 'Escolha a data primeiro'}</option>
-                                    {HORARIOS.map((h) => {
-                                        const ocupado = Boolean(dataEscolhida) && horarioOcupado(dataEscolhida, h, agendaSimulada, horariosReservados)
-                                        return (
-                                            <option key={h} value={h} disabled={ocupado}>
-                                                {ocupado ? `${h} (ocupado)` : h}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </Campo>
-                            <Campo id="observacoes" rotulo="Observações (opcional)" erro={errors.observacoes?.message} largo>
-                                <textarea
-                                    id="observacoes"
-                                    rows={3}
-                                    placeholder="Descreva algum problema ou informação importante."
-                                    className={campo}
-                                    {...acessivel('observacoes')}
-                                    {...register('observacoes')}
-                                />
-                            </Campo>
-                        </div>
-
-                        <div className="mt-4 flex items-start gap-3">
-                            <input id="consentimento" type="checkbox" className="mt-1 size-5 accent-fg" {...acessivel('consentimento')} {...register('consentimento')} />
-                            <label htmlFor="consentimento" className="text-sm">
-                                Autorizo a MotoImports a usar meus dados para entrar em contato sobre este agendamento (LGPD).
-                            </label>
-                        </div>
-                        {errors.consentimento && (
-                            <p id="consentimento-erro" role="alert" className="mt-1 text-sm font-medium text-erro">
-                                {errors.consentimento.message}
-                            </p>
-                        )}
-                    </Etapa>
-
-                    <button
-                        type="submit"
-                        className="botao min-h-11 self-start px-6 py-3 text-sm"
-                    >
-                        Solicitar agendamento
-                    </button>
-
-                    <p className="text-xs text-suave">
-                        A disponibilidade do horário escolhido será verificada pela oficina. O agendamento só será
-                        confirmado após a validação do horário.
+                <ExigeLogin motivo="agendar um serviço na oficina">
+                    <h2 className="text-4xl">Agende seu serviço</h2>
+                    <p className="mt-2 text-suave">
+                        Escolha o serviço, informe os dados da sua moto e selecione a data desejada.
                     </p>
-                </form>
 
-                <div aria-live="polite">
-                    {agendado && (
-                        <section className="folha folha-sombra fita mt-10 p-6">
-                            <h2 className="text-2xl">Aguarde a confirmação do agendamento</h2>
-                            <p className="mt-2">Recebemos sua solicitação. Confira os dados informados:</p>
-                            <ul className="mt-3 flex flex-col gap-1 text-sm">
-                                <li><strong>Cliente:</strong> {agendado.nome}</li>
-                                <li><strong>Telefone:</strong> {formatarTelefone(agendado.telefone)}</li>
-                                <li><strong>Moto:</strong> {agendado.moto}</li>
-                                <li><strong>Serviço:</strong> {servicoEscolhido?.nome}</li>
-                                <li><strong>Data:</strong> {formatarDataIso(agendado.data)}</li>
-                                <li><strong>Horário:</strong> {agendado.horario}</li>
-                                {agendado.observacoes && <li><strong>Observações:</strong> {agendado.observacoes}</li>}
-                            </ul>
-                            <p className="mt-3 text-sm">
-                                O agendamento depende da confirmação da oficina. Entraremos em contato para validar o horário escolhido.
-                            </p>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    reset()
-                                    setAgendado(null)
-                                }}
-                                className="botao-vazado mt-4 min-h-11 px-5 text-sm"
-                            >
-                                Fazer novo agendamento
-                            </button>
-                        </section>
-                    )}
-                </div>
+                    <form
+                        className="mt-8 flex flex-col gap-6"
+                        noValidate
+                        onSubmit={handleSubmit((dados) => {
+                            reservarHorario({ data: dados.data, horario: dados.horario })
+                            setAgendado(dados)
+                        })}
+                    >
+                        <Etapa numero="01" titulo="Escolha o serviço desejado">
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                {SERVICOS.map((servico) => (
+                                    <label
+                                        key={servico.id}
+                                        className="opcao has-checked:opcao-card-marcada flex cursor-pointer flex-col gap-1 p-4 text-sm has-focus-visible:outline-3 has-focus-visible:outline-offset-3 has-focus-visible:outline-tinta"
+                                    >
+                                        <input type="radio" value={servico.id} className="sr-only" {...register('servico')} />
+                                        <span className="font-bold">{servico.nome}</span>
+                                        <span>{servico.descricao}</span>
+                                        <span className="text-xs text-suave">{servico.duracao}</span>
+                                    </label>
+                                ))}
+                            </div>
+                            {errors.servico && (
+                                <p role="alert" className="mt-2 text-sm font-medium text-erro">
+                                    {errors.servico.message}
+                                </p>
+                            )}
+                        </Etapa>
+
+                        <Etapa numero="02" titulo="Dados do cliente e da moto">
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <Campo id="nome" rotulo="Nome completo" erro={errors.nome?.message}>
+                                    <input id="nome" type="text" autoComplete="name" placeholder="Digite seu nome" className={campo} {...acessivel('nome')} {...register('nome')} />
+                                </Campo>
+                                <Campo id="telefone" rotulo="Telefone" erro={errors.telefone?.message}>
+                                    <input
+                                        id="telefone"
+                                        type="tel"
+                                        autoComplete="tel"
+                                        placeholder="(81) 99999-9999"
+                                        className={campo}
+                                        {...acessivel('telefone')}
+                                        {...register('telefone', {
+                                            onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                                                e.target.value = formatarTelefone(e.target.value)
+                                            },
+                                        })}
+                                    />
+                                </Campo>
+                                <Campo id="moto" rotulo="Modelo da moto" erro={errors.moto?.message} largo>
+                                    <input id="moto" type="text" placeholder="Ex.: Honda CG 160, ano 2024" className={campo} {...acessivel('moto')} {...register('moto')} />
+                                </Campo>
+                            </div>
+                        </Etapa>
+
+                        <Etapa numero="03" titulo="Data e horário">
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="flex flex-col gap-1 sm:col-span-2">
+                                    <p id="data-rotulo" className="text-sm">Data desejada</p>
+                                    <input type="hidden" {...register('data')} />
+                                    <div role="group" aria-labelledby="data-rotulo" className="folha w-fit border-2 border-tinta p-2">
+                                        <DayPicker
+                                            mode="single"
+                                            locale={ptBR}
+                                            weekStartsOn={0}
+                                            selected={dataEscolhida ? new Date(`${dataEscolhida}T00:00:00`) : undefined}
+                                            onSelect={(dia) => {
+                                                setValue('data', dia ? dataIsoLocal(dia) : '', { shouldValidate: true, shouldDirty: true })
+                                                resetField('horario') // o horário escolhido pode estar ocupado no novo dia
+                                            }}
+                                            disabled={{ before: new Date(`${hoje}T00:00:00`) }}
+                                            style={{
+                                                '--rdp-accent-color': 'var(--color-tinta)',
+                                                '--rdp-accent-background-color': 'var(--color-fita)',
+                                            } as CSSProperties}
+                                        />
+                                    </div>
+                                    {errors.data && (
+                                        <p id="data-erro" role="alert" className="text-sm font-medium text-erro">
+                                            {errors.data.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <Campo id="horario" rotulo="Horário desejado" erro={errors.horario?.message}>
+                                    <select
+                                        id="horario"
+                                        className={campo}
+                                        disabled={!dataEscolhida}
+                                        {...acessivel('horario')}
+                                        {...register('horario')}
+                                    >
+                                        <option value="">{dataEscolhida ? 'Selecione um horário' : 'Escolha a data primeiro'}</option>
+                                        {HORARIOS.map((h) => {
+                                            const ocupado = Boolean(dataEscolhida) && horarioOcupado(dataEscolhida, h, agendaSimulada, horariosReservados)
+                                            return (
+                                                <option key={h} value={h} disabled={ocupado}>
+                                                    {ocupado ? `${h} (ocupado)` : h}
+                                                </option>
+                                            )
+                                        })}
+                                    </select>
+                                </Campo>
+                                <Campo id="observacoes" rotulo="Observações (opcional)" erro={errors.observacoes?.message} largo>
+                                    <textarea
+                                        id="observacoes"
+                                        rows={3}
+                                        placeholder="Descreva algum problema ou informação importante."
+                                        className={campo}
+                                        {...acessivel('observacoes')}
+                                        {...register('observacoes')}
+                                    />
+                                </Campo>
+                            </div>
+
+                            <div className="mt-4 flex items-start gap-3">
+                                <input id="consentimento" type="checkbox" className="mt-1 size-5 accent-fg" {...acessivel('consentimento')} {...register('consentimento')} />
+                                <label htmlFor="consentimento" className="text-sm">
+                                    Autorizo a MotoImports a usar meus dados para entrar em contato sobre este agendamento (LGPD).
+                                </label>
+                            </div>
+                            {errors.consentimento && (
+                                <p id="consentimento-erro" role="alert" className="mt-1 text-sm font-medium text-erro">
+                                    {errors.consentimento.message}
+                                </p>
+                            )}
+                        </Etapa>
+
+                        <button
+                            type="submit"
+                            className="botao min-h-11 self-start px-6 py-3 text-sm"
+                        >
+                            Solicitar agendamento
+                        </button>
+
+                        <p className="text-xs text-suave">
+                            A disponibilidade do horário escolhido será verificada pela oficina. O agendamento só será
+                            confirmado após a validação do horário.
+                        </p>
+                    </form>
+
+                    <div aria-live="polite">
+                        {agendado && (
+                            <section className="folha folha-sombra fita mt-10 p-6">
+                                <h2 className="text-2xl">Aguarde a confirmação do agendamento</h2>
+                                <p className="mt-2">Recebemos sua solicitação. Confira os dados informados:</p>
+                                <ul className="mt-3 flex flex-col gap-1 text-sm">
+                                    <li><strong>Cliente:</strong> {agendado.nome}</li>
+                                    <li><strong>Telefone:</strong> {formatarTelefone(agendado.telefone)}</li>
+                                    <li><strong>Moto:</strong> {agendado.moto}</li>
+                                    <li><strong>Serviço:</strong> {servicoEscolhido?.nome}</li>
+                                    <li><strong>Data:</strong> {formatarDataIso(agendado.data)}</li>
+                                    <li><strong>Horário:</strong> {agendado.horario}</li>
+                                    {agendado.observacoes && <li><strong>Observações:</strong> {agendado.observacoes}</li>}
+                                </ul>
+                                <p className="mt-3 text-sm">
+                                    O agendamento depende da confirmação da oficina. Entraremos em contato para validar o horário escolhido.
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        reset()
+                                        setAgendado(null)
+                                    }}
+                                    className="botao-vazado mt-4 min-h-11 px-5 text-sm"
+                                >
+                                    Fazer novo agendamento
+                                </button>
+                            </section>
+                        )}
+                    </div>
+                </ExigeLogin>
             </div>
         </section>
     )

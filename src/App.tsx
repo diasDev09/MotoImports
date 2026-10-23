@@ -10,6 +10,7 @@ import Simulador from './pages/Simulador.tsx'
 import Checkout from './pages/Checkout.tsx'
 import PosVenda from './pages/PosVenda.tsx'
 import Boutique from './pages/Boutique.tsx'
+import ExigeLogin from './auth/ExigeLogin.tsx'
 
 // Cada colega troca o <Placeholder /> da sua rota pela página real.
 
@@ -24,7 +25,14 @@ export default function App() {
           <Route path="/moto/:id" element={<MotoDetalhe />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/simulador" element={<Simulador />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/checkout"
+            element={
+              <ExigeLogin pagina motivo="reservar a sua moto">
+                <Checkout />
+              </ExigeLogin>
+            }
+          />
           <Route path="/pos-venda" element={<PosVenda />} />
           <Route path="/boutique" element={<Boutique />} />
           <Route
@@ -36,4 +44,4 @@ export default function App() {
       <Footer />
     </>
   )
-}
+}

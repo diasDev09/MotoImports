@@ -1,3 +1,4 @@
+import ExigeLogin from '../../auth/ExigeLogin.tsx'
 import { FORMAS_PAGAMENTO_BOUTIQUE } from '../../data/boutique.ts'
 import type { FormaPagamentoBoutique } from '../../data/boutique.ts'
 import { subtotal, totalItens, valorTotal } from '../../domain/boutique.ts'
@@ -98,14 +99,17 @@ export default function CarrinhoBoutique({
                             ))}
                         </div>
 
-                        <button
-                            type="button"
-                            disabled={!pagamento}
-                            onClick={aoConfirmar}
-                            className="botao min-h-11 w-full px-6 py-3 text-sm"
-                        >
-                            Confirmar pedido
-                        </button>
+                        {/* só quem entrou com o Google confirma o pedido */}
+                        <ExigeLogin motivo="confirmar o seu pedido">
+                            <button
+                                type="button"
+                                disabled={!pagamento}
+                                onClick={aoConfirmar}
+                                className="botao min-h-11 w-full px-6 py-3 text-sm"
+                            >
+                                Confirmar pedido
+                            </button>
+                        </ExigeLogin>
                     </fieldset>
 
                     {pedidoFinalizado && forma && (

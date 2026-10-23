@@ -255,31 +255,32 @@ export default function Simulador() {
                         </p>
                         <p className="text-sm">{resultadoAtivo.nomeModalidade}</p>
 
-                        <dl className="mt-5 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t-2 border-dashed border-linha pt-4 text-sm">
+                        <dl className="mt-5 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border-t-2 border-dashed border-linha pt-4 text-sm">
                             <dt>Preço da moto</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.precoMoto)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.precoMoto)}</dd>
                             {simulacao.totalAcessorios > 0 && (
                                 <>
                                     <dt>Acessórios ({acessorios.length})</dt>
-                                    <dd className="font-bold">{formatarPreco(simulacao.totalAcessorios)}</dd>
+                                    <dd className="text-right font-bold">{formatarPreco(simulacao.totalAcessorios)}</dd>
                                 </>
                             )}
                             <dt>Valor da operação</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
                             <dt>Entrada ({simulacao.percentualEntrada}%)</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.entrada)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.entrada)}</dd>
                             <dt>Saldo a pagar em parcelas</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.saldoDevedor)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.saldoDevedor)}</dd>
                             {simulacao.valorDevidoNoAto > simulacao.entrada && (
                                 <>
                                     <dt>Devido no ato (entrada + acessórios)</dt>
-                                    <dd className="font-bold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
+                                    <dd className="text-right font-bold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
                                 </>
                             )}
-                            <dt>Custo</dt>
-                            <dd>{resultadoAtivo.tipoCusto}</dd>
-                            <dt>Liberação</dt>
-                            <dd>{resultadoAtivo.prazoEntrega}</dd>
+                            {/* textos longos ocupam a linha toda, com o rótulo em cima */}
+                            <dt className="col-span-2 mt-2 text-suave">Custo</dt>
+                            <dd className="col-span-2 -mt-1">{resultadoAtivo.tipoCusto}</dd>
+                            <dt className="col-span-2 mt-2 text-suave">Liberação</dt>
+                            <dd className="col-span-2 -mt-1">{resultadoAtivo.prazoEntrega}</dd>
                         </dl>
 
                         {modalidade === 'consorcio' && simulacao.economiaConsorcio > 0 && (

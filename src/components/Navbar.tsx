@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useApp } from '../context/AppContext.ts'
+import { useAuth } from '../auth/AuthContext.ts'
 
 interface ItemMenu {
     para: string
@@ -28,6 +29,8 @@ export default function Navbar() {
     // RF-11: quantos acessórios já estão na reserva
     const { acessorios } = useApp()
     const itens = acessorios.length
+    const { estado, usuario, entrar, sair } = useAuth()
+    const primeiroNome = usuario?.nome.split(' ')[0]
 
     return (
         <header className="sticky top-0 z-50 border-b-2 border-dashed border-cimento bg-tinta/95">
@@ -100,6 +103,22 @@ export default function Navbar() {
                             Sobre nós
                         </Link>
                     </li>
+                    {/* conta: quem não entrou vê "Entrar"; quem entrou vê o nome e "Sair" */}
+                    {estado === 'anonimo' && (
+                        <li>
+                            <button type="button" onClick={() => void entrar()} className="botao-vazado min-h-11 px-4 text-sm">
+                                Entrar
+                            </button>
+                        </li>
+                    )}
+                    {estado === 'logado' && (
+                        <li className="flex items-center gap-3">
+                            <span className="text-sm text-suave">Olá, {primeiroNome}</span>
+                            <button type="button" onClick={() => void sair()} className="botao-vazado min-h-11 px-4 text-sm">
+                                Sair
+                            </button>
+                        </li>
+                    )}
                 </ul>
             </nav>
         </header>

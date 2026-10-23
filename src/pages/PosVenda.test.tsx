@@ -7,6 +7,7 @@ import { agendaSimulada } from '../domain/agenda.ts'
 import { formatarDataIso } from '../domain/agendamento.ts'
 import { HORARIOS } from '../data/posVenda.ts'
 import PosVenda from './PosVenda.tsx'
+import { ComLogin } from '../test/ComLogin.tsx'
 
 type Usuario = ReturnType<typeof userEvent.setup>
 
@@ -27,11 +28,13 @@ const escolherDia = (user: Usuario, rotulo = ROTULO_DIA) => user.click(screen.ge
 
 function abrir() {
     return render(
-        <AppProvider>
-            <MemoryRouter>
-                <PosVenda />
-            </MemoryRouter>
-        </AppProvider>,
+        <ComLogin>
+            <AppProvider>
+                <MemoryRouter>
+                    <PosVenda />
+                </MemoryRouter>
+            </AppProvider>
+        </ComLogin>,
     )
 }
 
@@ -183,4 +186,4 @@ describe('Pós-venda · agendamento', () => {
         expect(screen.getByLabelText('Nome completo')).toHaveValue('')
         expect(screen.getByLabelText(/autorizo a motoimports/i)).not.toBeChecked()
     })
-})
+})
