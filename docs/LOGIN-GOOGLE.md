@@ -25,4 +25,4 @@ Sem as variáveis, o site funciona, mas os botões de login ficam desativados co
 
 ## Limite importante
 
-Bloquear a tela é conforto, **não segurança**: quem entende de navegador pode contornar. O que protege os dados de verdade são as **regras do Firestore**, que chegam no próximo commit (armazenamento).
+Bloquear a tela é conforto, **não segurança**: quem entende de navegador pode contornar. O que protege os dados de verdade são as **regras do Firestore** (`firestore.rules`); veja `docs/FIRESTORE.md`.

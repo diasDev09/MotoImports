@@ -1,3 +1,6 @@
+import { useAuthOpcional } from '../auth/AuthContext.ts'
+import { useRepositorio } from '../storage/Repositorio.ts'
+import type { LeadRegistrado } from '../domain/lead.ts'
 import { useState } from 'react'
 import LeadForm from '../components/LeadForm.tsx'
 import ProposalModal from '../components/ProposalModal.tsx'
@@ -10,6 +13,17 @@ export default function Contato() {
     const [propostaAberta, setPropostaAberta] = useState(false)
 
     const urlVideo = motoSelecionada?.videoUrl
+    const auth = useAuthOpcional()
+    const repositorio = useRepositorio()
+
+    // O contato é público: se guardar no banco falhar, a pessoa não é barrada (o lead continua no app).
+    // O erro só vai para o console, para quem mantém o site investigar.
+    function enviarLead(novo: LeadRegistrado) {
+        registrarLead(novo)
+        repositorio?.salvarLead(novo, auth?.usuario?.uid).catch((e: unknown) => {
+            console.error('Não foi possível guardar o contato', e)
+        })
+    }
 
     return (
         <section className="py-12">
@@ -25,7 +39,7 @@ export default function Contato() {
                     </div>
                 )}
 
-                <LeadForm aoEnviar={registrarLead} motoInteresse={motoSelecionada} />
+                <LeadForm aoEnviar={enviarLead} motoInteresse={motoSelecionada} />
 
                 {lead && (
                     <div className="mt-6">

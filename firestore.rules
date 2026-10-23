@@ -1,0 +1,58 @@
+rules_version = '2';
+
+// Regras do Firestore da MotoImports.
+// Princípio: cada pessoa só escreve e lê o que é dela; ninguém altera nem apaga o que já foi gravado.
+// ATENÇÃO: estas regras não foram testadas em emulador. Teste no console do Firebase (aba "Regras" > "Simulador")
+// ou com o Emulator Suite antes de publicar.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() {
+      return request.auth != null;
+    }
+
+    function dono(uid) {
+      return logado() && request.auth.uid == uid;
+    }
+
+    // o documento novo precisa declarar o dono certo e usar a hora do servidor
+    function documentoValido(uid) {
+      return request.resource.data.uid == uid
+        && request.resource.data.criadoEm == request.time;
+    }
+
+    // Reservas, pedidos da boutique e agendamentos: ficam sob o uid de quem os criou.
+    // Pode criar e ler os próprios; não pode editar nem apagar (histórico imutável pelo cliente).
+    match /users/{uid}/reservas/{id} {
+      allow read: if dono(uid);
+      allow create: if dono(uid) && documentoValido(uid);
+      allow update, delete: if false;
+    }
+
+    match /users/{uid}/pedidosBoutique/{id} {
+      allow read: if dono(uid);
+      allow create: if dono(uid) && documentoValido(uid);
+      allow update, delete: if false;
+    }
+
+    match /users/{uid}/agendamentos/{id} {
+      allow read: if dono(uid);
+      allow create: if dono(uid) && documentoValido(uid);
+      allow update, delete: if false;
+    }
+
+    // Contatos (leads): o formulário de contato não exige login, então qualquer pessoa pode CRIAR.
+    // Ninguém lê pelo site; a equipe consulta pelo console do Firebase.
+    // Risco conhecido: sem login, dá para enviar spam. Mitigação futura: App Check ou exigir login.
+    match /leads/{id} {
+      allow create: if request.resource.data.criadoEm == request.time
+        && (!('uid' in request.resource.data) || request.resource.data.uid == (logado() ? request.auth.uid : null));
+      allow read, update, delete: if false;
+    }
+
+    // tudo o que não foi listado acima é negado
+    match /{outros=**} {
+      allow read, write: if false;
+    }
+  }
+}

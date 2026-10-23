@@ -1,3 +1,5 @@
+import { useAuth } from '../auth/AuthContext.ts'
+import { useRepositorio } from '../storage/Repositorio.ts'
 import ExigeLogin from '../auth/ExigeLogin.tsx'
 import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
@@ -68,6 +70,9 @@ export default function PosVenda() {
         [hoje, horariosReservados],
     )
     const [agendado, setAgendado] = useState<Agendamento | null>(null)
+    const [erroSalvar, setErroSalvar] = useState<string | null>(null)
+    const { usuario } = useAuth()
+    const repositorio = useRepositorio()
 
     const {
         register,
@@ -77,7 +82,7 @@ export default function PosVenda() {
         setValue,
         control,
         subscribe,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<AgendamentoEntrada, unknown, Agendamento>({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -131,7 +136,17 @@ export default function PosVenda() {
                     <form
                         className="mt-8 flex flex-col gap-6"
                         noValidate
-                        onSubmit={handleSubmit((dados) => {
+                        onSubmit={handleSubmit(async (dados) => {
+                            // o horário só é reservado depois de guardado; se falhar, a pessoa vê o aviso e tenta de novo
+                            if (repositorio && usuario) {
+                                setErroSalvar(null)
+                                try {
+                                    await repositorio.salvarAgendamento(usuario.uid, dados)
+                                } catch {
+                                    setErroSalvar('Não conseguimos guardar o seu agendamento agora. Confira a conexão e tente de novo.')
+                                    return
+                                }
+                            }
                             reservarHorario({ data: dados.data, horario: dados.horario })
                             setAgendado(dados)
                         })}
@@ -255,8 +270,15 @@ export default function PosVenda() {
                             )}
                         </Etapa>
 
+                        {erroSalvar && (
+                            <p role="alert" className="text-sm font-bold text-erro">
+                                {erroSalvar}
+                            </p>
+                        )}
+
                         <button
                             type="submit"
+                            disabled={isSubmitting}
                             className="botao min-h-11 self-start px-6 py-3 text-sm"
                         >
                             Solicitar agendamento

@@ -13,12 +13,14 @@ export const firebaseConfigurado = Object.values(config).every(Boolean)
 
 // Os módulos do Firebase são carregados só quando necessário (import dinâmico):
 // quem não está configurado, e os testes, nunca baixam esse código.
+// O app do Firebase é um só, compartilhado pelo login (aqui) e pelo banco (lib/firestore.ts).
+export async function carregarApp() {
+    const { initializeApp, getApps, getApp } = await import('firebase/app')
+    return getApps().length > 0 ? getApp() : initializeApp(config)
+}
+
 async function carregarAuth() {
-    const [{ initializeApp, getApps, getApp }, auth] = await Promise.all([
-        import('firebase/app'),
-        import('firebase/auth'),
-    ])
-    const app = getApps().length > 0 ? getApp() : initializeApp(config)
+    const [app, auth] = await Promise.all([carregarApp(), import('firebase/auth')])
     return { auth, instancia: auth.getAuth(app) }
 }
 

@@ -13,6 +13,8 @@ interface CarrinhoBoutiqueProps {
     aoRemover: (chave: string) => void
     aoEscolherPagamento: (forma: FormaPagamentoBoutique) => void
     aoConfirmar: () => void
+    salvando?: boolean
+    erroPedido?: string | null
 }
 
 const botaoQuantidade = 'botao-vazado size-11 text-lg'
@@ -25,6 +27,8 @@ export default function CarrinhoBoutique({
     aoRemover,
     aoEscolherPagamento,
     aoConfirmar,
+    salvando = false,
+    erroPedido = null,
 }: CarrinhoBoutiqueProps) {
     const quantidade = totalItens(itens)
     const total = valorTotal(itens)
@@ -103,12 +107,17 @@ export default function CarrinhoBoutique({
                         <ExigeLogin motivo="confirmar o seu pedido">
                             <button
                                 type="button"
-                                disabled={!pagamento}
+                                disabled={!pagamento || salvando}
                                 onClick={aoConfirmar}
                                 className="botao min-h-11 w-full px-6 py-3 text-sm"
                             >
-                                Confirmar pedido
+                                {salvando ? 'Guardando o pedido…' : 'Confirmar pedido'}
                             </button>
+                            {erroPedido && (
+                                <p role="alert" className="mt-3 text-sm font-bold text-erro">
+                                    {erroPedido}
+                                </p>
+                            )}
                         </ExigeLogin>
                     </fieldset>
 

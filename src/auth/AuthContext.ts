@@ -33,6 +33,11 @@ export interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | null>(null)
 
+// Para quem só quer saber se há alguém logado, sem exigir o provider (ex.: o formulário de contato, que é público).
+export function useAuthOpcional(): AuthContextValue | null {
+    return useContext(AuthContext)
+}
+
 export function useAuth(): AuthContextValue {
     const ctx = useContext(AuthContext)
     if (!ctx) throw new Error('useAuth precisa estar dentro de <AuthProvider>')

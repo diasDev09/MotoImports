@@ -10,6 +10,7 @@ import { simularOperacao } from '../domain/financing.ts'
 import type { Modalidade } from '../domain/financing.ts'
 import type { LeadRegistrado } from '../domain/lead.ts'
 import Checkout from './Checkout.tsx'
+import { ComLogin } from '../test/ComLogin.tsx'
 
 const rebel = motos.find((m) => m.id === 'honda-rebel-500')! // R$ 42.900, pronta entrega
 const protetor: Acessorio = { id: 'ac-protetor-motor-tubular', nome: 'Protetor de motor', preco: 1000 }
@@ -29,19 +30,21 @@ function MostraLead() {
 // o app já começa no estado em que a pessoa estaria depois de passar pelo simulador
 function abrir({ moto, acessorios, modalidade, lead }: Cena = { moto: true }) {
     return render(
-        <MemoryRouter>
-            <AppProvider
-                inicial={{
-                    moto: moto ? rebel : null,
-                    acessorios,
-                    lead,
-                    simulacao: modalidade ? simularOperacao({ moto: rebel, meses: 36, modalidade }) : null,
-                }}
-            >
-                <Checkout />
-                <MostraLead />
-            </AppProvider>
-        </MemoryRouter>,
+        <ComLogin>
+            <MemoryRouter>
+                <AppProvider
+                    inicial={{
+                        moto: moto ? rebel : null,
+                        acessorios,
+                        lead,
+                        simulacao: modalidade ? simularOperacao({ moto: rebel, meses: 36, modalidade }) : null,
+                    }}
+                >
+                    <Checkout />
+                    <MostraLead />
+                </AppProvider>
+            </MemoryRouter>
+        </ComLogin>,
     )
 }
 
@@ -201,4 +204,4 @@ describe('RF-08 · Checkout', () => {
         expect(within(comprovante).getByText(/maria silva/i)).toBeInTheDocument()
         expect(within(comprovante).getByText(/7 dias corridos/i)).toBeInTheDocument()
     })
-})
+})
