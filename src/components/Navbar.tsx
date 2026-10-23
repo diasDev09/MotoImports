@@ -12,6 +12,7 @@ const links: ItemMenu[] = [
     { para: '/catalogo', texto: 'Catálogo' },
     { para: '/simulador', texto: 'Simulador' },
     { para: '/pos-venda', texto: 'Pós-venda' },
+    { para: '/boutique', texto: 'Boutique' },
     { para: '/contato', texto: 'Contato', botao: true },
 ]
 

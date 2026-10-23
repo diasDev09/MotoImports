@@ -26,6 +26,11 @@ describe('layout e rotas', () => {
         expect(screen.getByRole('heading', { level: 1, name: /cuidado com sua moto/i })).toBeInTheDocument()
     })
 
+    it('a rota /boutique mostra a boutique', () => {
+        abrir('/boutique')
+        expect(screen.getByRole('heading', { level: 1, name: /boutique moto imports/i })).toBeInTheDocument()
+    })
+
     it('mostra "não encontrada" para rota desconhecida', () => {
         abrir('/rota-que-nao-existe')
         expect(screen.getByRole('heading', { level: 1, name: 'Página não encontrada' })).toBeInTheDocument()

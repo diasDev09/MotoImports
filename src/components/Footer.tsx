@@ -19,7 +19,8 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm">
                             <li><Link className={linkRodape} to="/catalogo">Catálogo</Link></li>
                             <li><Link className={linkRodape} to="/simulador">Simulador</Link></li>
-                            <li><Link className={linkRodape} to="/pos-venda">Oficina e boutique</Link></li>
+                            <li><Link className={linkRodape} to="/pos-venda">Oficina (pós-venda)</Link></li>
+                            <li><Link className={linkRodape} to="/boutique">Boutique</Link></li>
                             <li><Link className={linkRodape} to="/#sobre">Sobre nós</Link></li>
                         </ul>
                     </div>
