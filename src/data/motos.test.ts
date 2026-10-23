@@ -8,6 +8,7 @@ import {
     CILINDRADA_MAX,
 } from './motos.ts'
 
+// Protege o contrato de dados que o grupo todo usa.
 describe('integridade dos dados das motos', () => {
     it('todos os ids são únicos', () => {
         const ids = motos.map((m) => m.id)
@@ -19,13 +20,19 @@ describe('integridade dos dados das motos', () => {
         expect(Object.keys(ESTOQUE)).toContain(m.estoque)
         expect(m.modos.length).toBeGreaterThan(0)
         m.modos.forEach((modo) => expect(MODOS_PILOTAGEM).toContain(modo))
-        expect(m.precoBase).toBeGreaterThan(0)
+        expect(m.preco).toBeGreaterThan(0)
     })
 
-    it('o slider de cilindrada cobre todas as motos', () => {
+    it('o slider de cilindrada cobre todas as motos do catálogo (RF-03)', () => {
         motos.forEach((m) => {
             expect(m.cilindrada).toBeGreaterThanOrEqual(CILINDRADA_MIN)
             expect(m.cilindrada).toBeLessThanOrEqual(CILINDRADA_MAX)
         })
+    })
+
+    it('motos em trânsito ou sob pedido informam o prazo (RN-02)', () => {
+        motos
+            .filter((m) => m.estoque !== 'pronta-entrega')
+            .forEach((m) => expect(m.prazoDias).not.toBe(''))
     })
 })
