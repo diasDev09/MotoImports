@@ -21,6 +21,11 @@ describe('layout e rotas', () => {
         expect(screen.getByRole('heading', { level: 1, name: 'Catálogo' })).toBeInTheDocument()
     })
 
+    it('a rota /moto/:id mostra a ficha da moto', () => {
+        abrir('/moto/yamaha-mt-07')
+        expect(screen.getByRole('heading', { level: 1, name: 'MT-07' })).toBeInTheDocument()
+    })
+
     it('a rota /pos-venda mostra o pós-venda', () => {
         abrir('/pos-venda')
         expect(screen.getByRole('heading', { level: 1, name: /cuidado com sua moto/i })).toBeInTheDocument()

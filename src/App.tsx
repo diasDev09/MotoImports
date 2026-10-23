@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar.tsx'
 import Footer from './components/Footer.tsx'
+import MotoDetalhe from './pages/MotoDetalhe.tsx'
 import Placeholder from './components/Placeholder.tsx'
 import Home from './pages/Home.tsx'
 import Catalogo from './pages/Catalogo.tsx'
@@ -20,7 +21,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/moto/:id" element={<Placeholder titulo="Detalhes da moto" />} />
+          <Route path="/moto/:id" element={<MotoDetalhe />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/simulador" element={<Simulador />} />
           <Route path="/checkout" element={<Checkout />} />
