@@ -1,3 +1,4 @@
+import ExigeLogin from '../../auth/ExigeLogin.tsx'
 import { FORMAS_PAGAMENTO_BOUTIQUE } from '../../data/boutique.ts'
 import type { FormaPagamentoBoutique } from '../../data/boutique.ts'
 import { subtotal, totalItens, valorTotal } from '../../domain/boutique.ts'
@@ -12,6 +13,8 @@ interface CarrinhoBoutiqueProps {
     aoRemover: (chave: string) => void
     aoEscolherPagamento: (forma: FormaPagamentoBoutique) => void
     aoConfirmar: () => void
+    salvando?: boolean
+    erroPedido?: string | null
 }
 
 const botaoQuantidade = 'botao-vazado size-11 text-lg'
@@ -24,6 +27,8 @@ export default function CarrinhoBoutique({
     aoRemover,
     aoEscolherPagamento,
     aoConfirmar,
+    salvando = false,
+    erroPedido = null,
 }: CarrinhoBoutiqueProps) {
     const quantidade = totalItens(itens)
     const total = valorTotal(itens)
@@ -41,7 +46,7 @@ export default function CarrinhoBoutique({
                         {itens.map((item) => (
                             <li key={item.chave} className="flex flex-wrap items-center justify-between gap-4 py-4">
                                 <div className="flex items-center gap-4">
-                                    <img src={item.produto.imagem} alt="" className="size-16 border-2 border-tinta bg-papel object-contain" />
+                                    <img src={item.produto.imagem} alt="" className="size-16 border-2 border-navy bg-almond object-cover" />
                                     <div className="text-sm">
                                         <p className="font-bold">{item.produto.nome}</p>
                                         {item.tamanho && <p>Tamanho: {item.tamanho}</p>}
@@ -62,7 +67,7 @@ export default function CarrinhoBoutique({
                                         type="button"
                                         onClick={() => aoRemover(item.chave)}
                                         aria-label={`Remover ${item.produto.nome} do carrinho`}
-                                        className="min-h-11 border-2 border-dashed border-erro px-3 text-sm font-bold text-erro hover:bg-erro hover:text-fundo"
+                                        className="min-h-11 border-2 border-erro px-3 text-sm font-bold text-erro hover:bg-erro hover:text-fundo"
                                     >
                                         Remover
                                     </button>
@@ -73,7 +78,7 @@ export default function CarrinhoBoutique({
 
                     <p className="my-4 text-right text-2xl font-bold">Total: {formatarPrecoComCentavos(total)}</p>
 
-                    <fieldset className="border-t-2 border-dashed border-linha pt-5">
+                    <fieldset className="border-t-2 border-linha pt-5">
                         <legend className="text-xl font-bold">Escolha a forma de pagamento</legend>
                         <div className="my-4 grid gap-3 sm:grid-cols-2">
                             {FORMAS_PAGAMENTO_BOUTIQUE.map((f) => (
@@ -98,18 +103,26 @@ export default function CarrinhoBoutique({
                             ))}
                         </div>
 
-                        <button
-                            type="button"
-                            disabled={!pagamento}
-                            onClick={aoConfirmar}
-                            className="botao min-h-11 w-full px-6 py-3 text-sm"
-                        >
-                            Confirmar pedido
-                        </button>
+                        {/* só quem entrou com o Google confirma o pedido */}
+                        <ExigeLogin motivo="confirmar o seu pedido">
+                            <button
+                                type="button"
+                                disabled={!pagamento || salvando}
+                                onClick={aoConfirmar}
+                                className="botao min-h-11 w-full px-6 py-3 text-sm"
+                            >
+                                {salvando ? 'Guardando o pedido…' : 'Confirmar pedido'}
+                            </button>
+                            {erroPedido && (
+                                <p role="alert" className="mt-3 text-sm font-bold text-erro">
+                                    {erroPedido}
+                                </p>
+                            )}
+                        </ExigeLogin>
                     </fieldset>
 
                     {pedidoFinalizado && forma && (
-                        <p role="status" className="mt-4 bg-fita p-4 text-sm text-tinta">
+                        <p role="status" className="mt-4 bg-mist p-4 text-sm text-noir">
                             Pedido de demonstração confirmado! Forma de pagamento: <strong>{forma.nome}</strong>. Total:{' '}
                             {formatarPrecoComCentavos(total)}. Nenhum pagamento real foi realizado.
                         </p>

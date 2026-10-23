@@ -4,13 +4,18 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { AppProvider } from './context/AppProvider.tsx'
+import { ComLogin } from './test/ComLogin.tsx'
+import { criarServicoFalso } from './test/servicoAuth.ts'
+import { AuthProvider } from './auth/AuthProvider.tsx'
 
 function abrir(url: string) {
     return render(
         <MemoryRouter initialEntries={[url]}>
-            <AppProvider>
-                <App />
-            </AppProvider>
+            <ComLogin>
+                <AppProvider>
+                    <App />
+                </AppProvider>
+            </ComLogin>
         </MemoryRouter>,
     )
 }
@@ -91,5 +96,40 @@ describe('Navbar (menu no celular)', () => {
         abrir('/')
         const links = screen.getAllByRole('link', { name: 'Sobre nós' })
         links.forEach((l) => expect(l).toHaveAttribute('href', '/#sobre'))
+    })
+})
+
+describe('login com Google', () => {
+    function abrirComoVisitante(url: string) {
+        const { servico } = criarServicoFalso(null)
+        return render(
+            <MemoryRouter initialEntries={[url]}>
+                <AuthProvider servico={servico}>
+                    <AppProvider>
+                        <App />
+                    </AppProvider>
+                </AuthProvider>
+            </MemoryRouter>,
+        )
+    }
+
+    it('o checkout pede login de quem não entrou', () => {
+        abrirComoVisitante('/checkout')
+        expect(screen.getByRole('heading', { level: 1, name: /entre para continuar/i })).toBeInTheDocument()
+        expect(screen.queryByRole('heading', { name: /reserva e retirada/i })).not.toBeInTheDocument()
+    })
+
+    it('o checkout abre normal para quem está logado', () => {
+        abrir('/checkout')
+        expect(screen.getByRole('heading', { level: 1, name: /reserva e retirada/i })).toBeInTheDocument()
+    })
+
+    it('o menu mostra "Entrar" para visitante e o nome com "Sair" para quem entrou', async () => {
+        const user = userEvent.setup()
+        abrirComoVisitante('/')
+        const menu = screen.getByRole('navigation', { name: 'Principal' })
+        await user.click(within(menu).getByRole('button', { name: 'Entrar' }))
+        expect(await within(menu).findByText(/olá, maria/i)).toBeInTheDocument()
+        expect(within(menu).getByRole('button', { name: 'Sair' })).toBeInTheDocument()
     })
 })

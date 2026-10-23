@@ -2,10 +2,16 @@ import { describe, it, expect } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Boutique from './Boutique.tsx'
+import { ComLogin } from '../test/ComLogin.tsx'
 
 type Usuario = ReturnType<typeof userEvent.setup>
 
-const abrir = () => render(<Boutique />)
+const abrir = () =>
+    render(
+        <ComLogin>
+            <Boutique />
+        </ComLogin>,
+    )
 
 const botaoCarrinho = () => screen.getByRole('button', { name: /^carrinho/i })
 const abrirCarrinho = (user: Usuario) => user.click(botaoCarrinho())
@@ -200,4 +206,4 @@ describe('Boutique · carrinho', () => {
         await abrirCarrinho(user)
         expect(botaoCarrinho()).toHaveAttribute('aria-expanded', 'true')
     })
-})
+})

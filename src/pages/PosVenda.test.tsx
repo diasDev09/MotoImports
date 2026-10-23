@@ -7,6 +7,9 @@ import { agendaSimulada } from '../domain/agenda.ts'
 import { formatarDataIso } from '../domain/agendamento.ts'
 import { HORARIOS } from '../data/posVenda.ts'
 import PosVenda from './PosVenda.tsx'
+import { ComLogin } from '../test/ComLogin.tsx'
+import { criarRepositorioFalso, USUARIO_TESTE } from '../test/servicoAuth.ts'
+import type { Repositorio } from '../storage/Repositorio.ts'
 
 type Usuario = ReturnType<typeof userEvent.setup>
 
@@ -25,13 +28,15 @@ afterEach(() => vi.useRealTimers())
 
 const escolherDia = (user: Usuario, rotulo = ROTULO_DIA) => user.click(screen.getByRole('button', { name: rotulo }))
 
-function abrir() {
+function abrir(repositorio: Repositorio | null = null) {
     return render(
-        <AppProvider>
-            <MemoryRouter>
-                <PosVenda />
-            </MemoryRouter>
-        </AppProvider>,
+        <ComLogin repositorio={repositorio}>
+            <AppProvider>
+                <MemoryRouter>
+                    <PosVenda />
+                </MemoryRouter>
+            </AppProvider>
+        </ComLogin>,
     )
 }
 
@@ -182,5 +187,33 @@ describe('Pós-venda · agendamento', () => {
         expect(screen.queryByRole('heading', { name: /aguarde a confirmação/i })).not.toBeInTheDocument()
         expect(screen.getByLabelText('Nome completo')).toHaveValue('')
         expect(screen.getByLabelText(/autorizo a motoimports/i)).not.toBeChecked()
+    })
+})
+
+describe('Pós-venda · armazenamento', () => {
+    it('guarda o agendamento na conta de quem está logado e só então confirma', async () => {
+        const user = userEvent.setup()
+        const { repositorio, salvos } = criarRepositorioFalso()
+        abrir(repositorio)
+        await preencher(user)
+        await enviar(user)
+
+        expect(await screen.findByText(/aguarde a confirmação/i)).toBeInTheDocument()
+        expect(salvos.agendamentos).toHaveLength(1)
+        expect(salvos.agendamentos[0].uid).toBe(USUARIO_TESTE.uid)
+        expect(salvos.agendamentos[0].agendamento).toMatchObject({ nome: 'Maria Silva', telefone: '81999999999', horario: LIVRE })
+    })
+
+    it('se não conseguir guardar, avisa e não confirma nem ocupa o horário', async () => {
+        const user = userEvent.setup()
+        const { repositorio } = criarRepositorioFalso({ falhar: true })
+        abrir(repositorio)
+        await preencher(user)
+        await enviar(user)
+
+        expect(await screen.findByText(/não conseguimos guardar o seu agendamento/i)).toBeInTheDocument()
+        expect(screen.queryByText(/aguarde a confirmação/i)).not.toBeInTheDocument()
+        // dá para tentar de novo
+        expect(screen.getByRole('button', { name: /solicitar agendamento/i })).toBeEnabled()
     })
 })

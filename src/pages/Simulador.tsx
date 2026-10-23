@@ -222,7 +222,7 @@ export default function Simulador() {
                                 {acessoriosCompativeis.map((ac) => {
                                     const noCarrinho = acessorios.some((a) => a.id === ac.id)
                                     return (
-                                        <li key={ac.id} className="flex items-center justify-between gap-3 border-2 border-dashed border-linha px-3 py-2 text-sm">
+                                        <li key={ac.id} className="flex items-center justify-between gap-3 border-2 border-linha px-3 py-2 text-sm">
                                             <span>
                                                 {ac.nome}
                                                 <span className="block text-xs text-suave">{ac.categoria} · {formatarPreco(ac.preco)}</span>
@@ -247,50 +247,51 @@ export default function Simulador() {
                     </div>
 
                     {/* o recorte rasgado corta sombras, então a sombra dura vai no invólucro (drop-shadow) */}
-                    <div className="h-fit lg:sticky lg:top-24 [filter:drop-shadow(8px_8px_0_var(--color-sangue))]">
+                    <div className="h-fit lg:sticky lg:top-24 [filter:drop-shadow(8px_8px_0_var(--color-mist))]">
                     <aside className="folha rasgado p-6 pb-10" aria-label="Resultado da simulação">
                         <p className="text-sm">Parcela mensal estimada ({simulacao.meses}x)</p>
-                        <p className="font-display text-5xl font-bold text-sangue" data-testid="parcela">
+                        <p className="font-display text-5xl font-bold text-navy" data-testid="parcela">
                             {formatarPreco(resultadoAtivo.parcelaMensal)}
                         </p>
                         <p className="text-sm">{resultadoAtivo.nomeModalidade}</p>
 
-                        <dl className="mt-5 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t-2 border-dashed border-linha pt-4 text-sm">
+                        <dl className="mt-5 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border-t-2 border-linha pt-4 text-sm">
                             <dt>Preço da moto</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.precoMoto)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.precoMoto)}</dd>
                             {simulacao.totalAcessorios > 0 && (
                                 <>
                                     <dt>Acessórios ({acessorios.length})</dt>
-                                    <dd className="font-bold">{formatarPreco(simulacao.totalAcessorios)}</dd>
+                                    <dd className="text-right font-bold">{formatarPreco(simulacao.totalAcessorios)}</dd>
                                 </>
                             )}
                             <dt>Valor da operação</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
                             <dt>Entrada ({simulacao.percentualEntrada}%)</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.entrada)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.entrada)}</dd>
                             <dt>Saldo a pagar em parcelas</dt>
-                            <dd className="font-bold">{formatarPreco(simulacao.saldoDevedor)}</dd>
+                            <dd className="text-right font-bold">{formatarPreco(simulacao.saldoDevedor)}</dd>
                             {simulacao.valorDevidoNoAto > simulacao.entrada && (
                                 <>
                                     <dt>Devido no ato (entrada + acessórios)</dt>
-                                    <dd className="font-bold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
+                                    <dd className="text-right font-bold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
                                 </>
                             )}
-                            <dt>Custo</dt>
-                            <dd>{resultadoAtivo.tipoCusto}</dd>
-                            <dt>Liberação</dt>
-                            <dd>{resultadoAtivo.prazoEntrega}</dd>
+                            {/* textos longos ocupam a linha toda, com o rótulo em cima */}
+                            <dt className="col-span-2 mt-2 text-suave">Custo</dt>
+                            <dd className="col-span-2 -mt-1">{resultadoAtivo.tipoCusto}</dd>
+                            <dt className="col-span-2 mt-2 text-suave">Liberação</dt>
+                            <dd className="col-span-2 -mt-1">{resultadoAtivo.prazoEntrega}</dd>
                         </dl>
 
                         {modalidade === 'consorcio' && simulacao.economiaConsorcio > 0 && (
-                            <p className="mt-4 bg-fita p-3 text-sm text-tinta">
+                            <p className="mt-4 bg-mist p-3 text-sm text-noir">
                                 Pelas premissas desta simulação, o consórcio custa cerca de{' '}
                                 <strong>{formatarPreco(simulacao.economiaConsorcio)}</strong> a menos no total que o
                                 financiamento. A contemplação depende de sorteio ou lance.
                             </p>
                         )}
                         {modalidade === 'financiamento' && (
-                            <p className="mt-4 bg-fita p-3 text-sm text-tinta">
+                            <p className="mt-4 bg-mist p-3 text-sm text-noir">
                                 Aprovado o cadastro, a moto é faturada sem esperar sorteio mensal.
                             </p>
                         )}

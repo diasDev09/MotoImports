@@ -5,7 +5,7 @@ const linkRodape = 'inline-flex min-h-11 items-center hover:underline hover:deco
 
 export default function Footer() {
     return (
-        <footer className="mt-20 border-t-2 border-dashed border-cimento">
+        <footer className="escuro mt-20">
             <div className="mx-auto max-w-site px-6 py-12">
                 <div className="grid gap-8 md:grid-cols-3">
                     <div>
@@ -35,7 +35,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <p className="mt-10 border-t-2 border-dashed border-cimento pt-6 text-xs text-suave">
+                <p className="mt-10 border-t border-mist/40 pt-6 text-xs text-suave">
                     © 2026 Moto Imports. Todos os direitos reservados.
                 </p>
             </div>

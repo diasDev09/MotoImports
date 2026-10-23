@@ -51,7 +51,7 @@ export const motos: readonly Moto[] = [
         estoque: 'pronta-entrega',
         prazoDias: '',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/ducati-panigale-v2.webp',
         destaques: ['Quickshifter bidirecional', 'Cornering ABS', 'IMU de 6 eixos'],
     },
     {
@@ -66,7 +66,7 @@ export const motos: readonly Moto[] = [
         estoque: 'em-transito',
         prazoDias: '15 a 30 dias',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/kawasaki-ninja-zx-6r.webp',
         destaques: ['Quickshifter bidirecional', 'ABS em curva', 'Painel TFT'],
     },
     {
@@ -81,7 +81,7 @@ export const motos: readonly Moto[] = [
         estoque: 'pronta-entrega',
         prazoDias: '',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/yamaha-mt-07.webp',
         destaques: ['Controle de tração', 'Torque forte em baixa rotação', 'Leve e ágil'],
     },
     {
@@ -96,7 +96,7 @@ export const motos: readonly Moto[] = [
         estoque: 'sob-pedido',
         prazoDias: '45 a 60 dias',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/triumph-speed-triple-1200.webp',
         destaques: ['Controle de tração multinível', 'Suspensão Öhlins', 'Quickshifter'],
     },
     {
@@ -111,7 +111,7 @@ export const motos: readonly Moto[] = [
         estoque: 'pronta-entrega',
         prazoDias: '',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/bmw-r-1250-gs.webp',
         destaques: ['Suspensão eletrônica semiativa', 'Tanque de 20 litros', 'Modo Enduro'],
     },
     {
@@ -126,7 +126,7 @@ export const motos: readonly Moto[] = [
         estoque: 'em-transito',
         prazoDias: '15 a 30 dias',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/triumph-tiger-900.webp',
         destaques: ['Suspensão eletrônica semiativa', 'Modo Enduro Pro', 'Tanque expandido'],
     },
     {
@@ -141,7 +141,7 @@ export const motos: readonly Moto[] = [
         estoque: 'sob-pedido',
         prazoDias: '45 a 60 dias',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/harley-davidson-fat-boy.webp',
         destaques: ['Refrigeração combinada', 'Transmissão final por correia', 'Motor Milwaukee-Eight'],
     },
     {
@@ -156,7 +156,7 @@ export const motos: readonly Moto[] = [
         estoque: 'pronta-entrega',
         prazoDias: '',
         videoUrl: '',
-        imagem: '',
+        imagem: '/img/motos/honda-rebel-500.webp',
         destaques: ['Transmissão final por correia', 'Banco baixo', 'Fácil de pilotar'],
     },
-]
+]

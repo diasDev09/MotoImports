@@ -1,3 +1,5 @@
+import { useAuth } from '../auth/AuthContext.ts'
+import { useRepositorio } from '../storage/Repositorio.ts'
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -61,6 +63,10 @@ export default function Checkout() {
     const [forma, setForma] = useState<FormaPagamento>(simulacao?.modalidade ?? 'financiamento')
     const [consentimento, setConsentimento] = useState(false)
     const [erros, setErros] = useState<Erros>({})
+    const [salvando, setSalvando] = useState(false)
+    const [erroSalvar, setErroSalvar] = useState<string | null>(null)
+    const { usuario } = useAuth()
+    const repositorio = useRepositorio()
 
     if (voucherReserva) {
         return <VoucherReserva voucher={voucherReserva} aoNovaReserva={() => salvarVoucherReserva(null)} />
@@ -100,9 +106,9 @@ export default function Checkout() {
         }
     }
 
-    function confirmar(e: FormEvent) {
+    async function confirmar(e: FormEvent) {
         e.preventDefault()
-        if (!moto) return
+        if (!moto || salvando) return
 
         const validacao = validarDadosCheckout({ cliente, lojaId, consentimentoLGPD: consentimento })
         if (!validacao.valido) {
@@ -120,16 +126,30 @@ export default function Checkout() {
             motoId: moto.id,
         })
 
-        salvarVoucherReserva(
-            criarVoucherReserva({
-                moto,
-                acessorios,
-                simulacao: planoVinculado,
-                formaPagamento: forma,
-                cliente,
-                lojaId,
-            }),
-        )
+        const voucher = criarVoucherReserva({
+            moto,
+            acessorios,
+            simulacao: planoVinculado,
+            formaPagamento: forma,
+            cliente,
+            lojaId,
+        })
+
+        // a reserva só aparece para a pessoa depois de guardada: se falhar, ela vê o aviso e pode tentar de novo
+        if (repositorio && usuario) {
+            setSalvando(true)
+            setErroSalvar(null)
+            try {
+                await repositorio.salvarReserva(usuario.uid, voucher)
+            } catch {
+                setErroSalvar('Não conseguimos guardar a sua reserva agora. Confira a conexão e tente de novo.')
+                setSalvando(false)
+                return
+            }
+            setSalvando(false)
+        }
+
+        salvarVoucherReserva(voucher)
     }
 
     const acessivel = (nome: string) => ({
@@ -291,7 +311,7 @@ export default function Checkout() {
                             </ul>
                         )}
 
-                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t-2 border-dashed border-linha pt-4 text-sm">
+                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t-2 border-linha pt-4 text-sm">
                             <dt>Motocicleta</dt>
                             <dd className="font-bold">{formatarPreco(moto.preco)}</dd>
                             {totalAcessorios > 0 && (
@@ -304,15 +324,22 @@ export default function Checkout() {
                             <dd className="text-base font-bold">{formatarPreco(moto.preco + totalAcessorios)}</dd>
                         </dl>
 
-                        <p className="mt-4 bg-fita p-3 text-xs text-tinta">
+                        <p className="mt-4 bg-mist p-3 text-xs text-noir">
                             Esta é uma reserva de demonstração: nenhuma cobrança é feita.
                         </p>
 
+                        {erroSalvar && (
+                            <p role="alert" className="mt-4 border-2 border-navy p-3 text-sm font-bold text-erro">
+                                {erroSalvar}
+                            </p>
+                        )}
+
                         <button
                             type="submit"
+                            disabled={salvando}
                             className="botao mt-4 min-h-11 w-full px-6 py-3 text-sm"
                         >
-                            Confirmar reserva e gerar voucher
+                            {salvando ? 'Guardando a reserva…' : 'Confirmar reserva e gerar voucher'}
                         </button>
                         <p className="mt-3 text-center text-sm">
                             <Link to={`/simulador?moto=${moto.id}`} className="inline-flex min-h-11 items-center underline">

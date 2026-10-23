@@ -11,7 +11,7 @@ export default function GuiaTamanhos() {
 
             <table className="my-4 w-full border-collapse text-left text-sm">
                 <thead>
-                    <tr className="bg-fita text-tinta">
+                    <tr className="bg-mist text-noir">
                         <th className="border-2 border-linha p-2">Tamanho</th>
                         <th className="border-2 border-linha p-2">Circunferência aproximada</th>
                     </tr>

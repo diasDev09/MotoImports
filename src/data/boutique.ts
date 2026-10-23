@@ -35,7 +35,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['ECE', 'DOT'],
         tamanhos: ['PP', 'P', 'M', 'G', 'GG'],
         preco: 599.9,
-        imagem: 'https://images.unsplash.com/photo-1513089722837-f10c05960a52?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/101-racing-pro-black.webp',
         descricao: 'Design esportivo, viseira ampla e acabamento premium.',
     },
     {
@@ -46,7 +46,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['ECE'],
         tamanhos: ['P', 'M', 'G', 'GG'],
         preco: 749.9,
-        imagem: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/102-sport-blue.webp',
         descricao: 'Visual moderno para quem procura estilo e conforto.',
     },
     {
@@ -57,7 +57,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['DOT'],
         tamanhos: ['PP', 'P', 'M', 'G'],
         preco: 429.9,
-        imagem: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/103-street-graphite.webp',
         descricao: 'Modelo versátil para o uso urbano e cotidiano.',
     },
     {
@@ -68,7 +68,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['ECE', 'Snell'],
         tamanhos: ['P', 'M', 'G', 'GG'],
         preco: 899.9,
-        imagem: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/104-touring-premium.webp',
         descricao: 'Conforto para viagens e percursos mais longos.',
     },
     {
@@ -79,7 +79,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['ECE', 'Snell'],
         tamanhos: ['P', 'M', 'G'],
         preco: 1299.9,
-        imagem: 'https://images.unsplash.com/photo-1513089722837-f10c05960a52?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/105-racing-carbon.webp',
         descricao: 'Visual inspirado nas pistas e acabamento sofisticado.',
     },
     {
@@ -90,7 +90,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         certificacoes: ['ECE', 'DOT'],
         tamanhos: ['PP', 'P', 'M', 'G', 'GG'],
         preco: 479.9,
-        imagem: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/106-urban-white.webp',
         descricao: 'Estilo clean e versátil para a rotina sobre duas rodas.',
     },
     {
@@ -98,7 +98,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         nome: 'Luvas para Motociclista',
         categoria: 'Vestuário',
         preco: 120,
-        imagem: 'https://images.unsplash.com/photo-1683183191020-cf86f3d45db3?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/2-luvas.webp',
         descricao: 'Mais aderência e segurança ao pilotar.',
     },
     {
@@ -106,7 +106,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         nome: 'Jaqueta de Motociclismo',
         categoria: 'Vestuário',
         preco: 380,
-        imagem: 'https://images.unsplash.com/photo-1770130697254-d965c05d2ee0?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/3-jaqueta.webp',
         descricao: 'Resistência e conforto para o dia a dia.',
     },
     {
@@ -114,7 +114,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         nome: 'Óculos para Motociclista',
         categoria: 'Acessórios',
         preco: 85,
-        imagem: 'https://images.unsplash.com/photo-1677030041879-24c9e2cc55e5?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/4-oculos.webp',
         descricao: 'Proteção contra vento e poeira.',
     },
     {
@@ -122,7 +122,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         nome: 'Capa de Chuva',
         categoria: 'Acessórios',
         preco: 150,
-        imagem: 'https://images.unsplash.com/photo-1781277495387-ec90b4ba7e3c?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/5-capa-de-chuva.webp',
         descricao: 'Proteção para pilotar em dias chuvosos.',
     },
     {
@@ -130,7 +130,7 @@ export const PRODUTOS_BOUTIQUE: readonly ProdutoBoutique[] = [
         nome: 'Kit de Ferramentas',
         categoria: 'Manutenção',
         preco: 95,
-        imagem: 'https://images.unsplash.com/photo-1563090728-6f7cdbfb4d72?auto=format&fit=crop&w=800&q=80',
+        imagem: '/img/boutique/6-kit-ferramentas.webp',
         descricao: 'Ferramentas essenciais para sua moto.',
     },
 ]
@@ -151,4 +151,4 @@ export const GUIA_TAMANHOS: readonly { tamanho: TamanhoCapacete; circunferencia:
     { tamanho: 'M', circunferencia: '57–58 cm' },
     { tamanho: 'G', circunferencia: '59–60 cm' },
     { tamanho: 'GG', circunferencia: '61–62 cm' },
-]
+]

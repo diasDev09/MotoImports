@@ -1,55 +1,55 @@
 @import "tailwindcss";
 
 /*
-  Sistema visual: grunge dos anos 90 (papel xerocado, fita crepe, tinta desbotada).
-  Duas superfícies: a página é TINTA (escura) e o conteúdo vive em FOLHAS de papel.
-  Por isso as cores "semânticas" (fg, fundo, suave, linha, erro) mudam dentro de uma .folha:
-  o mesmo componente funciona sobre a página e sobre o papel sem ramificar classes.
+  Sistema visual: editorial sóbrio (Ivory, Almond, Mist, Navy, Noir).
+  Três superfícies: a PÁGINA (clara), a FOLHA (cartões e formulários, em Almond) e o ESCURO (faixas em Navy).
+  As cores "semânticas" (fg, fundo, suave, linha, erro, acento, sombra) mudam conforme a superfície:
+  o mesmo componente funciona nas três sem ramificar classes.
 */
 
 @theme {
-  /* cores de peso: sem preto puro */
-  --color-tinta: #2E2E2E;
-  --color-papel: #E9E1D4;
-  --color-fita: #B5A642;
-  --color-sangue: #8C2727;
-  --color-jeans: #3B5998;
-  --color-ferrugem: #A84700;   /* só sombra de apoio; como texto: 4,5:1, só em corpo grande */
-  --color-oliva: #6B8E23;      /* só decoração; nunca texto (2,9:1 sobre papel) */
-  --color-cimento: #7A7A7A;    /* só linhas tracejadas; nunca texto */
-  --color-cinza-claro: #B9B3A8; /* texto secundário sobre tinta: 6,5:1 */
+  --color-ivory: #F9F8F7;
+  --color-almond: #EDEAE4;
+  --color-mist: #ADB8BB;     /* só decoração, destaques e texto sobre Navy/Noir; nunca texto sobre claro */
+  --color-navy: #153147;
+  --color-noir: #232A2F;
 
-  /* uma família só: o que muda é peso e aperto */
-  --font-sans: "Courier New", Courier, monospace;
-  --font-display: "Courier New", Courier, monospace;
+  /* serifa para títulos, sem serifa para o resto; só fontes do sistema */
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: Georgia, "Times New Roman", Times, serif;
 
   --radius-card: 0;
   --container-site: 72rem;
 }
 
-/* cores que dependem da superfície (página ou folha) */
+/* cores que dependem da superfície */
 @theme inline {
   --color-fg: var(--fg);
   --color-fundo: var(--fundo);
   --color-suave: var(--suave);
   --color-linha: var(--linha);
   --color-erro: var(--erro);
+  --color-acento: var(--acento);
+  --color-sobre-acento: var(--sobre-acento);
 }
 
 :root {
-  /* superfície padrão: a página (tinta) */
-  --fg: #E9E1D4;
-  --fundo: #2E2E2E;
-  --suave: #B9B3A8;
-  --linha: #7A7A7A;
-  --erro: #F2B2A8; /* 7,9:1 sobre tinta */
-  --sombra: #8C2727;
+  /* superfície padrão: a página */
+  --fg: #232A2F;        /* 14,2:1 sobre Ivory */
+  --fundo: #F9F8F7;
+  --suave: #4A565C;     /* 7,4:1 */
+  --linha: #6B7A81;     /* 4,3:1: borda de componente (mínimo 3:1) */
+  --erro: #9B2C2C;     /* 7,5:1 */
+  --acento: #153147;    /* 13,0:1 */
+  --sobre-acento: #F9F8F7;
+  --sombra: #ADB8BB;
 }
-
 
 @layer base {
   html {
-    @apply bg-tinta font-sans text-papel antialiased;
+    background-color: var(--color-ivory);
+    color: var(--color-noir);
+    @apply font-sans antialiased;
     line-height: 1.6;
   }
 
@@ -57,33 +57,22 @@
     min-height: 100dvh;
   }
 
-  /* grão de xerox por cima de tudo; não captura cliques */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    pointer-events: none;
-    opacity: 0.07;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
-  }
-
   h1,
   h2,
   h3 {
     @apply font-display font-bold;
-    letter-spacing: -0.05em;
-    line-height: 0.98;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
   }
 
   ::selection {
-    background: var(--color-fita);
-    color: var(--color-tinta);
+    background: var(--color-mist);
+    color: var(--color-noir);
   }
 
-  /* foco sempre visível, em amarelo-fita (5,5:1 sobre tinta); sobre papel usa tinta */
+  /* foco sempre visível, na cor de acento da superfície (Navy no claro, Ivory no escuro) */
   :focus-visible {
-    outline: 3px solid var(--color-fita);
+    outline: 3px solid var(--acento);
     outline-offset: 3px;
   }
 
@@ -94,35 +83,49 @@
   }
 }
 
-/* ---------- peças reutilizáveis ---------- */
+/* ---------- superfícies ---------- */
 
-/* superfície de papel: cartões, notas, formulários, modais.
-   Redefine as cores semânticas, então tudo que está dentro troca de tinta para papel sozinho. */
+/* cartões, notas, formulários, modais */
 @utility folha {
-  --fg: #2E2E2E;
-  --fundo: #E9E1D4;
-  --suave: #4A4A4A; /* 6,8:1 sobre papel */
-  --linha: #2E2E2E;
-  --erro: #8C2727;  /* 6,6:1 sobre papel */
+  --fg: #232A2F;        /* 11,7:1 sobre Almond */
+  --fundo: #EDEAE4;
+  --suave: #46525A;     /* 6,6:1 */
+  --linha: #5F6E75;     /* 4,2:1 */
+  --erro: #9B2C2C;     /* 6,3:1 */
+  --acento: #153147;    /* 10,8:1 */
+  --sobre-acento: #F9F8F7;
+  --sombra: #ADB8BB;
   background-color: var(--fundo);
   color: var(--fg);
-  &:focus-visible,
-  & :focus-visible {
-    outline-color: var(--color-tinta);
-  }
 }
 
-/* cartão de opção marcado (radio em cartão): contorno cheio + sombra dura */
+/* faixas escuras: menu, rodapé, chamadas */
+@utility escuro {
+  --fg: #F9F8F7;        /* 13,0:1 sobre Navy */
+  --fundo: #153147;
+  --suave: #C9D1D3;     /* 9,2:1 */
+  --linha: #ADB8BB;     /* 6,6:1 */
+  --erro: #F2B2A8;     /* 8,0:1 */
+  --acento: #F9F8F7;
+  --sobre-acento: #153147;
+  --sombra: #232A2F;
+  background-color: var(--fundo);
+  color: var(--fg);
+}
+
+/* ---------- peças reutilizáveis ---------- */
+
+/* cartão de opção marcado (radio em cartão): contorno cheio + sombra deslocada */
 @utility opcao-card-marcada {
-  border: 2px solid var(--fg);
-  background-color: color-mix(in srgb, var(--fg) 8%, transparent);
+  border: 2px solid var(--acento);
+  background-color: color-mix(in srgb, var(--acento) 8%, transparent);
   box-shadow: 4px 4px 0 var(--sombra);
 }
 
-/* botão principal: sobe da folha, hover afunda 3px e a sombra encolhe */
+/* botão principal: sobe da superfície, hover afunda e a sombra encolhe */
 @utility botao {
-  background-color: var(--fg);
-  color: var(--fundo);
+  background-color: var(--acento);
+  color: var(--sobre-acento);
   font-weight: 700;
   box-shadow: 5px 5px 0 var(--sombra);
   transition: transform 120ms ease-out, box-shadow 120ms ease-out;
@@ -141,15 +144,15 @@
   }
 }
 
-/* botão secundário: contorno tracejado, hover preenche */
+/* botão secundário: contorno, hover preenche */
 @utility botao-vazado {
-  border: 2px dashed var(--fg);
-  color: var(--fg);
+  border: 2px solid var(--acento);
+  color: var(--acento);
   font-weight: 700;
   transition: background-color 120ms ease-out, color 120ms ease-out;
   &:hover:not(:disabled) {
-    background-color: var(--fg);
-    color: var(--fundo);
+    background-color: var(--acento);
+    color: var(--sobre-acento);
   }
   &:disabled {
     opacity: 0.55;
@@ -162,109 +165,102 @@
   border: 2px solid var(--linha);
   transition: background-color 120ms ease-out, color 120ms ease-out;
   &:hover {
-    background-color: color-mix(in srgb, var(--fg) 12%, transparent);
+    background-color: color-mix(in srgb, var(--acento) 10%, transparent);
   }
 }
 @utility opcao-marcada {
-  border: 2px solid var(--fg);
-  background-color: var(--fg);
-  color: var(--fundo);
+  border: 2px solid var(--acento);
+  background-color: var(--acento);
+  color: var(--sobre-acento);
 }
 
-/* campo de formulário: sempre papel, borda de tinta (contraste de componente ≥3:1) */
+/* campo de formulário: sempre Ivory, borda Navy (contraste de componente ≥3:1) */
 @utility campo {
-  background-color: var(--color-papel);
-  color: var(--color-tinta);
-  border: 2px solid var(--color-tinta);
+  background-color: var(--color-ivory);
+  color: var(--color-noir);
+  border: 1.5px solid var(--color-navy);
   padding: 0.5rem 0.75rem;
   min-height: 2.75rem;
   &::placeholder {
-    color: #5A5A5A;
+    color: #5A666C;
   }
   &[aria-invalid="true"] {
-    border-color: var(--color-sangue);
-    box-shadow: 3px 3px 0 var(--color-sangue);
+    border-color: #9B2C2C;
+    box-shadow: 3px 3px 0 #9B2C2C;
   }
 }
 
-/* folha de papel com sombra dura, sem desfoque */
+/* cartão com sombra deslocada, sem desfoque */
 @utility folha-sombra {
   box-shadow: 6px 6px 0 var(--sombra);
 }
 
-/* inclinações pequenas, de -1,5° a 1,5° */
+/* resquícios do estilo anterior, mantidos para não mexer nos componentes:
+   inclinações viram retas, fita vira filete, borda rasgada vira reta, meio-tom vira textura leve */
 @utility inclina-a {
-  transform: rotate(-1.4deg);
+  transform: none;
 }
 @utility inclina-b {
-  transform: rotate(1.1deg);
+  transform: none;
 }
 
-/* fita crepe colada na borda de cima (elemento precisa ser relative) */
+/* filete de Navy no topo do cartão (o elemento precisa ser relative) */
 @utility fita {
   position: relative;
   &::before {
     content: "";
     position: absolute;
-    top: -12px;
-    left: 30px;
-    width: 104px;
-    height: 26px;
-    background: rgba(181, 166, 66, 0.92);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    transform: rotate(-5deg);
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--color-navy);
     pointer-events: none;
   }
 }
 
-/* meio-tom de xerox para "fotos" quando não há imagem */
+/* "foto" quando não há imagem: listras finas em Mist */
 @utility meio-tom {
-  background-image: radial-gradient(circle at 3px 3px, rgba(46, 46, 46, 0.55) 1.4px, transparent 1.9px);
-  background-size: 7px 7px;
+  background-image: repeating-linear-gradient(135deg, rgba(173, 184, 187, 0.35) 0 2px, transparent 2px 12px);
 }
 
-/* borda de baixo rasgada */
 @utility rasgado {
-  clip-path: polygon(0 0, 100% 0, 100% 94%, 93.75% 100%, 87.5% 94%, 81.25% 100%, 75% 94%, 68.75% 100%, 62.5% 94%, 56.25% 100%, 50% 94%, 43.75% 100%, 37.5% 94%, 31.25% 100%, 25% 94%, 18.75% 100%, 12.5% 94%, 6.25% 100%, 0 94%);
-  padding-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
 }
 
-/* palavra marcada com fita/marca-texto: <span className="destaque"> */
+/* palavra marcada com marca-texto: <span className="destaque"> */
 @utility destaque {
-  background-color: var(--color-fita);
-  color: var(--color-tinta);
+  background-color: var(--color-mist);
+  color: var(--color-noir);
   padding-inline: 0.2em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 
-/* linha tracejada entre blocos */
+/* linha entre blocos */
 @utility tracejado {
-  border-style: dashed;
+  border-style: solid;
   border-color: var(--linha);
 }
 
-/* carimbo: a única animação orquestrada do site (transform e opacity apenas) */
+/* selo: a única animação orquestrada do site (transform e opacity apenas) */
 @utility carimbo {
   display: inline-block;
-  border: 4px solid var(--color-sangue);
-  color: var(--color-sangue);
+  border: 2px solid var(--acento);
+  color: var(--acento);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.08em;
   padding: 0.25rem 0.75rem;
-  transform: rotate(-8deg);
   animation: carimbar 420ms cubic-bezier(0.2, 0.9, 0.3, 1) 250ms both;
 }
 
 @keyframes carimbar {
   from {
     opacity: 0;
-    transform: rotate(-14deg) scale(1.6);
+    transform: scale(1.4);
   }
   to {
     opacity: 1;
-    transform: rotate(-8deg) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -278,20 +274,55 @@
   }
 }
 
-/* impressão do voucher: sem grão, sem sombras */
+/* impressão do voucher: sai só o comprovante, em preto sobre branco, sem botões, menu, rodapé ou grão */
 @media print {
+  @page {
+    margin: 12mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
   body::before {
     display: none;
   }
-  html {
+  /* esconde tudo e devolve só o voucher */
+  body * {
+    visibility: hidden;
+  }
+  #comprovante-voucher,
+  #comprovante-voucher * {
+    visibility: visible;
+  }
+  #comprovante-voucher {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    margin: 0;
     background: #fff;
     color: #000;
-  }
-  header[class*="sticky"],
-  footer {
-    display: none;
-  }
-  .folha-sombra {
+    border: 2px solid #000;
     box-shadow: none;
+    break-inside: avoid;
+    --fg: #000;
+    --fundo: #fff;
+    --suave: #222;
+    --linha: #000;
+    --acento: #000;
+    --sobre-acento: #fff;
+  }
+  #comprovante-voucher::before {
+    display: none; /* fita crepe */
+  }
+  #comprovante-voucher header {
+    background: #fff;
+    color: #000;
+    border-bottom: 2px solid #000;
+  }
+  #comprovante-voucher .carimbo {
+    color: #000;
+    border-color: #000;
+    animation: none;
   }
 }

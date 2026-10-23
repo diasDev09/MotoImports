@@ -25,7 +25,7 @@ export default function ProposalModal({ aberto, lead, contexto, aoFechar }: Prop
             <p className="text-sm text-suave">
                 Confira a mensagem e escolha como enviar para a nossa equipe.
             </p>
-            <pre className="mt-3 whitespace-pre-wrap border-2 border-dashed border-linha p-4 font-sans text-sm">
+            <pre className="mt-3 whitespace-pre-wrap border-2 border-linha p-4 font-sans text-sm">
                 {mensagem}
             </pre>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">

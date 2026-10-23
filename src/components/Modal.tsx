@@ -62,7 +62,7 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-tinta/85 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-noir/85 p-4"
             onClick={aoFechar}
         >
             <div
@@ -71,7 +71,7 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
                 aria-labelledby={idTitulo}
                 ref={dialogoRef}
                 tabIndex={-1}
-                className="folha folha-sombra max-h-full w-full max-w-2xl overflow-auto border-2 border-tinta p-6 outline-none"
+                className="folha folha-sombra max-h-full w-full max-w-2xl overflow-auto border-2 border-navy p-6 outline-none"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-start justify-between gap-4">

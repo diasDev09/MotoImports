@@ -1,3 +1,6 @@
+import { useAuth } from '../auth/AuthContext.ts'
+import { useRepositorio } from '../storage/Repositorio.ts'
+import { montarPedidoBoutique } from '../storage/documentos.ts'
 import { useState } from 'react'
 import CartaoProduto from '../components/boutique/CartaoProduto.tsx'
 import CarrinhoBoutique from '../components/boutique/CarrinhoBoutique.tsx'
@@ -34,6 +37,10 @@ export default function Boutique() {
     const [carrinhoAberto, setCarrinhoAberto] = useState(false)
     const [pagamento, setPagamento] = useState<FormaPagamentoBoutique | ''>('')
     const [pedidoFinalizado, setPedidoFinalizado] = useState(false)
+    const [salvandoPedido, setSalvandoPedido] = useState(false)
+    const [erroPedido, setErroPedido] = useState<string | null>(null)
+    const { usuario } = useAuth()
+    const repositorio = useRepositorio()
 
     const produtos = filtrarProdutos(PRODUTOS_BOUTIQUE, filtros)
     const quantidade = totalItens(carrinho)
@@ -43,6 +50,24 @@ export default function Boutique() {
     function atualizarCarrinho(novo: ItemCarrinho[]) {
         setCarrinho(novo)
         setPedidoFinalizado(false)
+    }
+
+    // o pedido só fica "confirmado" depois de guardado; se falhar, o carrinho continua como está
+    async function confirmarPedido() {
+        if (carrinho.length === 0 || !pagamento || salvandoPedido) return
+        if (repositorio && usuario) {
+            setSalvandoPedido(true)
+            setErroPedido(null)
+            try {
+                await repositorio.salvarPedidoBoutique(usuario.uid, montarPedidoBoutique(carrinho, pagamento))
+            } catch {
+                setErroPedido('Não conseguimos guardar o seu pedido agora. Confira a conexão e tente de novo.')
+                setSalvandoPedido(false)
+                return
+            }
+            setSalvandoPedido(false)
+        }
+        setPedidoFinalizado(true)
     }
 
     function adicionar(produto: ProdutoBoutique) {
@@ -79,7 +104,7 @@ export default function Boutique() {
                         className="botao-vazado flex min-h-11 items-center gap-2 px-5 py-3"
                     >
                         Carrinho
-                        <span className="bg-sangue px-2 py-0.5 text-xs font-bold text-papel">{quantidade}</span>
+                        <span className="bg-navy px-2 py-0.5 text-xs font-bold text-ivory">{quantidade}</span>
                         <span className="sr-only">{quantidade === 1 ? 'item' : 'itens'} no carrinho</span>
                     </button>
                 </header>
@@ -96,9 +121,9 @@ export default function Boutique() {
                                 setPagamento(forma)
                                 setPedidoFinalizado(false)
                             }}
-                            aoConfirmar={() => {
-                                if (carrinho.length > 0 && pagamento) setPedidoFinalizado(true)
-                            }}
+                            aoConfirmar={() => void confirmarPedido()}
+                            salvando={salvandoPedido}
+                            erroPedido={erroPedido}
                         />
                     )}
 
