@@ -32,6 +32,10 @@ export interface ResultadoValidacaoEntrada {
     entradaMaxima: number
 }
 
+// "1,49%" / "12%": percentual em pt-BR para os rótulos, sempre derivado dos parâmetros
+const percentual = (fracao: number) =>
+    `${(fracao * 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%`
+
 export const PARAMETROS_FINANCEIROS = {
     // Financiamento Bancário (CDC - Crédito Direto ao Consumidor com taxa pré-fixada)
     financiamento: {
@@ -236,6 +240,12 @@ export function simularOperacao<M extends MotoSimulavel, A extends ItemComPreco 
     valorEntrada?: number
     percentualEntrada?: number
 }) {
+    // o prazo precisa ser um dos oferecidos; antes, qualquer número passava em silêncio
+    const prazos: readonly number[] = PARAMETROS_FINANCEIROS[modalidade].prazosDisponiveis
+    if (!prazos.includes(meses)) {
+        throw new RangeError(`Prazo de ${meses} meses indisponível. Use: ${prazos.join(', ')}.`)
+    }
+
     const precoMoto = moto?.preco || 0
     const totalAcessorios = (acessorios || []).reduce((soma, item) => soma + (Number(item?.preco) || 0), 0)
 
@@ -243,9 +253,10 @@ export function simularOperacao<M extends MotoSimulavel, A extends ItemComPreco 
     const valorTotalOperacao = precoMoto + (incluirAcessoriosNoFinanciamento ? totalAcessorios : 0)
 
     // Determinar valor de entrada efetivo
-    let entradaEfetiva = typeof valorEntrada === 'number'
+    const entradaSolicitada = typeof valorEntrada === 'number'
         ? valorEntrada
         : Math.round(valorTotalOperacao * (percentualEntrada / 100))
+    let entradaEfetiva = entradaSolicitada
 
     const validacao = validarLimitesEntrada(valorTotalOperacao, entradaEfetiva, modalidade)
 
@@ -294,6 +305,9 @@ export function simularOperacao<M extends MotoSimulavel, A extends ItemComPreco 
         modalidade,
         meses,
         entrada: entradaEfetiva,
+        entradaSolicitada,
+        // true quando a entrada pedida estava fora dos limites e foi corrigida (quem exibe pode avisar)
+        entradaAjustada: entradaEfetiva !== entradaSolicitada,
         percentualEntrada: percentualEfetivo,
         entradaMinima: validacao.entradaMinima,
         entradaMaxima: validacao.entradaMaxima,
@@ -306,7 +320,7 @@ export function simularOperacao<M extends MotoSimulavel, A extends ItemComPreco 
                 parcelaMensal: resultadoConsorcio.parcelaMensal,
                 totalPago: totalGeralConsorcio,
                 custoAdicional: resultadoConsorcio.custoTaxaAdmin,
-                tipoCusto: 'Taxa Administrativa (12% diluída)',
+                tipoCusto: `Taxa Administrativa (${percentual(PARAMETROS_FINANCEIROS.consorcio.taxaAdminTotalPadrao)} diluída)`,
                 nomeModalidade: PARAMETROS_FINANCEIROS.consorcio.nome,
                 prazoEntrega: PARAMETROS_FINANCEIROS.consorcio.prazoLiberacao,
             }
@@ -314,7 +328,7 @@ export function simularOperacao<M extends MotoSimulavel, A extends ItemComPreco 
                 parcelaMensal: resultadoFinanciamento.parcelaMensal,
                 totalPago: totalGeralFinanciamento,
                 custoAdicional: resultadoFinanciamento.totalJuros,
-                tipoCusto: 'Juros de Financiamento (1,49% a.m.)',
+                tipoCusto: `Juros de Financiamento (${percentual(PARAMETROS_FINANCEIROS.financiamento.taxaMensalPadrao)} a.m.)`,
                 nomeModalidade: PARAMETROS_FINANCEIROS.financiamento.nome,
                 prazoEntrega: PARAMETROS_FINANCEIROS.financiamento.prazoLiberacao,
             },

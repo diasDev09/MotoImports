@@ -6,6 +6,7 @@ import {
     criarVoucherReserva,
     formatarMensagemWhatsAppVoucher,
 } from './reservation.ts'
+import { simularOperacao } from './financing.ts'
 import type { Moto } from '../data/motos.ts'
 
 describe('Módulo de Checkout & Reserva [RF-08, RN-02, RN-05, RN-06]', () => {
@@ -75,6 +76,29 @@ describe('Módulo de Checkout & Reserva [RF-08, RN-02, RN-05, RN-06]', () => {
             expect(res.erros.consentimentoLGPD).toBeDefined()
         })
 
+        it('telefone aceita 10 ou 11 dígitos, com ou sem máscara, e recusa 12', () => {
+            const com = (telefone: string) =>
+                validarDadosCheckout({ cliente: { ...clienteTeste, telefone }, lojaId: 'sp-jardins', consentimentoLGPD: true })
+            expect(com('(11) 98765-4321').valido).toBe(true)
+            expect(com('1132654321').valido).toBe(true)
+            expect(com('551198765432').erros.telefone).toBeDefined()
+        })
+
+        it('nome só com espaços não vale e o e-mail é aparado', () => {
+            const res = validarDadosCheckout({
+                cliente: { ...clienteTeste, nome: '    ', email: '  carlos@exemplo.com  ' },
+                lojaId: 'sp-jardins',
+                consentimentoLGPD: true,
+            })
+            expect(res.erros.nome).toBeDefined()
+            expect(res.erros.email).toBeUndefined()
+        })
+
+        it('sem nenhum dado devolve um erro por campo, sem quebrar', () => {
+            const res = validarDadosCheckout({})
+            expect(Object.keys(res.erros).sort()).toEqual(['cidade', 'consentimentoLGPD', 'email', 'lojaId', 'nome', 'telefone'])
+        })
+
         it('deve rejeitar e-mail inválido e telefone incompleto', () => {
             const res = validarDadosCheckout({
                 cliente: {
@@ -127,6 +151,21 @@ describe('Módulo de Checkout & Reserva [RF-08, RN-02, RN-05, RN-06]', () => {
             expect(msg).toContain(voucher.codigo)
             expect(msg).toContain('Panigale V2')
             expect(msg).toContain('7 dias corridos')
+        })
+
+        it('traz o aviso de reserva de demonstração (RN-06)', () => {
+            const voucher = criarVoucherReserva({ moto: motoTeste, formaPagamento: 'a_vista', cliente: clienteTeste, lojaId: 'sp-jardins' })
+            const msg = formatarMensagemWhatsAppVoucher(voucher)
+            expect(msg).toMatch(/reserva de demonstração/i)
+            expect(msg).toMatch(/nenhuma cobrança/i)
+        })
+
+        it('não promete "taxa zero" no consórcio', () => {
+            const simulacao = simularOperacao({ moto: motoTeste as { preco: number }, modalidade: 'consorcio', meses: 48 })
+            const voucher = criarVoucherReserva({ moto: motoTeste, formaPagamento: 'consorcio', simulacao, cliente: clienteTeste, lojaId: 'sp-jardins' })
+            const msg = formatarMensagemWhatsAppVoucher(voucher)
+            expect(msg).toContain('Consórcio')
+            expect(msg).not.toMatch(/taxa zero/i)
         })
     })
 })

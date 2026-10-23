@@ -133,5 +133,29 @@ describe('Módulo de Financiamento [RF-07, RN-03, RN-04, RN-07]', () => {
             expect(sim.economiaConsorcio).toBeGreaterThan(0)
             expect(sim.financiamento.totalGeral).toBeGreaterThan(sim.consorcio.totalGeral)
         })
+
+        // --- correções da equipe (Passo 41) ---
+        it('avisa quando a entrada pedida foi ajustada aos limites', () => {
+            const baixa = simularOperacao({ moto: motoTeste, valorEntrada: 5000 })
+            expect(baixa.entradaAjustada).toBe(true)
+            expect(baixa.entradaSolicitada).toBe(5000)
+            expect(baixa.entrada).toBe(20000)
+
+            const dentro = simularOperacao({ moto: motoTeste, valorEntrada: 30000 })
+            expect(dentro.entradaAjustada).toBe(false)
+            expect(dentro.entrada).toBe(30000)
+        })
+
+        it('recusa prazo que a modalidade não oferece', () => {
+            expect(() => simularOperacao({ moto: motoTeste, meses: 10 })).toThrow(RangeError)
+            expect(() => simularOperacao({ moto: motoTeste, modalidade: 'consorcio', meses: 100 })).toThrow(/indisponível/)
+        })
+
+        it('os rótulos de custo vêm dos parâmetros', () => {
+            expect(simularOperacao({ moto: motoTeste }).resultadoAtivo.tipoCusto).toBe('Juros de Financiamento (1,49% a.m.)')
+            expect(simularOperacao({ moto: motoTeste, modalidade: 'consorcio' }).resultadoAtivo.tipoCusto).toBe(
+                'Taxa Administrativa (12% diluída)',
+            )
+        })
     })
 })

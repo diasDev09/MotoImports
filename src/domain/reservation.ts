@@ -11,6 +11,7 @@
  * PADRÃO DE MATURIDADE: Funções puras, modelos de dados previsíveis e regras auditáveis.
  */
 
+import { z } from 'zod'
 import type { Moto, StatusEstoque } from '../data/motos.ts'
 import type { ItemComPreco, simularOperacao } from './financing.ts'
 
@@ -161,8 +162,27 @@ export function calcularDataExpiracao(diasValidade = 7): Date {
     return expiracao
 }
 
+const apenasDigitos = (texto: string) => texto.replace(/\D/g, '')
+
+// Mesmas regras de antes, agora em um schema Zod. O formato do retorno não muda; só o telefone passa a aceitar no máximo 11 dígitos.
+const schemaCheckout = z.object({
+    nome: z.string().trim().min(3, 'Informe seu nome completo (mínimo de 3 caracteres).'),
+    telefone: z
+        .string()
+        .refine((valor) => [10, 11].includes(apenasDigitos(valor).length), {
+            message: 'Informe um telefone válido com DDD (10 ou 11 dígitos).',
+        }),
+    email: z.string().trim().pipe(z.email('Informe um endereço de e-mail válido.')),
+    cidade: z.string().trim().min(2, 'Informe sua cidade e estado.'),
+    lojaId: z.string().min(1, 'Selecione uma loja autorizada para retirada presencial do veículo.'),
+    consentimentoLGPD: z.literal(true, {
+        error: 'É necessário concordar com os termos de privacidade para gerar a reserva.',
+    }),
+})
+
 /**
- * Validação rigorosa dos dados do formulário de checkout e lead capture [RF-01, RNF-05].
+ * Validação dos dados do formulário de checkout e lead capture [RF-01, RNF-05].
+ * Devolve { valido, erros }, com no máximo uma mensagem por campo.
  */
 export function validarDadosCheckout({
     cliente,
@@ -173,38 +193,24 @@ export function validarDadosCheckout({
     lojaId?: string
     consentimentoLGPD?: boolean
 }) {
+    const resultado = schemaCheckout.safeParse({
+        nome: cliente?.nome ?? '',
+        telefone: cliente?.telefone ?? '',
+        email: cliente?.email ?? '',
+        cidade: cliente?.cidade ?? '',
+        lojaId: lojaId ?? '',
+        consentimentoLGPD,
+    })
+
     const erros: Record<string, string> = {}
-
-    if (!cliente?.nome || cliente.nome.trim().length < 3) {
-        erros.nome = 'Informe seu nome completo (mínimo de 3 caracteres).'
+    if (!resultado.success) {
+        for (const problema of resultado.error.issues) {
+            const campo = String(problema.path[0])
+            erros[campo] ??= problema.message // fica a primeira mensagem de cada campo
+        }
     }
 
-    const telefoneLimpo = (cliente?.telefone || '').replace(/\D/g, '')
-    if (!telefoneLimpo || telefoneLimpo.length < 10) {
-        erros.telefone = 'Informe um número de WhatsApp/Telefone válido com DDD (mínimo 10 dígitos).'
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!cliente?.email || !emailRegex.test(cliente.email.trim())) {
-        erros.email = 'Informe um endereço de e-mail corporativo ou pessoal válido.'
-    }
-
-    if (!cliente?.cidade || cliente.cidade.trim().length < 2) {
-        erros.cidade = 'Informe sua cidade e estado.'
-    }
-
-    if (!lojaId) {
-        erros.lojaId = 'Selecione uma loja autorizada para retirada presencial do veículo.'
-    }
-
-    if (!consentimentoLGPD) {
-        erros.consentimentoLGPD = 'É necessário concordar com os termos de privacidade para gerar a reserva.'
-    }
-
-    return {
-        valido: Object.keys(erros).length === 0,
-        erros,
-    }
+    return { valido: resultado.success, erros }
 }
 
 /**
@@ -312,7 +318,7 @@ export function formatarMensagemWhatsAppVoucher(voucher?: VoucherReserva | null)
         resumoFinanceiro = `\n💳 *Financiamento:* Entrada de ${formatoMoeda(sim.entrada)} + ${sim.meses}x de ${formatoMoeda(sim.resultadoAtivo.parcelaMensal)}`
     } else if (financeiro.formaPagamento === 'consorcio' && financeiro.simulacaoDetalhada?.resultadoAtivo) {
         const sim = financeiro.simulacaoDetalhada
-        resumoFinanceiro = `\n🤝 *Consórcio:* Lance de ${formatoMoeda(sim.entrada)} + ${sim.meses}x de ${formatoMoeda(sim.resultadoAtivo.parcelaMensal)} (taxa zero de juros)`
+        resumoFinanceiro = `\n🤝 *Consórcio:* Lance de ${formatoMoeda(sim.entrada)} + ${sim.meses}x de ${formatoMoeda(sim.resultadoAtivo.parcelaMensal)} (sem juros bancários; com taxa administrativa)`
     } else {
         resumoFinanceiro = `\n💵 *À Vista / Sinal:* Valor All-Inclusive ${formatoMoeda(financeiro.valorTotalGeral)}`
     }
@@ -331,7 +337,7 @@ export function formatarMensagemWhatsAppVoucher(voucher?: VoucherReserva | null)
         `📍 *Endereço:* ${retirada.endereco}`,
         `⏱️ *Previsão de Retirada:* ${retirada.prazoRetiradaTexto}`,
         `📅 *Validade da Reserva:* 7 dias corridos`,
-        `⚠️ *Nota:* Reserva gerada via simulador web oficial MotoImports.`,
+        `⚠️ *Aviso:* reserva de demonstração (simulação). Nenhuma cobrança foi feita e a moto não está reservada de fato.`,
     ].join('\n\n')
 
     return msg
