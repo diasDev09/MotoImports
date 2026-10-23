@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { leadSchema, formatarTelefone } from '../domain/lead.ts'
 import type { Lead, LeadEntrada, LeadRegistrado } from '../domain/lead.ts'
 
-const estiloInput = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
+const estiloInput = 'campo'
 
 // Campo reutilizável: rótulo ligado ao input, erro anunciado por leitores de tela.
 function Campo({
@@ -62,7 +62,7 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
     })
 
     return (
-        <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit(enviar)} noValidate>
+        <form className="folha folha-sombra fita mt-10 flex flex-col gap-4 p-6" onSubmit={handleSubmit(enviar)} noValidate>
             {motoInteresse && (
                 <p>
                     Moto de interesse: <strong>{motoInteresse.nome}</strong>
@@ -106,7 +106,7 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
                 <input
                     id="consentimento"
                     type="checkbox"
-                    className="mt-1 size-4 accent-musgo-600"
+                    className="mt-1 size-5 accent-fg"
                     {...acessivel('consentimento')}
                     {...register('consentimento')}
                 />
@@ -122,16 +122,16 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
 
             <button
                 type="submit"
-                className="self-start rounded-lg bg-musgo-900 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-600"
+                className="botao min-h-11 self-start px-6 py-3 text-sm"
             >
                 Enviar
             </button>
 
             {isSubmitSuccessful && (
-                <p role="status" className="rounded-lg border border-musgo-400 bg-musgo-200 p-4">
+                <p role="status" className="bg-fita p-4 text-tinta">
                     Recebemos seu contato! Nossa equipe fala com você em breve.
                 </p>
             )}
         </form>
     )
-}
+}

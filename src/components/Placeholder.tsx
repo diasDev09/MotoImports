@@ -12,15 +12,15 @@ export default function Placeholder({
     return (
         <section className="py-16">
             <div className="mx-auto max-w-site px-6">
-                <h1 className="text-4xl">{titulo}</h1>
-                <p className="mt-3 text-musgo-600">{mensagem}</p>
+                <h1 className="text-5xl">{titulo}</h1>
+                <p className="mt-3 text-suave">{mensagem}</p>
                 <Link
                     to="/"
-                    className="mt-6 inline-block rounded-lg border border-musgo-900 px-5 py-2 text-sm font-semibold hover:bg-musgo-200"
+                    className="mt-6 inline-block botao-vazado px-5 py-2 text-sm font-bold "
                 >
                     Voltar ao início
                 </Link>
             </div>
         </section>
     )
-}
+}

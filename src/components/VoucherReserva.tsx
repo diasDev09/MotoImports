@@ -12,8 +12,7 @@ const NOME_FORMA = {
     a_vista: 'À vista / sinal',
 } as const
 
-const botao =
-    'rounded-lg border border-musgo-900 px-5 py-3 text-sm font-semibold uppercase tracking-wide hover:bg-musgo-200'
+const estiloBotao = 'inline-flex min-h-11 items-center px-5 py-3 text-sm'
 
 const data = (iso: string) => new Date(iso).toLocaleDateString('pt-BR')
 const hora = (iso: string) =>
@@ -22,7 +21,7 @@ const hora = (iso: string) =>
 function Secao({ titulo, children }: { titulo: string; children: React.ReactNode }) {
     return (
         <section>
-            <h3 className="text-sm font-bold uppercase tracking-wide text-musgo-600">{titulo}</h3>
+            <h3 className="text-sm font-bold uppercase text-suave">{titulo}</h3>
             <div className="mt-2 flex flex-col gap-1 text-sm">{children}</div>
         </section>
     )
@@ -61,24 +60,24 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
     return (
         <section className="py-12">
             <div className="mx-auto max-w-3xl px-6">
-                <p role="alert" className="rounded-lg border border-aviso bg-aviso/40 p-4 text-sm">
+                <p role="alert" className="bg-fita p-4 text-sm text-tinta">
                     <strong>{voucher.identificacaoSimulacao}</strong>
                     <br />
                     Nenhuma cobrança foi feita. Este comprovante é só uma demonstração do fluxo de reserva.
                 </p>
 
-                <article className="mt-6 overflow-hidden rounded-card border border-musgo-200 bg-white" id="comprovante-voucher">
-                    <header className="flex flex-wrap items-center justify-between gap-4 bg-musgo-900 p-6 text-white">
+                <article className="folha folha-sombra fita mt-8 border-2 border-tinta" id="comprovante-voucher">
+                    <header className="flex flex-wrap items-center justify-between gap-4 bg-tinta p-6 text-papel">
                         <div>
-                            <p className="font-display text-xl font-extrabold uppercase">Moto Imports</p>
-                            <h1 ref={titulo} tabIndex={-1} className="text-sm outline-none">
+                            <p className="font-display text-2xl font-bold">Moto Imports</p>
+                            <h1 ref={titulo} tabIndex={-1} className="text-base outline-none">
                                 Voucher de reserva presencial
                             </h1>
                         </div>
                         <div className="text-right">
                             <p className="text-xs uppercase">Código da reserva</p>
-                            <p className="font-display text-2xl font-extrabold" data-testid="codigo">{voucher.codigo}</p>
-                            <p className="text-xs font-semibold uppercase">Reserva de demonstração</p>
+                            <p className="font-display text-3xl font-bold" data-testid="codigo">{voucher.codigo}</p>
+                            <p className="carimbo mt-2 border-papel text-xs text-papel">Reserva de demonstração</p>
                         </div>
                     </header>
 
@@ -97,7 +96,7 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
                         </Secao>
 
                         <Secao titulo="Loja de retirada">
-                            <p className="font-semibold">{retirada.nomeLoja}</p>
+                            <p className="font-bold">{retirada.nomeLoja}</p>
                             <p>{retirada.endereco}</p>
                             <p><strong>Horário:</strong> {retirada.horarioFuncionamento}</p>
                             <p><strong>Telefone:</strong> {retirada.telefone}</p>
@@ -112,7 +111,7 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
                                 </p>
                             )}
                             <p><strong>Valor total:</strong></p>
-                            <p className="font-display text-2xl font-extrabold">{formatarPreco(financeiro.valorTotalGeral)}</p>
+                            <p className="font-display text-2xl font-bold">{formatarPreco(financeiro.valorTotalGeral)}</p>
                         </Secao>
 
                         {voucher.acessorios.length > 0 && (
@@ -128,28 +127,28 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
                         )}
                     </div>
 
-                    <footer className="border-t border-musgo-200 bg-musgo-50 p-4 text-xs">
+                    <footer className="border-t-2 border-dashed border-linha p-4 text-xs">
                         Emitido em {data(voucher.dataCriacao)} às {hora(voucher.dataCriacao)}. Válido até{' '}
                         {data(voucher.dataExpiracao)} ({voucher.prazoValidadeDias} dias corridos).
                     </footer>
                 </article>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                    <button type="button" onClick={() => window.print()} className={`${botao} bg-musgo-900 text-white hover:bg-musgo-600`}>
+                    <button type="button" onClick={() => window.print()} className={`${estiloBotao} botao`}>
                         Imprimir ou salvar PDF
                     </button>
-                    <button type="button" onClick={copiarCodigo} className={botao}>
+                    <button type="button" onClick={copiarCodigo} className={`${estiloBotao} botao-vazado`}>
                         {copiado ? '✓ Código copiado' : 'Copiar código'}
                     </button>
                     <a
                         href={linkWhatsApp(retirada.whatsapp, formatarMensagemWhatsAppVoucher(voucher))}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={botao}
+                        className={`${estiloBotao} botao-vazado`}
                     >
                         Enviar para a loja no WhatsApp
                     </a>
-                    <button type="button" onClick={aoNovaReserva} className={botao}>
+                    <button type="button" onClick={aoNovaReserva} className={`${estiloBotao} botao-vazado`}>
                         Nova reserva
                     </button>
                 </div>
@@ -157,4 +156,4 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
             </div>
         </section>
     )
-}
+}

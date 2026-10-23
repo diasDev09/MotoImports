@@ -14,8 +14,8 @@ export default function Contato() {
     return (
         <section className="py-12">
             <div className="mx-auto max-w-xl px-6">
-                <h1 className="text-4xl">Fale com a equipe</h1>
-                <p className="mt-3 text-musgo-600">
+                <h1 className="text-5xl md:text-6xl">Fale com a equipe</h1>
+                <p className="mt-3 text-suave">
                     Preencha seus dados e retornamos com a proposta da sua próxima moto.
                 </p>
 
@@ -32,7 +32,7 @@ export default function Contato() {
                         <button
                             type="button"
                             onClick={() => setPropostaAberta(true)}
-                            className="rounded-lg bg-musgo-600 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-900"
+                            className="botao min-h-11 px-6 py-3 text-sm"
                         >
                             Receber proposta
                         </button>
@@ -50,4 +50,4 @@ export default function Contato() {
             </div>
         </section>
     )
-}
+}

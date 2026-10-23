@@ -12,10 +12,9 @@ import { formatarPreco } from '../utils/formatters.ts'
 // RF-07: simulador de financiamento e consórcio (porte da v1, do Santos).
 // Regras de cálculo ficam em domain/financing.ts; aqui só tem tela.
 
-const cartao = 'rounded-card border border-musgo-200 bg-white p-5'
-const titulo = 'mb-3 text-lg font-bold'
-const botaoMini =
-    'rounded-lg border border-musgo-600 px-3 py-1 text-sm font-semibold hover:bg-musgo-200'
+const cartao = 'folha folha-sombra p-5'
+const titulo = 'mb-4 text-2xl'
+const botaoMini = 'botao-vazado inline-flex min-h-11 items-center px-3 text-sm'
 
 const MODALIDADES: { id: Modalidade; nome: string; selo: string }[] = [
     { id: 'financiamento', nome: 'Financiamento bancário', selo: 'Liberação após análise cadastral' },
@@ -80,8 +79,8 @@ export default function Simulador() {
         <section className="py-12">
             <div className="mx-auto max-w-site px-6">
                 <header className="max-w-2xl">
-                    <h1 className="text-4xl">Simulador de financiamento e consórcio</h1>
-                    <p className="mt-3 text-musgo-600">
+                    <h1 className="text-4xl md:text-6xl">Simulador de financiamento e consórcio</h1>
+                    <p className="mt-3 text-suave">
                         Compare o crédito bancário com o consórcio, de 12x a 72x, ajuste a entrada e some acessórios à
                         conta.
                     </p>
@@ -96,7 +95,7 @@ export default function Simulador() {
                                 id="moto"
                                 value={motoAtiva.id}
                                 onChange={(e) => trocarMoto(e.target.value)}
-                                className="w-full rounded-lg border border-musgo-400 bg-white px-3 py-2"
+                                className="campo w-full"
                             >
                                 {motos.map((m) => (
                                     <option key={m.id} value={m.id}>
@@ -106,11 +105,11 @@ export default function Simulador() {
                             </select>
                             <div className="mt-3 flex items-center gap-4">
                                 {motoAtiva.imagem && (
-                                    <img src={motoAtiva.imagem} alt="" className="h-14 w-20 rounded-lg object-cover" />
+                                    <img src={motoAtiva.imagem} alt="" className="h-14 w-20 object-cover" />
                                 )}
                                 <div className="flex-1">
-                                    <p className="font-semibold">{motoAtiva.marca} {motoAtiva.nome}</p>
-                                    <p className="text-sm text-musgo-600">{formatarPreco(motoAtiva.preco)}</p>
+                                    <p className="font-bold">{motoAtiva.marca} {motoAtiva.nome}</p>
+                                    <p className="text-sm text-suave">{formatarPreco(motoAtiva.preco)}</p>
                                 </div>
                                 <Link to={`/moto/${motoAtiva.id}`} className={botaoMini}>Ver ficha</Link>
                             </div>
@@ -126,12 +125,9 @@ export default function Simulador() {
                                         role="tab"
                                         aria-selected={modalidade === m.id}
                                         onClick={() => setModalidade(m.id)}
-                                        className={`flex flex-col rounded-lg border px-4 py-3 text-left ${modalidade === m.id
-                                                ? 'border-musgo-900 bg-musgo-900 text-white'
-                                                : 'border-musgo-400 hover:bg-musgo-200'
-                                            }`}
+                                        className={`flex min-h-11 flex-col px-4 py-3 text-left ${modalidade === m.id ? 'opcao-marcada' : 'opcao'}`}
                                     >
-                                        <span className="font-semibold">{m.nome}</span>
+                                        <span className="font-bold">{m.nome}</span>
                                         <span className="text-xs">{m.selo}</span>
                                     </button>
                                 ))}
@@ -156,9 +152,9 @@ export default function Simulador() {
                                 step={5}
                                 value={percentual}
                                 onChange={(e) => setPercentualEscolhido(Number(e.target.value))}
-                                className="w-full accent-musgo-600"
+                                className="w-full accent-fg"
                             />
-                            <p className="mt-1 flex justify-between text-sm text-musgo-600">
+                            <p className="mt-1 flex justify-between text-sm text-suave">
                                 <span>Mínimo {minimo}% ({formatarPreco(simulacao.entradaMinima)})</span>
                                 <span>Máximo {maximo}% ({formatarPreco(simulacao.entradaMaxima)})</span>
                             </p>
@@ -173,8 +169,7 @@ export default function Simulador() {
                                         type="button"
                                         aria-pressed={meses === p}
                                         onClick={() => setMeses(p)}
-                                        className={`rounded-lg border px-4 py-2 text-sm font-semibold ${meses === p ? 'border-musgo-900 bg-musgo-900 text-white' : 'border-musgo-400 hover:bg-musgo-200'
-                                            }`}
+                                        className={`min-h-11 px-4 py-2 text-sm font-bold ${meses === p ? 'opcao-marcada' : 'opcao'}`}
                                     >
                                         {p}x
                                     </button>
@@ -184,7 +179,7 @@ export default function Simulador() {
 
                         <section className={cartao} aria-labelledby="sim-acessorios">
                             <h2 id="sim-acessorios" className={titulo}>
-                                5. Acessórios <span className="text-sm font-normal text-musgo-600">({acessorios.length} no carrinho)</span>
+                                5. Acessórios <span className="text-sm font-normal text-suave">({acessorios.length} no carrinho)</span>
                             </h2>
 
                             <label className="flex items-start gap-3 text-sm">
@@ -192,7 +187,7 @@ export default function Simulador() {
                                     type="checkbox"
                                     checked={incluirAcessorios}
                                     onChange={(e) => setIncluirAcessorios(e.target.checked)}
-                                    className="mt-1 size-4 accent-musgo-600"
+                                    className="mt-1 size-4 accent-fg"
                                 />
                                 <span>
                                     <strong>Incluir acessórios no parcelamento</strong>
@@ -204,7 +199,7 @@ export default function Simulador() {
                             {acessorios.length > 0 && (
                                 <ul className="mt-4 flex flex-col gap-2" aria-label="Acessórios no carrinho">
                                     {acessorios.map((item) => (
-                                        <li key={item.id} className="flex items-center justify-between gap-3 rounded-lg bg-musgo-50 px-3 py-2 text-sm">
+                                        <li key={item.id} className="flex items-center justify-between gap-3 bg-fg/10 px-3 py-2 text-sm">
                                             <span>{item.nome}</span>
                                             <span className="flex items-center gap-3">
                                                 <strong>{formatarPreco(item.preco)}</strong>
@@ -222,18 +217,18 @@ export default function Simulador() {
                                 </ul>
                             )}
 
-                            <p className="mt-4 text-sm text-musgo-600">Acessórios compatíveis com {motoAtiva.categoria}:</p>
+                            <p className="mt-4 text-sm text-suave">Acessórios compatíveis com {motoAtiva.categoria}:</p>
                             <ul className="mt-2 flex flex-col gap-2">
                                 {acessoriosCompativeis.map((ac) => {
                                     const noCarrinho = acessorios.some((a) => a.id === ac.id)
                                     return (
-                                        <li key={ac.id} className="flex items-center justify-between gap-3 rounded-lg border border-musgo-200 px-3 py-2 text-sm">
+                                        <li key={ac.id} className="flex items-center justify-between gap-3 border-2 border-dashed border-linha px-3 py-2 text-sm">
                                             <span>
                                                 {ac.nome}
-                                                <span className="block text-xs text-musgo-600">{ac.categoria} · {formatarPreco(ac.preco)}</span>
+                                                <span className="block text-xs text-suave">{ac.categoria} · {formatarPreco(ac.preco)}</span>
                                             </span>
                                             {noCarrinho ? (
-                                                <span className="text-xs font-semibold text-musgo-600">✓ No carrinho</span>
+                                                <span className="text-xs font-bold text-suave">✓ No carrinho</span>
                                             ) : (
                                                 <button
                                                     type="button"
@@ -251,32 +246,34 @@ export default function Simulador() {
                         </section>
                     </div>
 
-                    <aside className="h-fit rounded-card bg-musgo-900 p-6 text-white lg:sticky lg:top-24" aria-label="Resultado da simulação">
+                    {/* o recorte rasgado corta sombras, então a sombra dura vai no invólucro (drop-shadow) */}
+                    <div className="h-fit lg:sticky lg:top-24 [filter:drop-shadow(8px_8px_0_var(--color-sangue))]">
+                    <aside className="folha rasgado p-6 pb-10" aria-label="Resultado da simulação">
                         <p className="text-sm">Parcela mensal estimada ({simulacao.meses}x)</p>
-                        <p className="font-display text-4xl font-extrabold" data-testid="parcela">
+                        <p className="font-display text-5xl font-bold text-sangue" data-testid="parcela">
                             {formatarPreco(resultadoAtivo.parcelaMensal)}
                         </p>
                         <p className="text-sm">{resultadoAtivo.nomeModalidade}</p>
 
-                        <dl className="mt-5 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t border-white/30 pt-4 text-sm">
+                        <dl className="mt-5 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t-2 border-dashed border-linha pt-4 text-sm">
                             <dt>Preço da moto</dt>
-                            <dd className="font-semibold">{formatarPreco(simulacao.precoMoto)}</dd>
+                            <dd className="font-bold">{formatarPreco(simulacao.precoMoto)}</dd>
                             {simulacao.totalAcessorios > 0 && (
                                 <>
                                     <dt>Acessórios ({acessorios.length})</dt>
-                                    <dd className="font-semibold">{formatarPreco(simulacao.totalAcessorios)}</dd>
+                                    <dd className="font-bold">{formatarPreco(simulacao.totalAcessorios)}</dd>
                                 </>
                             )}
                             <dt>Valor da operação</dt>
-                            <dd className="font-semibold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
+                            <dd className="font-bold">{formatarPreco(simulacao.valorTotalOperacao)}</dd>
                             <dt>Entrada ({simulacao.percentualEntrada}%)</dt>
-                            <dd className="font-semibold">{formatarPreco(simulacao.entrada)}</dd>
+                            <dd className="font-bold">{formatarPreco(simulacao.entrada)}</dd>
                             <dt>Saldo a pagar em parcelas</dt>
-                            <dd className="font-semibold">{formatarPreco(simulacao.saldoDevedor)}</dd>
+                            <dd className="font-bold">{formatarPreco(simulacao.saldoDevedor)}</dd>
                             {simulacao.valorDevidoNoAto > simulacao.entrada && (
                                 <>
                                     <dt>Devido no ato (entrada + acessórios)</dt>
-                                    <dd className="font-semibold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
+                                    <dd className="font-bold">{formatarPreco(simulacao.valorDevidoNoAto)}</dd>
                                 </>
                             )}
                             <dt>Custo</dt>
@@ -286,14 +283,14 @@ export default function Simulador() {
                         </dl>
 
                         {modalidade === 'consorcio' && simulacao.economiaConsorcio > 0 && (
-                            <p className="mt-4 rounded-lg bg-musgo-600 p-3 text-sm">
+                            <p className="mt-4 bg-fita p-3 text-sm text-tinta">
                                 Pelas premissas desta simulação, o consórcio custa cerca de{' '}
                                 <strong>{formatarPreco(simulacao.economiaConsorcio)}</strong> a menos no total que o
                                 financiamento. A contemplação depende de sorteio ou lance.
                             </p>
                         )}
                         {modalidade === 'financiamento' && (
-                            <p className="mt-4 rounded-lg bg-musgo-600 p-3 text-sm">
+                            <p className="mt-4 bg-fita p-3 text-sm text-tinta">
                                 Aprovado o cadastro, a moto é faturada sem esperar sorteio mensal.
                             </p>
                         )}
@@ -302,7 +299,7 @@ export default function Simulador() {
                             <button
                                 type="button"
                                 onClick={irParaCheckout}
-                                className="rounded-lg bg-white px-6 py-3 text-sm font-semibold uppercase tracking-wide text-musgo-900 hover:bg-musgo-200"
+                                className="botao min-h-11 px-6 py-3 text-sm"
                             >
                                 Reservar e emitir voucher →
                             </button>
@@ -310,7 +307,7 @@ export default function Simulador() {
                                 href={montarUrlWhatsApp(mensagem, CONTATO_COMERCIAL.whatsapp)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="rounded-lg border border-white px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide hover:bg-musgo-600"
+                                className="botao-vazado flex min-h-11 items-center justify-center px-6 py-3 text-center text-sm"
                             >
                                 Receber esta cotação no WhatsApp
                             </a>
@@ -321,8 +318,9 @@ export default function Simulador() {
                             e valores são ilustrativos.
                         </p>
                     </aside>
+                    </div>
                 </div>
             </div>
         </section>
     )
-}
+}

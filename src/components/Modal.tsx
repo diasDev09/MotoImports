@@ -62,7 +62,7 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-musgo-900/70 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-tinta/85 p-4"
             onClick={aoFechar}
         >
             <div
@@ -71,7 +71,7 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
                 aria-labelledby={idTitulo}
                 ref={dialogoRef}
                 tabIndex={-1}
-                className="max-h-full w-full max-w-2xl overflow-auto outline-none rounded-card bg-musgo-50 p-6 text-musgo-900"
+                className="folha folha-sombra max-h-full w-full max-w-2xl overflow-auto border-2 border-tinta p-6 outline-none"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-start justify-between gap-4">
@@ -82,7 +82,7 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
                         type="button"
                         onClick={aoFechar}
                         aria-label="Fechar"
-                        className="rounded-lg px-3 py-1 text-xl hover:bg-musgo-200"
+                        className="botao-vazado size-11 shrink-0 text-2xl leading-none"
                     >
                         ×
                     </button>
@@ -91,4 +91,4 @@ export default function Modal({ aberto, titulo, aoFechar, children }: ModalProps
             </div>
         </div>
     )
-}
+}

@@ -12,10 +12,8 @@ import { formatarCilindrada, formatarPreco } from '../utils/formatters.ts'
 // Página de detalhe da moto (/moto/:id). RF-02 (preço final e composição), RF-05 (vídeo),
 // RF-09 (selo de estoque) e os atalhos para simular, reservar e pedir proposta.
 
-const botaoPrimario =
-    'rounded-lg bg-musgo-600 px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-900'
-const botaoSecundario =
-    'rounded-lg border border-musgo-900 px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide text-musgo-900 hover:bg-musgo-200'
+const botaoPrimario = 'botao flex min-h-11 items-center justify-center px-6 py-3 text-center text-sm'
+const botaoSecundario = 'botao-vazado flex min-h-11 items-center justify-center px-6 py-3 text-center text-sm'
 
 // Se o preço for menor que os custos fixos, a decomposição lança RangeError: a ficha continua
 // funcionando e só esconde o detalhamento, em vez de derrubar a página.
@@ -32,9 +30,9 @@ function NaoEncontrada() {
         <section className="py-16">
             <title>Moto não encontrada | MotoImports</title>
             <div className="mx-auto max-w-site px-6">
-                <h1 className="text-4xl">Moto não encontrada</h1>
-                <p className="mt-3 text-musgo-600">Esse modelo não está no nosso catálogo.</p>
-                <Link to="/catalogo" className={`${botaoSecundario} mt-6 inline-block`}>
+                <h1 className="text-5xl">Moto não encontrada</h1>
+                <p className="mt-3 text-suave">Esse modelo não está no nosso catálogo.</p>
+                <Link to="/catalogo" className={`${botaoSecundario} mt-6 inline-flex`}>
                     Ver o catálogo
                 </Link>
             </div>
@@ -67,11 +65,11 @@ function Ficha({ moto }: { moto: Moto }) {
         <article className="py-12">
             <title>{`${moto.marca} ${moto.nome} | MotoImports`}</title>
             <div className="mx-auto grid max-w-site gap-10 px-6 lg:grid-cols-2">
-                <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-card bg-musgo-200">
+                <div className="meio-tom fita folha folha-sombra inclina-a flex aspect-4/3 items-center justify-center border-2 border-tinta">
                     {moto.imagem ? (
                         <img src={moto.imagem} alt={`${moto.marca} ${moto.nome}`} className="size-full object-cover" />
                     ) : (
-                        <span aria-hidden="true" className="font-display text-9xl font-extrabold text-musgo-600">
+                        <span aria-hidden="true" className="bg-papel px-3 font-display text-8xl font-bold text-tinta md:text-9xl">
                             {moto.cilindrada}
                         </span>
                     )}
@@ -79,10 +77,10 @@ function Ficha({ moto }: { moto: Moto }) {
 
                 <div className="flex flex-col gap-5">
                     <div>
-                        <p className="text-xs uppercase tracking-wide text-musgo-600">
+                        <p className="text-sm uppercase text-suave">
                             {moto.marca} · {moto.categoria}
                         </p>
-                        <h1 className="mt-1 text-4xl">{moto.nome}</h1>
+                        <h1 className="mt-1 text-5xl md:text-7xl">{moto.nome}</h1>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -91,8 +89,8 @@ function Ficha({ moto }: { moto: Moto }) {
                     </div>
 
                     <div>
-                        <p className="font-display text-4xl font-extrabold">{formatarPreco(moto.preco)}</p>
-                        <p className="text-sm text-musgo-600">Preço final, com frete e impostos incluídos.</p>
+                        <p className="font-display text-5xl font-bold">{formatarPreco(moto.preco)}</p>
+                        <p className="text-sm text-suave">Preço final, com frete e impostos incluídos.</p>
                     </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -112,8 +110,8 @@ function Ficha({ moto }: { moto: Moto }) {
 
             <div className="mx-auto mt-12 grid max-w-site gap-10 px-6 lg:grid-cols-2">
                 <section aria-labelledby="ficha-titulo">
-                    <h2 id="ficha-titulo" className="text-2xl">Ficha técnica</h2>
-                    <dl className="mt-4 divide-y divide-musgo-200 rounded-card border border-musgo-200 bg-white">
+                    <h2 id="ficha-titulo" className="text-3xl">Ficha técnica</h2>
+                    <dl className="mt-4 divide-y divide-linha folha folha-sombra">
                         {[
                             ['Cilindrada', formatarCilindrada(moto.cilindrada)],
                             ['Potência', `${moto.potenciaCv} cv`],
@@ -121,18 +119,23 @@ function Ficha({ moto }: { moto: Moto }) {
                             ['Modos de pilotagem', moto.modos.join(', ')],
                         ].map(([rotulo, valor]) => (
                             <div key={rotulo} className="flex justify-between gap-4 px-5 py-3 text-sm">
-                                <dt className="text-musgo-600">{rotulo}</dt>
-                                <dd className="text-right font-semibold">{valor}</dd>
+                                <dt className="text-suave">{rotulo}</dt>
+                                <dd className="text-right font-bold">{valor}</dd>
                             </div>
                         ))}
                     </dl>
 
                     {moto.destaques.length > 0 && (
                         <>
-                            <h3 className="mt-8 text-xl">Destaques</h3>
-                            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-                                {moto.destaques.map((d) => (
-                                    <li key={d}>{d}</li>
+                            <h3 className="mt-10 text-2xl">Destaques</h3>
+                            <ul className="mt-4 flex flex-col gap-3">
+                                {moto.destaques.map((d, i) => (
+                                    <li
+                                        key={d}
+                                        className={`bg-fita px-4 py-2 text-sm font-bold text-tinta shadow-[3px_3px_0_var(--color-sangue)] ${i % 2 ? 'rotate-1' : '-rotate-1'}`}
+                                    >
+                                        {d}
+                                    </li>
                                 ))}
                             </ul>
                         </>
@@ -141,17 +144,17 @@ function Ficha({ moto }: { moto: Moto }) {
 
                 {composicao && (
                     <section aria-labelledby="preco-titulo">
-                        <h2 id="preco-titulo" className="text-2xl">Como chegamos ao preço</h2>
+                        <h2 id="preco-titulo" className="text-3xl">Como chegamos ao preço</h2>
                         <p className="mt-2 text-sm">
                             Sem taxas adicionais na entrega: o valor acima já inclui tudo o que aparece abaixo.
                         </p>
-                        <details className="mt-4 rounded-card border border-musgo-200 bg-white p-5">
-                            <summary className="cursor-pointer text-sm font-semibold">Ver composição do preço</summary>
-                            <dl className="mt-4 divide-y divide-musgo-200">
+                        <details open className="mt-4 folha folha-sombra p-5">
+                            <summary className="min-h-11 cursor-pointer py-2 text-sm font-bold">Ver composição do preço</summary>
+                            <dl className="mt-4 divide-y divide-linha">
                                 {linhas.map(([rotulo, valor]) => (
                                     <div key={rotulo} className="flex justify-between gap-4 py-2 text-sm">
                                         <dt>{rotulo}</dt>
-                                        <dd className="font-semibold">{valor}</dd>
+                                        <dd className="font-bold">{valor}</dd>
                                     </div>
                                 ))}
                                 <div className="flex justify-between gap-4 py-2 text-sm font-bold">
@@ -159,7 +162,7 @@ function Ficha({ moto }: { moto: Moto }) {
                                     <dd>{formatarPreco(composicao.total)}</dd>
                                 </div>
                             </dl>
-                            <p className="mt-3 text-xs text-musgo-600">
+                            <p className="mt-3 text-xs text-suave">
                                 Divisão estimada com as alíquotas de referência da loja; o total é o preço final.
                             </p>
                         </details>
@@ -174,4 +177,4 @@ export default function MotoDetalhe() {
     const { id } = useParams()
     const moto = motos.find((m) => m.id === id)
     return moto ? <Ficha moto={moto} /> : <NaoEncontrada />
-}
+}

@@ -2,11 +2,11 @@ import { ESTOQUE } from '../data/motos.ts'
 import type { StatusEstoque } from '../data/motos.ts'
 
 // RF-09: o status NÃO pode depender só da cor, então cada estado tem ícone + texto.
-// Todos os fundos aceitam texto escuro (musgo-900) com contraste acima de 7:1.
+// Contrastes: papel sobre tinta 10,5:1; tinta sobre fita 5,5:1; papel sobre jeans 5,3:1.
 const ESTILOS: Record<StatusEstoque, { icone: string; fundo: string }> = {
-    'pronta-entrega': { icone: '✓', fundo: 'bg-musgo-200' },
-    'em-transito': { icone: '⏱', fundo: 'bg-aviso' },
-    'sob-pedido': { icone: '✈', fundo: 'bg-info' },
+    'pronta-entrega': { icone: '✓', fundo: 'bg-tinta text-papel border-2 border-papel' },
+    'em-transito': { icone: '⏱', fundo: 'bg-fita text-tinta' },
+    'sob-pedido': { icone: '✈', fundo: 'bg-jeans text-papel' },
 }
 
 export default function StockBadge({ status }: { status: StatusEstoque }) {
@@ -16,10 +16,10 @@ export default function StockBadge({ status }: { status: StatusEstoque }) {
 
     return (
         <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-musgo-900 ${fundo}`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold ${fundo}`}
         >
             <span aria-hidden="true">{icone}</span>
             {ESTOQUE[status].rotulo}
         </span>
     )
-}
+}

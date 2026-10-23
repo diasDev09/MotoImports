@@ -4,9 +4,8 @@ import { CATEGORIAS, MODOS_PILOTAGEM, CILINDRADA_MIN, CILINDRADA_MAX } from '../
 import { formatarCilindrada } from '../utils/formatters.ts'
 
 const estiloCampo = 'flex min-w-48 flex-col gap-1 text-sm'
-const estiloSelect = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
-const estiloBotao =
-    'rounded-lg px-5 py-2 text-sm font-semibold uppercase tracking-wide'
+const estiloSelect = 'campo'
+const estiloBotao = 'min-h-11 px-5 py-2 text-sm'
 
 export default function Catalogo() {
     const f = useCatalogFilters()
@@ -15,12 +14,12 @@ export default function Catalogo() {
     return (
         <section className="py-12">
             <div className="mx-auto max-w-site px-6">
-                <h1 className="text-4xl">Catálogo</h1>
+                <h1 className="text-5xl md:text-7xl">Catálogo</h1>
 
                 <div
                     role="search"
                     aria-label="Filtros do catálogo"
-                    className="mt-6 flex flex-wrap items-end gap-4 rounded-card border border-musgo-200 bg-white p-5"
+                    className="mt-6 flex flex-wrap items-end gap-4 folha folha-sombra p-5"
                 >
                     <div className={estiloCampo}>
                         <label htmlFor="filtro-categoria">Categoria</label>
@@ -63,7 +62,7 @@ export default function Catalogo() {
                         <input
                             id="filtro-cc"
                             type="range"
-                            className="accent-musgo-600"
+                            className="h-11 accent-fg"
                             min={CILINDRADA_MIN}
                             max={CILINDRADA_MAX}
                             step={50}
@@ -75,7 +74,7 @@ export default function Catalogo() {
                     {f.filtrosAtivos > 0 && (
                         <button
                             type="button"
-                            className={`${estiloBotao} border border-musgo-900 hover:bg-musgo-200`}
+                            className={`${estiloBotao} botao-vazado`}
                             onClick={f.limpar}
                         >
                             Limpar filtros
@@ -84,7 +83,7 @@ export default function Catalogo() {
                 </div>
 
                 {/* aria-live: leitores de tela anunciam quando a quantidade muda */}
-                <p className="mt-6 text-musgo-600" aria-live="polite">
+                <p className="mt-6 text-suave" aria-live="polite">
                     {total === 1 ? '1 moto encontrada' : `${total} motos encontradas`}
                 </p>
 
@@ -97,12 +96,12 @@ export default function Catalogo() {
                 ) : (
                     <div
                         role="status"
-                        className="mt-4 rounded-card border border-dashed border-musgo-400 px-4 py-12 text-center"
+                        className="mt-4 border-2 border-dashed border-linha px-4 py-12 text-center"
                     >
                         <p>Nenhuma moto encontrada com esses filtros.</p>
                         <button
                             type="button"
-                            className={`${estiloBotao} mt-4 bg-musgo-900 text-white hover:bg-musgo-600`}
+                            className={`${estiloBotao} mt-4 botao`}
                             onClick={f.limpar}
                         >
                             Limpar filtros
@@ -112,4 +111,4 @@ export default function Catalogo() {
             </div>
         </section>
     )
-}
+}
