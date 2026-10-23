@@ -1,7 +1,59 @@
 import { describe, it, expect, vi } from 'vitest'
+import { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Modal from './Modal.tsx'
+
+function ComBotao() {
+    const [aberto, setAberto] = useState(false)
+    return (
+        <>
+            <button onClick={() => setAberto(true)}>Abrir</button>
+            <Modal aberto={aberto} titulo="T" aoFechar={() => setAberto(false)}>
+                <button>Primeiro</button>
+                <button>Último</button>
+            </Modal>
+        </>
+    )
+}
+
+describe('Modal · foco (acessibilidade)', () => {
+    it('ao abrir, o foco vai para o diálogo', async () => {
+        const user = userEvent.setup()
+        render(<ComBotao />)
+        await user.click(screen.getByRole('button', { name: 'Abrir' }))
+        expect(screen.getByRole('dialog')).toHaveFocus()
+    })
+
+    it('Tab fica preso dentro do diálogo (volta do último para o primeiro)', async () => {
+        const user = userEvent.setup()
+        render(<ComBotao />)
+        await user.click(screen.getByRole('button', { name: 'Abrir' }))
+
+        screen.getByRole('button', { name: 'Último' }).focus()
+        await user.tab()
+        expect(screen.getByRole('button', { name: 'Fechar' })).toHaveFocus()
+    })
+
+    it('Shift+Tab no primeiro item vai para o último', async () => {
+        const user = userEvent.setup()
+        render(<ComBotao />)
+        await user.click(screen.getByRole('button', { name: 'Abrir' }))
+
+        screen.getByRole('button', { name: 'Fechar' }).focus()
+        await user.tab({ shift: true })
+        expect(screen.getByRole('button', { name: 'Último' })).toHaveFocus()
+    })
+
+    it('ao fechar, o foco volta ao botão que abriu', async () => {
+        const user = userEvent.setup()
+        render(<ComBotao />)
+        const abrir = screen.getByRole('button', { name: 'Abrir' })
+        await user.click(abrir)
+        await user.keyboard('{Escape}')
+        expect(abrir).toHaveFocus()
+    })
+})
 
 describe('Modal', () => {
     it('fechado, não renderiza nada', () => {
