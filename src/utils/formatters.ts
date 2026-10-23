@@ -8,6 +8,11 @@ export function formatarPreco(valor: number): string {
     })
 }
 
+// Para produtos com centavos (boutique): R$ 599,90. O formatarPreco acima arredondaria para R$ 600.
+export function formatarPrecoComCentavos(valor: number): string {
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+}
+
 export function formatarCilindrada(cc: number): string {
     return `${cc.toLocaleString('pt-BR')} cc`
 }

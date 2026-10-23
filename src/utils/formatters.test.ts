@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatarPreco, formatarCilindrada, linkWhatsApp } from './formatters.ts'
+import { formatarPreco, formatarPrecoComCentavos, formatarCilindrada, linkWhatsApp } from './formatters.ts'
 
 // o Intl usa espaço "não separável" entre R$ e o número; trocamos por espaço comum para comparar
 const normalizar = (texto: string) => texto.replace(/\s/g, ' ')
@@ -12,6 +12,14 @@ describe('formatarPreco', () => {
 
     it('formata zero', () => {
         expect(normalizar(formatarPreco(0))).toBe('R$ 0')
+    })
+})
+
+describe('formatarPrecoComCentavos', () => {
+    it('mostra os centavos (a boutique tem preços como R$ 599,90)', () => {
+        expect(normalizar(formatarPrecoComCentavos(599.9))).toBe('R$ 599,90')
+        expect(normalizar(formatarPrecoComCentavos(120))).toBe('R$ 120,00')
+        expect(normalizar(formatarPrecoComCentavos(1299.9))).toBe('R$ 1.299,90')
     })
 })
 
