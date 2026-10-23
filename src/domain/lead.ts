@@ -7,6 +7,17 @@ export function somenteDigitos(texto: string): string {
     return texto.replace(/\D/g, '')
 }
 
+// máscara de telefone enquanto a pessoa digita (porte da v1, da Mylena):
+// "81999999999" -> "(81) 99999-9999"; aceita fixo (10 dígitos) e celular (11)
+export function formatarTelefone(valor: string): string {
+    const d = somenteDigitos(valor).slice(0, 11)
+
+    if (d.length <= 2) return d
+    if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`
+    if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`
+    return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
+}
+
 export const leadSchema = z.object({
     nome: z.string().trim().min(2, 'Informe seu nome (mínimo 2 letras).'),
     email: z.email('Informe um e-mail válido, como nome@exemplo.com.'),
@@ -17,6 +28,12 @@ export const leadSchema = z.object({
             message: 'Informe o telefone com DDD, por exemplo (81) 99999-9999.',
         })
         .transform(somenteDigitos),
+    // cidade (da v1, da Mylena). \p{L} aceita qualquer letra, inclusive o apóstrofo curvo do celular
+    cidade: z
+        .string()
+        .trim()
+        .min(2, 'Informe sua cidade.')
+        .regex(/^[\p{L}'’ .-]+$/u, 'Informe uma cidade válida.'),
     mensagem: z.string().trim().max(500, 'A mensagem pode ter no máximo 500 caracteres.').optional(),
     // RNF-05 (LGPD): sem consentimento explícito, não há envio
     consentimento: z.boolean().refine((valor) => valor === true, {

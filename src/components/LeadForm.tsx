@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
-import type { ReactNode } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { leadSchema } from '../domain/lead.ts'
+import { leadSchema, formatarTelefone } from '../domain/lead.ts'
 import type { Lead, LeadEntrada, LeadRegistrado } from '../domain/lead.ts'
 
 const estiloInput = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
@@ -46,7 +46,7 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
         formState: { errors, isSubmitSuccessful },
     } = useForm<LeadEntrada, unknown, Lead>({
         resolver: zodResolver(leadSchema),
-        defaultValues: { nome: '', email: '', telefone: '', mensagem: '', consentimento: false },
+        defaultValues: { nome: '', email: '', telefone: '', cidade: '', mensagem: '', consentimento: false },
     })
 
     function enviar(dados: Lead) {
@@ -85,8 +85,17 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
                     placeholder="(81) 99999-9999"
                     className={estiloInput}
                     {...acessivel('telefone')}
-                    {...register('telefone')}
+                    {...register('telefone', {
+                        // máscara enquanto digita (porte da v1, da Mylena)
+                        onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                            e.target.value = formatarTelefone(e.target.value)
+                        },
+                    })}
                 />
+            </Campo>
+
+            <Campo id="cidade" rotulo="Cidade" erro={errors.cidade?.message}>
+                <input id="cidade" type="text" autoComplete="address-level2" className={estiloInput} {...acessivel('cidade')} {...register('cidade')} />
             </Campo>
 
             <Campo id="mensagem" rotulo="Mensagem (opcional)" erro={errors.mensagem?.message}>

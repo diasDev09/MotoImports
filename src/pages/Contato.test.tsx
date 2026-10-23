@@ -25,6 +25,7 @@ describe('página de contato', () => {
         await user.type(screen.getByLabelText('Nome'), 'João Pereira')
         await user.type(screen.getByLabelText('E-mail'), 'joao@exemplo.com')
         await user.type(screen.getByLabelText('Telefone com DDD'), '81988887777')
+        await user.type(screen.getByLabelText('Cidade'), 'Olinda')
         await user.click(screen.getByLabelText(/autorizo a motoimports/i))
         await user.click(screen.getByRole('button', { name: 'Enviar' }))
 

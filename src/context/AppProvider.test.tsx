@@ -51,6 +51,7 @@ describe('AppContext', () => {
                 nome: 'Maria',
                 email: 'm@e.com',
                 telefone: '81999999999',
+                cidade: 'Recife',
                 consentimento: true,
                 motoId: null,
             }),

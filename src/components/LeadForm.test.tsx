@@ -9,14 +9,16 @@ interface Dados {
     nome?: string
     email?: string
     telefone?: string
+    cidade?: string
     consentir?: boolean
 }
 
 // preenche o formulário como uma pessoa faria
-async function preencher(user: Usuario, { nome, email, telefone, consentir = true }: Dados) {
+async function preencher(user: Usuario, { nome, email, telefone, cidade = 'Recife', consentir = true }: Dados) {
     if (nome) await user.type(screen.getByLabelText('Nome'), nome)
     if (email) await user.type(screen.getByLabelText('E-mail'), email)
     if (telefone) await user.type(screen.getByLabelText('Telefone com DDD'), telefone)
+    if (cidade) await user.type(screen.getByLabelText('Cidade'), cidade)
     if (consentir) await user.click(screen.getByLabelText(/autorizo a motoimports/i))
 }
 
@@ -31,7 +33,7 @@ describe('RF-01 · LeadForm', () => {
         await enviar(user)
 
         const alertas = await screen.findAllByRole('alert')
-        expect(alertas).toHaveLength(4) // nome, e-mail, telefone e consentimento
+        expect(alertas).toHaveLength(5) // nome, e-mail, telefone, cidade e consentimento
         expect(aoEnviar).not.toHaveBeenCalled()
     })
 
@@ -81,11 +83,32 @@ describe('RF-01 · LeadForm', () => {
                 nome: 'Maria Silva',
                 email: 'maria@exemplo.com',
                 telefone: '81999999999',
+                cidade: 'Recife',
                 consentimento: true,
                 motoId: 'rebel-500',
             }),
         )
         expect(await screen.findByRole('status')).toHaveTextContent(/recebemos seu contato/i)
+    })
+
+    it('aplica a máscara de telefone enquanto a pessoa digita', async () => {
+        const user = userEvent.setup()
+        render(<LeadForm aoEnviar={vi.fn()} />)
+        const telefone = screen.getByLabelText('Telefone com DDD')
+
+        await user.type(telefone, '81999999999')
+        expect(telefone).toHaveValue('(81) 99999-9999')
+    })
+
+    it('exige a cidade', async () => {
+        const user = userEvent.setup()
+        const aoEnviar = vi.fn()
+        render(<LeadForm aoEnviar={aoEnviar} />)
+        await preencher(user, { nome: 'Maria Silva', email: 'm@e.com', telefone: '8133334444', cidade: '' })
+        await enviar(user)
+
+        expect(await screen.findByText(/informe sua cidade/i)).toBeInTheDocument()
+        expect(aoEnviar).not.toHaveBeenCalled()
     })
 
     it('limpa os campos depois de enviar', async () => {
