@@ -1,15 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
+import type { CSSProperties } from 'react'
+import { DayPicker } from 'react-day-picker'
+import { ptBR } from 'react-day-picker/locale'
+import 'react-day-picker/style.css'
 import type { ChangeEvent, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useApp } from '../context/AppContext.ts'
 import { HORARIOS, SERVICOS } from '../data/posVenda.ts'
+import { agendaSimulada, horarioOcupado } from '../domain/agenda.ts'
 import { criarAgendamentoSchema, dataIsoLocal, formatarDataIso } from '../domain/agendamento.ts'
 import type { Agendamento, AgendamentoEntrada } from '../domain/agendamento.ts'
 import { formatarTelefone } from '../domain/lead.ts'
 
 // Pós-venda: agendamento de serviço na oficina (porte da v1, da Ariely).
-// A disponibilidade do horário é conferida pela oficina depois (RF-10 fecha essa lacuna mais adiante).
+// RF-10: calendário sem datas passadas e horários já ocupados bloqueados. A oficina ainda confirma o horário.
 
 const campo = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
 
@@ -54,14 +60,21 @@ function Campo({
 }
 
 export default function PosVenda() {
+    const { horariosReservados, reservarHorario } = useApp()
     const hoje = dataIsoLocal()
-    const schema = useMemo(() => criarAgendamentoSchema(hoje), [hoje])
+    const schema = useMemo(
+        () => criarAgendamentoSchema(hoje, agendaSimulada, horariosReservados),
+        [hoje, horariosReservados],
+    )
     const [agendado, setAgendado] = useState<Agendamento | null>(null)
 
     const {
         register,
         handleSubmit,
         reset,
+        resetField,
+        setValue,
+        control,
         subscribe,
         formState: { errors },
     } = useForm<AgendamentoEntrada, unknown, Agendamento>({
@@ -77,6 +90,8 @@ export default function PosVenda() {
             consentimento: false,
         },
     })
+
+    const dataEscolhida = useWatch({ control, name: 'data' })
 
     // se a pessoa mexer em qualquer campo, o resumo anterior deixa de valer (como na v1)
     useEffect(() => {
@@ -114,7 +129,10 @@ export default function PosVenda() {
                 <form
                     className="mt-8 flex flex-col gap-6"
                     noValidate
-                    onSubmit={handleSubmit((dados) => setAgendado(dados))}
+                    onSubmit={handleSubmit((dados) => {
+                        reservarHorario({ data: dados.data, horario: dados.horario })
+                        setAgendado(dados)
+                    })}
                 >
                     <Etapa numero="01" titulo="Escolha o serviço desejado">
                         <div className="grid gap-3 sm:grid-cols-2">
@@ -165,17 +183,49 @@ export default function PosVenda() {
 
                     <Etapa numero="03" titulo="Data e horário">
                         <div className="grid gap-4 sm:grid-cols-2">
-                            <Campo id="data" rotulo="Data desejada" erro={errors.data?.message}>
-                                <input id="data" type="date" min={hoje} className={campo} {...acessivel('data')} {...register('data')} />
-                            </Campo>
+                            <div className="flex flex-col gap-1 sm:col-span-2">
+                                <p id="data-rotulo" className="text-sm">Data desejada</p>
+                                <input type="hidden" {...register('data')} />
+                                <div role="group" aria-labelledby="data-rotulo" className="w-fit rounded-lg border border-musgo-400 bg-white p-2">
+                                    <DayPicker
+                                        mode="single"
+                                        locale={ptBR}
+                                        weekStartsOn={0}
+                                        selected={dataEscolhida ? new Date(`${dataEscolhida}T00:00:00`) : undefined}
+                                        onSelect={(dia) => {
+                                            setValue('data', dia ? dataIsoLocal(dia) : '', { shouldValidate: true, shouldDirty: true })
+                                            resetField('horario') // o horário escolhido pode estar ocupado no novo dia
+                                        }}
+                                        disabled={{ before: new Date(`${hoje}T00:00:00`) }}
+                                        style={{
+                                            '--rdp-accent-color': 'var(--color-musgo-600)',
+                                            '--rdp-accent-background-color': 'var(--color-musgo-200)',
+                                        } as CSSProperties}
+                                    />
+                                </div>
+                                {errors.data && (
+                                    <p id="data-erro" role="alert" className="text-sm font-medium text-erro">
+                                        {errors.data.message}
+                                    </p>
+                                )}
+                            </div>
                             <Campo id="horario" rotulo="Horário desejado" erro={errors.horario?.message}>
-                                <select id="horario" className={campo} {...acessivel('horario')} {...register('horario')}>
-                                    <option value="">Selecione um horário</option>
-                                    {HORARIOS.map((h) => (
-                                        <option key={h} value={h}>
-                                            {h}
-                                        </option>
-                                    ))}
+                                <select
+                                    id="horario"
+                                    className={campo}
+                                    disabled={!dataEscolhida}
+                                    {...acessivel('horario')}
+                                    {...register('horario')}
+                                >
+                                    <option value="">{dataEscolhida ? 'Selecione um horário' : 'Escolha a data primeiro'}</option>
+                                    {HORARIOS.map((h) => {
+                                        const ocupado = Boolean(dataEscolhida) && horarioOcupado(dataEscolhida, h, agendaSimulada, horariosReservados)
+                                        return (
+                                            <option key={h} value={h} disabled={ocupado}>
+                                                {ocupado ? `${h} (ocupado)` : h}
+                                            </option>
+                                        )
+                                    })}
                                 </select>
                             </Campo>
                             <Campo id="observacoes" rotulo="Observações (opcional)" erro={errors.observacoes?.message} largo>

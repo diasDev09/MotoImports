@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import type { Moto } from '../data/motos.ts'
 import type { LeadRegistrado } from '../domain/lead.ts'
 import type { VoucherReserva } from '../domain/reservation.ts'
+import type { ReservaHorario } from '../domain/agenda.ts'
 import { AppContext } from './AppContext.ts'
 import type { Acessorio, AppContextValue, Simulacao } from './AppContext.ts'
 
@@ -20,6 +21,7 @@ export function AppProvider({ children, inicial = {} }: { children: ReactNode; i
     const [lead, setLead] = useState<LeadRegistrado | null>(inicial.lead ?? null)
     const [simulacao, setSimulacao] = useState<Simulacao | null>(inicial.simulacao ?? null)
     const [voucherReserva, setVoucherReserva] = useState<VoucherReserva | null>(null)
+    const [horariosReservados, setHorariosReservados] = useState<ReservaHorario[]>([])
 
     // não deixa adicionar o mesmo acessório duas vezes
     function adicionarAcessorio(item: Acessorio) {
@@ -51,6 +53,9 @@ export function AppProvider({ children, inicial = {} }: { children: ReactNode; i
         salvarSimulacao: setSimulacao,
         voucherReserva,
         salvarVoucherReserva: setVoucherReserva,
+        horariosReservados,
+        // RF-10: o horário agendado passa a contar como ocupado
+        reservarHorario: (reserva: ReservaHorario) => setHorariosReservados((atual) => [...atual, reserva]),
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

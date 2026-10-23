@@ -84,6 +84,16 @@ describe('AppContext', () => {
         expect(result.current.voucherReserva).toBeNull()
     })
 
+    it('RF-10: guarda os horários agendados', () => {
+        const { result } = renderHook(() => useApp(), { wrapper })
+        expect(result.current.horariosReservados).toEqual([])
+
+        act(() => result.current.reservarHorario({ data: '2026-10-24', horario: '09:00' }))
+        act(() => result.current.reservarHorario({ data: '2026-10-24', horario: '10:00' }))
+        expect(result.current.horariosReservados).toHaveLength(2)
+        expect(result.current.horariosReservados[0]).toEqual({ data: '2026-10-24', horario: '09:00' })
+    })
+
     it('guarda o lead registrado', () => {
         const { result } = renderHook(() => useApp(), { wrapper })
         act(() =>

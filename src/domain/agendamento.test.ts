@@ -63,6 +63,24 @@ describe('Pós-venda · criarAgendamentoSchema', () => {
         if (!r.success) expect(r.error.issues[0].message).toBe('Escolha uma data de hoje em diante.')
     })
 
+    it('RF-10: rejeita horário que a oficina já tem ocupado', () => {
+        const comOcupacao = criarAgendamentoSchema(HOJE, () => ['09:00'])
+        const r = comOcupacao.safeParse(valido)
+        expect(r.success).toBe(false)
+        if (!r.success) {
+            expect(r.error.issues[0].path[0]).toBe('horario')
+            expect(r.error.issues[0].message).toBe('Esse horário já está ocupado. Escolha outro.')
+        }
+        expect(comOcupacao.safeParse({ ...valido, horario: '10:00' }).success).toBe(true)
+    })
+
+    it('RF-10: rejeita horário já agendado na sessão, só na mesma data', () => {
+        const reservas = [{ data: '2026-10-24', horario: '09:00' }]
+        const comReservas = criarAgendamentoSchema(HOJE, () => [], reservas)
+        expect(comReservas.safeParse(valido).success).toBe(false)
+        expect(comReservas.safeParse({ ...valido, data: '2026-10-25' }).success).toBe(true)
+    })
+
     it('observações é opcional', () => {
         const { observacoes: _omitida, ...semObservacoes } = valido
         expect(schema.safeParse(semObservacoes).success).toBe(true)

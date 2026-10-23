@@ -1,20 +1,37 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { dataIsoLocal, formatarDataIso } from '../domain/agendamento.ts'
+import { AppProvider } from '../context/AppProvider.tsx'
+import { agendaSimulada } from '../domain/agenda.ts'
+import { formatarDataIso } from '../domain/agendamento.ts'
+import { HORARIOS } from '../data/posVenda.ts'
 import PosVenda from './PosVenda.tsx'
 
 type Usuario = ReturnType<typeof userEvent.setup>
 
-const dia = (diferenca: number) => dataIsoLocal(new Date(Date.now() + diferenca * 24 * 60 * 60 * 1000))
-const AMANHA = dia(2) // 2 dias à frente: nunca cai em "hoje" por causa de fuso ou horário
+// Só o relógio (Date) é simulado: sexta, 23/10/2026. Os timers reais continuam, então o user-event e o RHF funcionam.
+const HOJE = '2026-10-23'
+const DIA = '2026-10-26' // segunda-feira
+const ROTULO_DIA = /26 de outubro de 2026/
+const OCUPADOS = agendaSimulada(DIA)
+const LIVRE = HORARIOS.find((h) => !OCUPADOS.includes(h))!
+
+beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date(`${HOJE}T12:00:00`))
+})
+afterEach(() => vi.useRealTimers())
+
+const escolherDia = (user: Usuario, rotulo = ROTULO_DIA) => user.click(screen.getByRole('button', { name: rotulo }))
 
 function abrir() {
     return render(
-        <MemoryRouter>
-            <PosVenda />
-        </MemoryRouter>,
+        <AppProvider>
+            <MemoryRouter>
+                <PosVenda />
+            </MemoryRouter>
+        </AppProvider>,
     )
 }
 
@@ -23,8 +40,8 @@ async function preencher(user: Usuario, { consentir = true } = {}) {
     await user.type(screen.getByLabelText('Nome completo'), 'Maria Silva')
     await user.type(screen.getByLabelText('Telefone'), '81999999999')
     await user.type(screen.getByLabelText('Modelo da moto'), 'Honda CG 160, ano 2024')
-    fireEvent.change(screen.getByLabelText('Data desejada'), { target: { value: AMANHA } })
-    await user.selectOptions(screen.getByLabelText('Horário desejado'), '09:00')
+    await escolherDia(user)
+    await user.selectOptions(screen.getByLabelText('Horário desejado'), LIVRE)
     await user.type(screen.getByLabelText(/observações/i), 'Barulho no motor')
     if (consentir) await user.click(screen.getByLabelText(/autorizo a motoimports/i))
 }
@@ -37,7 +54,8 @@ describe('Pós-venda · agendamento', () => {
         expect(screen.getByRole('heading', { level: 1, name: /cuidado com sua moto/i })).toBeInTheDocument()
         expect(screen.getAllByRole('radio')).toHaveLength(4)
         expect(screen.getByRole('option', { name: '08:00' })).toBeInTheDocument()
-        expect(screen.getAllByRole('option')).toHaveLength(9) // 8 horários + "Selecione"
+        expect(within(screen.getByRole('group', { name: 'Data desejada' })).getAllByRole('grid')).toHaveLength(1)
+        expect(screen.getAllByRole('option')).toHaveLength(9) // 8 horários + o texto-guia
     })
 
     it('tem link para a boutique', () => {
@@ -55,13 +73,50 @@ describe('Pós-venda · agendamento', () => {
         expect(screen.queryByText(/aguarde a confirmação/i)).not.toBeInTheDocument()
     })
 
-    it('não aceita data no passado', async () => {
+    it('RF-10: dias passados ficam desabilitados e hoje está disponível', () => {
+        abrir()
+        expect(screen.getByRole('button', { name: /22 de outubro de 2026/ })).toBeDisabled()
+        expect(screen.getByRole('button', { name: /23 de outubro de 2026/ })).toBeEnabled()
+    })
+
+    it('RF-10: o horário só libera depois de escolher o dia', async () => {
         const user = userEvent.setup()
         abrir()
-        fireEvent.change(screen.getByLabelText('Data desejada'), { target: { value: dia(-3) } })
+        const horario = screen.getByLabelText('Horário desejado')
+        expect(horario).toBeDisabled()
+        await escolherDia(user)
+        expect(horario).toBeEnabled()
+    })
+
+    it('RF-10: horários ocupados aparecem desabilitados e marcados', async () => {
+        const user = userEvent.setup()
+        abrir()
+        await escolherDia(user)
+        for (const h of OCUPADOS) {
+            expect(screen.getByRole('option', { name: `${h} (ocupado)` })).toBeDisabled()
+        }
+        expect(screen.getByRole('option', { name: LIVRE })).toBeEnabled()
+        expect(screen.getAllByRole('option', { name: /ocupado/ })).toHaveLength(OCUPADOS.length)
+    })
+
+    it('RF-10: trocar de dia limpa o horário escolhido', async () => {
+        const user = userEvent.setup()
+        abrir()
+        await escolherDia(user)
+        await user.selectOptions(screen.getByLabelText('Horário desejado'), LIVRE)
+        await escolherDia(user, /27 de outubro de 2026/)
+        expect(screen.getByLabelText('Horário desejado')).toHaveValue('')
+    })
+
+    it('RF-10: o horário recém-agendado fica ocupado para o mesmo dia', async () => {
+        const user = userEvent.setup()
+        abrir()
+        await preencher(user)
         await enviar(user)
-        expect(await screen.findByText('Escolha uma data de hoje em diante.')).toBeInTheDocument()
-        expect(screen.getByLabelText('Data desejada')).toHaveAttribute('min', dataIsoLocal())
+        await user.click(await screen.findByRole('button', { name: /fazer novo agendamento/i }))
+
+        await escolherDia(user)
+        expect(screen.getByRole('option', { name: `${LIVRE} (ocupado)` })).toBeDisabled()
     })
 
     it('marca o campo inválido para leitores de tela', async () => {
@@ -100,8 +155,8 @@ describe('Pós-venda · agendamento', () => {
         expect(resumo).toHaveTextContent('Maria Silva')
         expect(resumo).toHaveTextContent('(81) 99999-9999')
         expect(resumo).toHaveTextContent('Troca de óleo')
-        expect(resumo).toHaveTextContent(formatarDataIso(AMANHA))
-        expect(resumo).toHaveTextContent('09:00')
+        expect(resumo).toHaveTextContent(formatarDataIso(DIA))
+        expect(resumo).toHaveTextContent(LIVRE)
         expect(resumo).toHaveTextContent('Barulho no motor')
         expect(resumo).toHaveTextContent(/depende da confirmação da oficina/i)
     })
