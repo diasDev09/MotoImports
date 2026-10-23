@@ -8,15 +8,19 @@ import { formatarCilindrada, formatarPreco } from '../utils/formatters.ts'
 export default function CartaoDestaque({ moto }: { moto: Moto }) {
     return (
         <article className="folha folha-sombra fita relative flex flex-col">
-            <div className="meio-tom relative m-4 mb-0 flex h-44 items-center justify-center border-2 border-tinta bg-papel">
+            <div className="meio-tom relative m-4 mb-0 flex aspect-4/3 items-center justify-center overflow-hidden border-2 border-navy bg-ivory">
                 {moto.imagem ? (
                     <img
                         src={moto.imagem}
                         alt={`${moto.marca} ${moto.nome}`}
+                        width={1200}
+                        height={900}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover"
                     />
                 ) : (
-                    <span aria-hidden="true" className="bg-papel px-2 font-display text-7xl font-bold text-tinta">
+                    <span aria-hidden="true" className="bg-ivory px-2 font-display text-7xl font-bold text-noir">
                         {moto.cilindrada}
                     </span>
                 )}

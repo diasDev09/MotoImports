@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
-test('o tema grunge está aplicado', async ({ page }) => {
+test('a paleta Ivory está aplicada', async ({ page }) => {
     await page.goto('/')
-    // tinta = #2E2E2E = rgb(46, 46, 46)
-    await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(46, 46, 46)')
+    // Ivory = #F9F8F7 = rgb(249, 248, 247)
+    await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(249, 248, 247)')
 })

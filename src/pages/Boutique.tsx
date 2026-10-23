@@ -104,7 +104,7 @@ export default function Boutique() {
                         className="botao-vazado flex min-h-11 items-center gap-2 px-5 py-3"
                     >
                         Carrinho
-                        <span className="bg-sangue px-2 py-0.5 text-xs font-bold text-papel">{quantidade}</span>
+                        <span className="bg-navy px-2 py-0.5 text-xs font-bold text-ivory">{quantidade}</span>
                         <span className="sr-only">{quantidade === 1 ? 'item' : 'itens'} no carrinho</span>
                     </button>
                 </header>

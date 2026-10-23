@@ -65,11 +65,18 @@ function Ficha({ moto }: { moto: Moto }) {
         <article className="py-12">
             <title>{`${moto.marca} ${moto.nome} | MotoImports`}</title>
             <div className="mx-auto grid max-w-site gap-10 px-6 lg:grid-cols-2">
-                <div className="meio-tom fita folha folha-sombra inclina-a flex aspect-4/3 items-center justify-center border-2 border-tinta">
+                <div className="meio-tom fita folha folha-sombra flex aspect-4/3 items-center justify-center border-2 border-navy">
                     {moto.imagem ? (
-                        <img src={moto.imagem} alt={`${moto.marca} ${moto.nome}`} className="size-full object-cover" />
+                        <img
+                            src={moto.imagem}
+                            alt={`${moto.marca} ${moto.nome}`}
+                            width={1200}
+                            height={900}
+                            decoding="async"
+                            className="size-full object-cover"
+                        />
                     ) : (
-                        <span aria-hidden="true" className="bg-papel px-3 font-display text-8xl font-bold text-tinta md:text-9xl">
+                        <span aria-hidden="true" className="bg-ivory px-3 font-display text-8xl font-bold text-noir md:text-9xl">
                             {moto.cilindrada}
                         </span>
                     )}
@@ -129,10 +136,10 @@ function Ficha({ moto }: { moto: Moto }) {
                         <>
                             <h3 className="mt-10 text-2xl">Destaques</h3>
                             <ul className="mt-4 flex flex-col gap-3">
-                                {moto.destaques.map((d, i) => (
+                                {moto.destaques.map((d) => (
                                     <li
                                         key={d}
-                                        className={`bg-fita px-4 py-2 text-sm font-bold text-tinta shadow-[3px_3px_0_var(--color-sangue)] ${i % 2 ? 'rotate-1' : '-rotate-1'}`}
+                                        className="border-l-4 border-navy bg-almond px-4 py-2 text-sm font-bold text-noir"
                                     >
                                         {d}
                                     </li>

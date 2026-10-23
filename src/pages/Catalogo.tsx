@@ -96,7 +96,7 @@ export default function Catalogo() {
                 ) : (
                     <div
                         role="status"
-                        className="mt-4 border-2 border-dashed border-linha px-4 py-12 text-center"
+                        className="mt-4 border-2 border-linha px-4 py-12 text-center"
                     >
                         <p>Nenhuma moto encontrada com esses filtros.</p>
                         <button

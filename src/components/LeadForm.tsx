@@ -128,7 +128,7 @@ export default function LeadForm({ aoEnviar, motoInteresse }: LeadFormProps) {
             </button>
 
             {isSubmitSuccessful && (
-                <p role="status" className="bg-fita p-4 text-tinta">
+                <p role="status" className="bg-mist p-4 text-noir">
                     Recebemos seu contato! Nossa equipe fala com você em breve.
                 </p>
             )}

@@ -32,7 +32,7 @@ export default function ExigeLogin({
             <p className="mt-2">Entre com a sua conta Google para {motivo}. É rápido e não cria senha nova.</p>
 
             {!disponivel && (
-                <p className="mt-3 bg-fita p-3 text-sm text-tinta">
+                <p className="mt-3 bg-mist p-3 text-sm text-noir">
                     O login ainda não foi configurado neste ambiente (faltam as variáveis do Firebase).
                 </p>
             )}

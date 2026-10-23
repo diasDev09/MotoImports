@@ -30,7 +30,7 @@ export default function NotaPreco({ moto }: { moto: Moto }) {
     // O clip-path do papel rasgado corta sombra e fita, então os dois ficam no invólucro:
     // drop-shadow acompanha o contorno recortado e a fita fica fora do recorte.
     return (
-        <div className="fita inclina-b mx-auto w-full max-w-md [filter:drop-shadow(8px_8px_0_var(--color-sangue))]">
+        <div className="fita inclina-b mx-auto w-full max-w-md [filter:drop-shadow(8px_8px_0_var(--color-mist))]">
         <figure aria-labelledby="nota-titulo" className="folha rasgado relative p-6 pb-10 pt-8">
             <figcaption id="nota-titulo" className="text-xs uppercase text-suave">
                 Nota de preço · {moto.marca} {moto.nome}
@@ -38,7 +38,7 @@ export default function NotaPreco({ moto }: { moto: Moto }) {
 
             <dl className="mt-3 text-sm">
                 {linhas.map(([rotulo, valor]) => (
-                    <div key={rotulo} className="flex justify-between gap-4 border-b border-dashed border-linha py-1.5">
+                    <div key={rotulo} className="flex justify-between gap-4 border-b border-linha py-1.5">
                         <dt>{rotulo}</dt>
                         <dd className="font-bold">{formatarPrecoComCentavos(valor)}</dd>
                     </div>

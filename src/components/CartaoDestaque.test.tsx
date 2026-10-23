@@ -35,13 +35,13 @@ describe('CartaoDestaque (vitrine)', () => {
     })
 
     it('sem imagem, mostra a cilindrada grande e nenhuma <img>', () => {
-        const { container } = mostrar()
+        const { container } = mostrar({ ...mt07, imagem: '' })
         expect(container.querySelector('img')).not.toBeInTheDocument()
         expect(screen.getByText('689', { selector: 'span[aria-hidden="true"]' })).toBeInTheDocument()
     })
 
     it('com imagem, mostra a foto com texto alternativo', () => {
-        mostrar({ ...mt07, imagem: '/img/mt07.jpg' })
-        expect(screen.getByRole('img', { name: 'Yamaha MT-07' })).toHaveAttribute('src', '/img/mt07.jpg')
+        mostrar({ ...mt07, imagem: '/img/motos/yamaha-mt-07.webp' })
+        expect(screen.getByRole('img', { name: 'Yamaha MT-07' })).toHaveAttribute('src', '/img/motos/yamaha-mt-07.webp')
     })
 })

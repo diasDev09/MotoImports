@@ -311,7 +311,7 @@ export default function Checkout() {
                             </ul>
                         )}
 
-                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t-2 border-dashed border-linha pt-4 text-sm">
+                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t-2 border-linha pt-4 text-sm">
                             <dt>Motocicleta</dt>
                             <dd className="font-bold">{formatarPreco(moto.preco)}</dd>
                             {totalAcessorios > 0 && (
@@ -324,12 +324,12 @@ export default function Checkout() {
                             <dd className="text-base font-bold">{formatarPreco(moto.preco + totalAcessorios)}</dd>
                         </dl>
 
-                        <p className="mt-4 bg-fita p-3 text-xs text-tinta">
+                        <p className="mt-4 bg-mist p-3 text-xs text-noir">
                             Esta é uma reserva de demonstração: nenhuma cobrança é feita.
                         </p>
 
                         {erroSalvar && (
-                            <p role="alert" className="mt-4 border-2 border-sangue p-3 text-sm font-bold text-erro">
+                            <p role="alert" className="mt-4 border-2 border-navy p-3 text-sm font-bold text-erro">
                                 {erroSalvar}
                             </p>
                         )}

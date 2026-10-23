@@ -25,7 +25,7 @@ const campo = 'campo'
 function Etapa({ numero, titulo, children }: { numero: string; titulo: string; children: ReactNode }) {
     return (
         <fieldset className="folha folha-sombra p-5">
-            <legend className="flex items-center gap-3 bg-papel px-2 py-1 text-sm font-bold text-tinta">
+            <legend className="flex items-center gap-3 bg-ivory px-2 py-1 text-sm font-bold text-noir">
                 <span className="bg-fg px-2 py-0.5 text-xs text-fundo">{numero}</span>
                 {titulo}
             </legend>
@@ -113,9 +113,9 @@ export default function PosVenda() {
 
     return (
         <section>
-            <div className="border-b-2 border-dashed border-cimento px-6 py-14">
+            <div className="border-b border-mist px-6 py-14">
                 <div className="mx-auto max-w-site">
-                    <p className="text-sm font-bold uppercase text-fita">Moto Imports · Pós-venda</p>
+                    <p className="text-sm font-bold uppercase text-navy">Moto Imports · Pós-venda</p>
                     <h1 className="mt-3 max-w-3xl text-5xl md:text-6xl">Cuidado com sua moto, em cada quilômetro.</h1>
                     <p className="mt-3 max-w-xl">
                         Agende seu serviço e conte com uma equipe preparada para cuidar da sua companheira de estrada.
@@ -203,7 +203,7 @@ export default function PosVenda() {
                                 <div className="flex flex-col gap-1 sm:col-span-2">
                                     <p id="data-rotulo" className="text-sm">Data desejada</p>
                                     <input type="hidden" {...register('data')} />
-                                    <div role="group" aria-labelledby="data-rotulo" className="folha w-fit border-2 border-tinta p-2">
+                                    <div role="group" aria-labelledby="data-rotulo" className="folha w-fit border-2 border-navy p-2">
                                         <DayPicker
                                             mode="single"
                                             locale={ptBR}
@@ -215,8 +215,8 @@ export default function PosVenda() {
                                             }}
                                             disabled={{ before: new Date(`${hoje}T00:00:00`) }}
                                             style={{
-                                                '--rdp-accent-color': 'var(--color-tinta)',
-                                                '--rdp-accent-background-color': 'var(--color-fita)',
+                                                '--rdp-accent-color': 'var(--color-navy)',
+                                                '--rdp-accent-background-color': 'var(--color-mist)',
                                             } as CSSProperties}
                                         />
                                     </div>

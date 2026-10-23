@@ -60,14 +60,14 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
     return (
         <section className="py-12">
             <div className="mx-auto max-w-3xl px-6">
-                <p role="alert" className="bg-fita p-4 text-sm text-tinta">
+                <p role="alert" className="bg-mist p-4 text-sm text-noir">
                     <strong>{voucher.identificacaoSimulacao}</strong>
                     <br />
                     Nenhuma cobrança foi feita. Este comprovante é só uma demonstração do fluxo de reserva.
                 </p>
 
-                <article className="folha folha-sombra fita mt-8 border-2 border-tinta" id="comprovante-voucher">
-                    <header className="flex flex-wrap items-center justify-between gap-4 bg-tinta p-6 text-papel">
+                <article className="folha folha-sombra fita mt-8 border-2 border-navy" id="comprovante-voucher">
+                    <header className="flex flex-wrap items-center justify-between gap-4 bg-navy p-6 text-ivory">
                         <div>
                             <p className="font-display text-2xl font-bold">Moto Imports</p>
                             <h1 ref={titulo} tabIndex={-1} className="text-base outline-none">
@@ -77,7 +77,7 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
                         <div className="text-right">
                             <p className="text-xs uppercase">Código da reserva</p>
                             <p className="font-display text-3xl font-bold" data-testid="codigo">{voucher.codigo}</p>
-                            <p className="carimbo mt-2 border-papel text-xs text-papel">Reserva de demonstração</p>
+                            <p className="carimbo mt-2 border-ivory text-xs text-ivory">Reserva de demonstração</p>
                         </div>
                     </header>
 
@@ -127,7 +127,7 @@ export default function VoucherReserva({ voucher, aoNovaReserva }: VoucherReserv
                         )}
                     </div>
 
-                    <footer className="border-t-2 border-dashed border-linha p-4 text-xs">
+                    <footer className="border-t-2 border-linha p-4 text-xs">
                         Emitido em {data(voucher.dataCriacao)} às {hora(voucher.dataCriacao)}. Válido até{' '}
                         {data(voucher.dataExpiracao)} ({voucher.prazoValidadeDias} dias corridos).
                     </footer>

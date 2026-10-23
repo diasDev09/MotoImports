@@ -14,13 +14,16 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
 
     return (
         <article className="folha folha-sombra fita relative flex flex-col">
-            <div className="m-4 mb-0 flex h-52 items-center justify-center border-2 border-tinta bg-papel p-3">
+            <div className="m-4 mb-0 flex aspect-square items-center justify-center overflow-hidden border-2 border-navy bg-almond">
                 <img
                     src={produto.imagem}
                     alt={produto.nome}
+                    width={900}
+                    height={900}
                     loading="lazy"
-                    className="size-full object-contain"
-                    // se a imagem externa falhar, some o ícone quebrado e o fundo continua
+                    decoding="async"
+                    className="size-full object-cover"
+                    // se a imagem falhar, some o ícone quebrado e o fundo continua
                     onError={(e) => {
                         e.currentTarget.style.visibility = 'hidden'
                     }}
@@ -38,7 +41,7 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
                 {produto.certificacoes && (
                     <ul className="flex flex-wrap gap-2" aria-label="Certificações do modelo">
                         {produto.certificacoes.map((c) => (
-                            <li key={c} className="border-2 border-dashed border-linha px-2 py-0.5 text-xs font-bold">
+                            <li key={c} className="border-2 border-linha px-2 py-0.5 text-xs font-bold">
                                 {c}
                             </li>
                         ))}
