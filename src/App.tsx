@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.tsx'
 import Footer from './components/Footer.tsx'
 import Placeholder from './components/Placeholder.tsx'
 import Home from './pages/Home.tsx'
+import Catalogo from './pages/Catalogo.tsx'
 
 // Cada colega troca o <Placeholder /> da sua rota pela página real.
 
@@ -13,7 +14,7 @@ export default function App() {
       <main id="conteudo">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogo" element={<Placeholder titulo="Catálogo" />} />
+          <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/moto/:id" element={<Placeholder titulo="Detalhes da moto" />} />
           <Route path="/contato" element={<Placeholder titulo="Fale com a equipe" />} />
           <Route path="/simulador" element={<Placeholder titulo="Simulador de financiamento" />} />
