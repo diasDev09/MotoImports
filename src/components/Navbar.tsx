@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext.ts'
 interface ItemMenu {
     para: string
     texto: string
-    botao?: boolean // o último item aparece como botão escuro, como o "SIGN UP" do design
+    botao?: boolean // o último item aparece como botão de papel com sombra vermelha
 }
 
 const links: ItemMenu[] = [
@@ -16,9 +16,10 @@ const links: ItemMenu[] = [
     { para: '/contato', texto: 'Contato', botao: true },
 ]
 
-const estiloLink = 'block rounded-lg px-3 py-2 text-sm font-medium hover:bg-musgo-200'
-const estiloBotao =
-    'block rounded-lg bg-musgo-900 px-5 py-2 text-sm font-semibold text-white hover:bg-musgo-600'
+// link comum: alvo de toque de 44px; o ativo ganha um sublinhado de fita
+const estiloLink = 'flex min-h-11 items-center px-3 text-sm font-bold hover:underline hover:decoration-2 hover:underline-offset-4'
+const estiloAtivo = 'underline decoration-fita decoration-4 underline-offset-4'
+const estiloBotao = 'botao flex min-h-11 items-center px-5 text-sm'
 
 export default function Navbar() {
     // controla o menu no celular: aberto ou fechado
@@ -29,11 +30,11 @@ export default function Navbar() {
     const itens = acessorios.length
 
     return (
-        <header className="sticky top-0 z-50 border-b border-musgo-200 bg-musgo-50/95 backdrop-blur">
+        <header className="sticky top-0 z-50 border-b-2 border-dashed border-cimento bg-tinta/95">
             {/* link para quem navega pelo teclado pular o menu: só aparece ao receber foco */}
             <a
                 href="#conteudo"
-                className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:rounded-lg focus:bg-musgo-900 focus:px-4 focus:py-2 focus:text-white"
+                className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:bg-papel focus:px-4 focus:py-2 focus:font-bold focus:text-tinta"
             >
                 Ir para o conteúdo
             </a>
@@ -42,13 +43,18 @@ export default function Navbar() {
                 className="mx-auto flex max-w-site flex-wrap items-center justify-between gap-2 px-6 py-3"
                 aria-label="Principal"
             >
-                <Link to="/" onClick={fechar} className="font-display text-xl font-extrabold uppercase tracking-tight">
-                    Moto<span className="text-musgo-600"> Imports</span>
+                {/* etiqueta de papel colada, levemente torta */}
+                <Link
+                    to="/"
+                    onClick={fechar}
+                    className="-rotate-2 bg-papel px-3 py-1 font-display text-xl font-bold text-tinta shadow-[3px_3px_0_var(--color-sangue)]"
+                >
+                    Moto<span> Imports</span>
                 </Link>
 
                 <button
                     type="button"
-                    className="rounded-lg border border-musgo-600 px-4 py-2 text-sm font-semibold md:hidden"
+                    className="botao-vazado min-h-11 px-4 py-2 text-sm md:hidden"
                     aria-expanded={aberto}
                     aria-controls="menu-principal"
                     onClick={() => setAberto(!aberto)}
@@ -58,7 +64,7 @@ export default function Navbar() {
 
                 <ul
                     id="menu-principal"
-                    className={`${aberto ? 'flex' : 'hidden'} w-full flex-col gap-1 md:flex md:w-auto md:flex-row md:items-center md:gap-2`}
+                    className={`${aberto ? 'flex' : 'hidden'} w-full flex-col gap-1 pb-3 md:flex md:w-auto md:flex-row md:items-center md:gap-2 md:pb-0`}
                 >
                     {links.map((l) => (
                         <li key={l.para}>
@@ -66,7 +72,7 @@ export default function Navbar() {
                                 to={l.para}
                                 onClick={fechar}
                                 className={({ isActive }) =>
-                                    l.botao ? estiloBotao : `${estiloLink} ${isActive ? 'bg-musgo-200 font-semibold' : ''}`
+                                    l.botao ? estiloBotao : `${estiloLink} ${isActive ? estiloAtivo : ''}`
                                 }
                             >
                                 {l.texto}
@@ -78,11 +84,11 @@ export default function Navbar() {
                             to="/checkout"
                             onClick={fechar}
                             aria-label={itens > 0 ? `Reserva, ${itens} ${itens === 1 ? 'acessório' : 'acessórios'}` : 'Reserva'}
-                            className={({ isActive }) => `${estiloLink} ${isActive ? 'bg-musgo-200 font-semibold' : ''}`}
+                            className={({ isActive }) => `${estiloLink} ${isActive ? estiloAtivo : ''}`}
                         >
                             Reserva
                             {itens > 0 && (
-                                <span aria-hidden="true" className="ml-2 rounded-full bg-musgo-900 px-2 py-0.5 text-xs text-white">
+                                <span aria-hidden="true" className="ml-2 bg-sangue px-2 py-0.5 text-xs text-papel">
                                     {itens}
                                 </span>
                             )}

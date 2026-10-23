@@ -17,13 +17,13 @@ import { formatarTelefone } from '../domain/lead.ts'
 // Pós-venda: agendamento de serviço na oficina (porte da v1, da Ariely).
 // RF-10: calendário sem datas passadas e horários já ocupados bloqueados. A oficina ainda confirma o horário.
 
-const campo = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
+const campo = 'campo'
 
 function Etapa({ numero, titulo, children }: { numero: string; titulo: string; children: ReactNode }) {
     return (
-        <fieldset className="rounded-card border border-musgo-200 bg-white p-5">
-            <legend className="flex items-center gap-3 px-2 text-sm font-bold uppercase tracking-wide">
-                <span className="rounded-full bg-musgo-900 px-2 py-0.5 text-xs text-white">{numero}</span>
+        <fieldset className="folha folha-sombra p-5">
+            <legend className="flex items-center gap-3 bg-papel px-2 py-1 text-sm font-bold text-tinta">
+                <span className="bg-fg px-2 py-0.5 text-xs text-fundo">{numero}</span>
                 {titulo}
             </legend>
             {children}
@@ -107,22 +107,22 @@ export default function PosVenda() {
 
     return (
         <section>
-            <div className="bg-musgo-900 px-6 py-14 text-white">
+            <div className="border-b-2 border-dashed border-cimento px-6 py-14">
                 <div className="mx-auto max-w-site">
-                    <p className="text-sm font-semibold uppercase tracking-widest">Moto Imports · Pós-venda</p>
-                    <h1 className="mt-3 max-w-2xl text-4xl">Cuidado com sua moto, em cada quilômetro.</h1>
+                    <p className="text-sm font-bold uppercase text-fita">Moto Imports · Pós-venda</p>
+                    <h1 className="mt-3 max-w-3xl text-5xl md:text-6xl">Cuidado com sua moto, em cada quilômetro.</h1>
                     <p className="mt-3 max-w-xl">
                         Agende seu serviço e conte com uma equipe preparada para cuidar da sua companheira de estrada.
                     </p>
-                    <Link to="/boutique" className="mt-6 inline-block rounded-lg border border-white px-5 py-2 text-sm font-semibold hover:bg-musgo-600">
+                    <Link to="/boutique" className="botao-vazado mt-6 inline-flex min-h-11 items-center px-5 text-sm">
                         Conheça a boutique →
                     </Link>
                 </div>
             </div>
 
             <div className="mx-auto max-w-3xl px-6 py-12">
-                <h2 className="text-3xl">Agende seu serviço</h2>
-                <p className="mt-2 text-musgo-600">
+                <h2 className="text-4xl">Agende seu serviço</h2>
+                <p className="mt-2 text-suave">
                     Escolha o serviço, informe os dados da sua moto e selecione a data desejada.
                 </p>
 
@@ -139,12 +139,12 @@ export default function PosVenda() {
                             {SERVICOS.map((servico) => (
                                 <label
                                     key={servico.id}
-                                    className="flex cursor-pointer flex-col gap-1 rounded-lg border border-musgo-200 p-4 text-sm has-:checked:border-musgo-900 has-:checked:bg-musgo-50"
+                                    className="opcao has-checked:opcao-card-marcada flex cursor-pointer flex-col gap-1 p-4 text-sm has-focus-visible:outline-3 has-focus-visible:outline-offset-3 has-focus-visible:outline-tinta"
                                 >
                                     <input type="radio" value={servico.id} className="sr-only" {...register('servico')} />
-                                    <span className="font-semibold">{servico.nome}</span>
+                                    <span className="font-bold">{servico.nome}</span>
                                     <span>{servico.descricao}</span>
-                                    <span className="text-xs text-musgo-600">{servico.duracao}</span>
+                                    <span className="text-xs text-suave">{servico.duracao}</span>
                                 </label>
                             ))}
                         </div>
@@ -186,7 +186,7 @@ export default function PosVenda() {
                             <div className="flex flex-col gap-1 sm:col-span-2">
                                 <p id="data-rotulo" className="text-sm">Data desejada</p>
                                 <input type="hidden" {...register('data')} />
-                                <div role="group" aria-labelledby="data-rotulo" className="w-fit rounded-lg border border-musgo-400 bg-white p-2">
+                                <div role="group" aria-labelledby="data-rotulo" className="folha w-fit border-2 border-tinta p-2">
                                     <DayPicker
                                         mode="single"
                                         locale={ptBR}
@@ -198,8 +198,8 @@ export default function PosVenda() {
                                         }}
                                         disabled={{ before: new Date(`${hoje}T00:00:00`) }}
                                         style={{
-                                            '--rdp-accent-color': 'var(--color-musgo-600)',
-                                            '--rdp-accent-background-color': 'var(--color-musgo-200)',
+                                            '--rdp-accent-color': 'var(--color-tinta)',
+                                            '--rdp-accent-background-color': 'var(--color-fita)',
                                         } as CSSProperties}
                                     />
                                 </div>
@@ -241,7 +241,7 @@ export default function PosVenda() {
                         </div>
 
                         <div className="mt-4 flex items-start gap-3">
-                            <input id="consentimento" type="checkbox" className="mt-1 size-4 accent-musgo-600" {...acessivel('consentimento')} {...register('consentimento')} />
+                            <input id="consentimento" type="checkbox" className="mt-1 size-5 accent-fg" {...acessivel('consentimento')} {...register('consentimento')} />
                             <label htmlFor="consentimento" className="text-sm">
                                 Autorizo a MotoImports a usar meus dados para entrar em contato sobre este agendamento (LGPD).
                             </label>
@@ -255,12 +255,12 @@ export default function PosVenda() {
 
                     <button
                         type="submit"
-                        className="self-start rounded-lg bg-musgo-900 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-600"
+                        className="botao min-h-11 self-start px-6 py-3 text-sm"
                     >
                         Solicitar agendamento
                     </button>
 
-                    <p className="text-xs uppercase text-musgo-600">
+                    <p className="text-xs text-suave">
                         A disponibilidade do horário escolhido será verificada pela oficina. O agendamento só será
                         confirmado após a validação do horário.
                     </p>
@@ -268,7 +268,7 @@ export default function PosVenda() {
 
                 <div aria-live="polite">
                     {agendado && (
-                        <section className="mt-8 rounded-card border border-musgo-400 bg-musgo-200 p-6">
+                        <section className="folha folha-sombra fita mt-10 p-6">
                             <h2 className="text-2xl">Aguarde a confirmação do agendamento</h2>
                             <p className="mt-2">Recebemos sua solicitação. Confira os dados informados:</p>
                             <ul className="mt-3 flex flex-col gap-1 text-sm">
@@ -289,7 +289,7 @@ export default function PosVenda() {
                                     reset()
                                     setAgendado(null)
                                 }}
-                                className="mt-4 rounded-lg border border-musgo-900 px-5 py-2 text-sm font-semibold hover:bg-musgo-50"
+                                className="botao-vazado mt-4 min-h-11 px-5 text-sm"
                             >
                                 Fazer novo agendamento
                             </button>
@@ -299,4 +299,4 @@ export default function PosVenda() {
             </div>
         </section>
     )
-}
+}

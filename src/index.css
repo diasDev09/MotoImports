@@ -1,43 +1,297 @@
 @import "tailwindcss";
 
+/*
+  Sistema visual: grunge dos anos 90 (papel xerocado, fita crepe, tinta desbotada).
+  Duas superfícies: a página é TINTA (escura) e o conteúdo vive em FOLHAS de papel.
+  Por isso as cores "semânticas" (fg, fundo, suave, linha, erro) mudam dentro de uma .folha:
+  o mesmo componente funciona sobre a página e sobre o papel sem ramificar classes.
+*/
+
 @theme {
-  /* paleta medida na imagem de referência */
-  --color-musgo-50: #E4E6DA;
-  --color-musgo-200: #C2CFB4;
-  --color-musgo-400: #8AA88A;
-  --color-musgo-600: #48654E;
-  --color-musgo-900: #253529;
+  /* cores de peso: sem preto puro */
+  --color-tinta: #2E2E2E;
+  --color-papel: #E9E1D4;
+  --color-fita: #B5A642;
+  --color-sangue: #8C2727;
+  --color-jeans: #3B5998;
+  --color-ferrugem: #A84700;   /* só sombra de apoio; como texto: 4,5:1, só em corpo grande */
+  --color-oliva: #6B8E23;      /* só decoração; nunca texto (2,9:1 sobre papel) */
+  --color-cimento: #7A7A7A;    /* só linhas tracejadas; nunca texto */
+  --color-cinza-claro: #B9B3A8; /* texto secundário sobre tinta: 6,5:1 */
 
-  /* estados: usar sempre com texto escuro (musgo-900) e com ícone */
-  --color-aviso: #F3D98B;
-  --color-info: #B9D4EA;
-  --color-erro-fundo: #F4C7C3;
-  --color-erro: #9B2C2C;
+  /* uma família só: o que muda é peso e aperto */
+  --font-sans: "Courier New", Courier, monospace;
+  --font-display: "Courier New", Courier, monospace;
 
-  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
-
-  --radius-card: 1.5rem;
+  --radius-card: 0;
   --container-site: 72rem;
 }
 
+/* cores que dependem da superfície (página ou folha) */
+@theme inline {
+  --color-fg: var(--fg);
+  --color-fundo: var(--fundo);
+  --color-suave: var(--suave);
+  --color-linha: var(--linha);
+  --color-erro: var(--erro);
+}
+
+:root {
+  /* superfície padrão: a página (tinta) */
+  --fg: #E9E1D4;
+  --fundo: #2E2E2E;
+  --suave: #B9B3A8;
+  --linha: #7A7A7A;
+  --erro: #F2B2A8; /* 7,9:1 sobre tinta */
+  --sombra: #8C2727;
+}
+
+
 @layer base {
   html {
-    @apply bg-musgo-50 font-sans text-musgo-900 antialiased;
+    @apply bg-tinta font-sans text-papel antialiased;
+    line-height: 1.6;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  /* grão de xerox por cima de tudo; não captura cliques */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
   }
 
   h1,
   h2,
   h3 {
-    @apply font-display font-extrabold tracking-tight;
+    @apply font-display font-bold;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
   }
 
+  ::selection {
+    background: var(--color-fita);
+    color: var(--color-tinta);
+  }
+
+  /* foco sempre visível, em amarelo-fita (5,5:1 sobre tinta); sobre papel usa tinta */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-musgo-600;
+    outline: 3px solid var(--color-fita);
+    outline-offset: 3px;
+  }
+
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
   }
 }
 
-/* palavra com faixa de realce, como no design: <span className="destaque"> */
+/* ---------- peças reutilizáveis ---------- */
+
+/* superfície de papel: cartões, notas, formulários, modais.
+   Redefine as cores semânticas, então tudo que está dentro troca de tinta para papel sozinho. */
+@utility folha {
+  --fg: #2E2E2E;
+  --fundo: #E9E1D4;
+  --suave: #4A4A4A; /* 6,8:1 sobre papel */
+  --linha: #2E2E2E;
+  --erro: #8C2727;  /* 6,6:1 sobre papel */
+  background-color: var(--fundo);
+  color: var(--fg);
+  &:focus-visible,
+  & :focus-visible {
+    outline-color: var(--color-tinta);
+  }
+}
+
+/* cartão de opção marcado (radio em cartão): contorno cheio + sombra dura */
+@utility opcao-card-marcada {
+  border: 2px solid var(--fg);
+  background-color: color-mix(in srgb, var(--fg) 8%, transparent);
+  box-shadow: 4px 4px 0 var(--sombra);
+}
+
+/* botão principal: sobe da folha, hover afunda 3px e a sombra encolhe */
+@utility botao {
+  background-color: var(--fg);
+  color: var(--fundo);
+  font-weight: 700;
+  box-shadow: 5px 5px 0 var(--sombra);
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+  &:hover:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--sombra);
+  }
+  &:active:not(:disabled) {
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--sombra);
+  }
+  &:disabled {
+    opacity: 0.55;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+/* botão secundário: contorno tracejado, hover preenche */
+@utility botao-vazado {
+  border: 2px dashed var(--fg);
+  color: var(--fg);
+  font-weight: 700;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+  &:hover:not(:disabled) {
+    background-color: var(--fg);
+    color: var(--fundo);
+  }
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+/* opção selecionável (radio/pílula): estado marcado vira bloco cheio */
+@utility opcao {
+  border: 2px solid var(--linha);
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+  &:hover {
+    background-color: color-mix(in srgb, var(--fg) 12%, transparent);
+  }
+}
+@utility opcao-marcada {
+  border: 2px solid var(--fg);
+  background-color: var(--fg);
+  color: var(--fundo);
+}
+
+/* campo de formulário: sempre papel, borda de tinta (contraste de componente ≥3:1) */
+@utility campo {
+  background-color: var(--color-papel);
+  color: var(--color-tinta);
+  border: 2px solid var(--color-tinta);
+  padding: 0.5rem 0.75rem;
+  min-height: 2.75rem;
+  &::placeholder {
+    color: #5A5A5A;
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--color-sangue);
+    box-shadow: 3px 3px 0 var(--color-sangue);
+  }
+}
+
+/* folha de papel com sombra dura, sem desfoque */
+@utility folha-sombra {
+  box-shadow: 6px 6px 0 var(--sombra);
+}
+
+/* inclinações pequenas, de -1,5° a 1,5° */
+@utility inclina-a {
+  transform: rotate(-1.4deg);
+}
+@utility inclina-b {
+  transform: rotate(1.1deg);
+}
+
+/* fita crepe colada na borda de cima (elemento precisa ser relative) */
+@utility fita {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 30px;
+    width: 104px;
+    height: 26px;
+    background: rgba(181, 166, 66, 0.92);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: rotate(-5deg);
+    pointer-events: none;
+  }
+}
+
+/* meio-tom de xerox para "fotos" quando não há imagem */
+@utility meio-tom {
+  background-image: radial-gradient(circle at 3px 3px, rgba(46, 46, 46, 0.55) 1.4px, transparent 1.9px);
+  background-size: 7px 7px;
+}
+
+/* borda de baixo rasgada */
+@utility rasgado {
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 93.75% 100%, 87.5% 94%, 81.25% 100%, 75% 94%, 68.75% 100%, 62.5% 94%, 56.25% 100%, 50% 94%, 43.75% 100%, 37.5% 94%, 31.25% 100%, 25% 94%, 18.75% 100%, 12.5% 94%, 6.25% 100%, 0 94%);
+  padding-bottom: 1.75rem;
+}
+
+/* palavra marcada com fita/marca-texto: <span className="destaque"> */
 @utility destaque {
-  background-image: linear-gradient(transparent 55%, var(--color-musgo-200) 55%);
-  padding-inline: 0.15em;
+  background-color: var(--color-fita);
+  color: var(--color-tinta);
+  padding-inline: 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* linha tracejada entre blocos */
+@utility tracejado {
+  border-style: dashed;
+  border-color: var(--linha);
+}
+
+/* carimbo: a única animação orquestrada do site (transform e opacity apenas) */
+@utility carimbo {
+  display: inline-block;
+  border: 4px solid var(--color-sangue);
+  color: var(--color-sangue);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  padding: 0.25rem 0.75rem;
+  transform: rotate(-8deg);
+  animation: carimbar 420ms cubic-bezier(0.2, 0.9, 0.3, 1) 250ms both;
+}
+
+@keyframes carimbar {
+  from {
+    opacity: 0;
+    transform: rotate(-14deg) scale(1.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* impressão do voucher: sem grão, sem sombras */
+@media print {
+  body::before {
+    display: none;
+  }
+  html {
+    background: #fff;
+    color: #000;
+  }
+  header[class*="sticky"],
+  footer {
+    display: none;
+  }
+  .folha-sombra {
+    box-shadow: none;
+  }
 }

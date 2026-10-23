@@ -13,8 +13,8 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
     const idTamanho = `tamanho-${produto.id}`
 
     return (
-        <article className="flex flex-col overflow-hidden rounded-card border border-musgo-200 bg-white">
-            <div className="flex h-56 items-center justify-center bg-musgo-200 p-3">
+        <article className="folha folha-sombra fita relative flex flex-col">
+            <div className="m-4 mb-0 flex h-52 items-center justify-center border-2 border-tinta bg-papel p-3">
                 <img
                     src={produto.imagem}
                     alt={produto.nome}
@@ -28,17 +28,17 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
             </div>
 
             <div className="flex flex-1 flex-col gap-2 p-5">
-                <p className="text-xs font-bold uppercase text-musgo-600">
+                <p className="text-xs font-bold uppercase text-suave">
                     {produto.categoria}
                     {produto.estilo ? ` · ${produto.estilo}` : ''}
                 </p>
-                <h2 className="text-xl">{produto.nome}</h2>
+                <h2 className="text-2xl">{produto.nome}</h2>
                 <p className="text-sm">{produto.descricao}</p>
 
                 {produto.certificacoes && (
                     <ul className="flex flex-wrap gap-2" aria-label="Certificações do modelo">
                         {produto.certificacoes.map((c) => (
-                            <li key={c} className="rounded bg-musgo-200 px-2 py-0.5 text-xs font-semibold">
+                            <li key={c} className="border-2 border-dashed border-linha px-2 py-0.5 text-xs font-bold">
                                 {c}
                             </li>
                         ))}
@@ -47,7 +47,7 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
 
                 {produto.tamanhos && (
                     <div className="flex flex-col gap-1">
-                        <label htmlFor={idTamanho} className="text-sm font-semibold">
+                        <label htmlFor={idTamanho} className="text-sm font-bold">
                             Escolha o tamanho
                         </label>
                         <select
@@ -56,7 +56,7 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
                             onChange={(e) => aoEscolherTamanho(e.target.value)}
                             aria-invalid={erro ? 'true' : 'false'}
                             aria-describedby={erro ? `${idTamanho}-erro` : undefined}
-                            className="rounded-lg border border-musgo-400 bg-white px-3 py-2"
+                            className="campo"
                         >
                             <option value="">Selecione um tamanho</option>
                             {produto.tamanhos.map((t) => (
@@ -73,18 +73,18 @@ export default function CartaoProduto({ produto, tamanho, erro, aoEscolherTamanh
                     </div>
                 )}
 
-                <p className="mt-auto pt-2 font-display text-2xl font-extrabold">
+                <p className="mt-auto pt-2 font-display text-2xl font-bold">
                     {formatarPrecoComCentavos(produto.preco)}
                 </p>
                 <button
                     type="button"
                     onClick={aoAdicionar}
                     aria-label={`Adicionar ${produto.nome} ao carrinho`}
-                    className="rounded-lg bg-musgo-900 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-600"
+                    className="botao min-h-11 px-5 py-3 text-sm"
                 >
                     Adicionar ao carrinho
                 </button>
             </div>
         </article>
     )
-}
+}

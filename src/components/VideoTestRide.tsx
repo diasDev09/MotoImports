@@ -16,7 +16,7 @@ export default function VideoTestRide({ urlVideo, titulo = 'Test-ride em vídeo'
             <button
                 type="button"
                 onClick={() => setAberto(true)}
-                className="rounded-lg border border-musgo-900 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-musgo-900 hover:bg-musgo-200"
+                className="botao-vazado min-h-11 px-6 py-3 text-sm"
             >
                 ▶ Ver test-ride
             </button>
@@ -26,7 +26,7 @@ export default function VideoTestRide({ urlVideo, titulo = 'Test-ride em vídeo'
                     <iframe
                         src={urlVideo}
                         title={titulo}
-                        className="size-full rounded-lg"
+                        className="size-full"
                         allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                     />
@@ -34,4 +34,4 @@ export default function VideoTestRide({ urlVideo, titulo = 'Test-ride em vídeo'
             </Modal>
         </>
     )
-}
+}

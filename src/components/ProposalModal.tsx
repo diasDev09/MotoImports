@@ -13,8 +13,7 @@ interface ProposalModalProps {
     aoFechar: () => void
 }
 
-const estiloLink =
-    'rounded-lg px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide'
+const estiloLink = 'flex min-h-11 items-center justify-center px-6 py-3 text-center text-sm'
 
 export default function ProposalModal({ aberto, lead, contexto, aoFechar }: ProposalModalProps) {
     const mensagem = montarMensagemProposta(lead, contexto)
@@ -23,10 +22,10 @@ export default function ProposalModal({ aberto, lead, contexto, aoFechar }: Prop
 
     return (
         <Modal aberto={aberto} titulo="Sua proposta" aoFechar={aoFechar}>
-            <p className="text-sm text-musgo-600">
+            <p className="text-sm text-suave">
                 Confira a mensagem e escolha como enviar para a nossa equipe.
             </p>
-            <pre className="mt-3 whitespace-pre-wrap rounded-lg border border-musgo-400 bg-white p-4 font-sans text-sm">
+            <pre className="mt-3 whitespace-pre-wrap border-2 border-dashed border-linha p-4 font-sans text-sm">
                 {mensagem}
             </pre>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
@@ -34,17 +33,17 @@ export default function ProposalModal({ aberto, lead, contexto, aoFechar }: Prop
                     href={urlWhatsApp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${estiloLink} bg-musgo-900 text-white hover:bg-musgo-600`}
+                    className={`${estiloLink} botao`}
                 >
                     Enviar pelo WhatsApp
                 </a>
                 <a
                     href={urlEmail}
-                    className={`${estiloLink} border border-musgo-900 text-musgo-900 hover:bg-musgo-200`}
+                    className={`${estiloLink} botao-vazado`}
                 >
                     Enviar por e-mail
                 </a>
             </div>
         </Modal>
     )
-}
+}

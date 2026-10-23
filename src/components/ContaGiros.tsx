@@ -47,14 +47,14 @@ export default function ContaGiros() {
             aria-label="Conta-giros marcando zero taxas surpresa no preço final"
         >
             <path
-                className="stroke-musgo-200"
+                className="stroke-tinta/30"
                 d={arco(ANGULO_INICIO, ANGULO_INICIO + ANGULO_TOTAL, RAIO)}
                 fill="none"
                 strokeWidth="10"
                 strokeLinecap="round"
             />
             <path
-                className="stroke-erro"
+                className="stroke-sangue"
                 d={arco(angulo(ZONA_VERMELHA_INICIO), angulo(MARCAS - 1), RAIO)}
                 fill="none"
                 strokeWidth="10"
@@ -69,7 +69,7 @@ export default function ContaGiros() {
                 return (
                     <g key={i}>
                         <line
-                            className="stroke-musgo-600"
+                            className="stroke-tinta"
                             x1={fora.x}
                             y1={fora.y}
                             x2={dentro.x}
@@ -77,7 +77,7 @@ export default function ContaGiros() {
                             strokeWidth="3"
                         />
                         <text
-                            className="fill-musgo-900 font-display text-base font-semibold"
+                            className="fill-tinta font-display text-base font-bold"
                             x={num.x}
                             y={num.y}
                             textAnchor="middle"
@@ -91,7 +91,7 @@ export default function ContaGiros() {
 
             <line
                 data-testid="agulha"
-                className="stroke-musgo-900 transition-transform duration-1800ms ease-out motion-reduce:transition-none"
+                className="stroke-sangue transition-transform duration-1800ms ease-out motion-reduce:transition-none"
                 x1={CX + 60}
                 y1={CY}
                 x2={CX + RAIO - 26}
@@ -103,13 +103,13 @@ export default function ContaGiros() {
                     transformOrigin: `${CX}px ${CY}px`,
                 }}
             />
-            <circle className="fill-white stroke-musgo-600" cx={CX} cy={CY} r="56" strokeWidth="3" />
-            <text className="fill-musgo-900 font-display text-4xl font-extrabold" x={CX} y={CY + 6} textAnchor="middle">
+            <circle className="fill-papel stroke-tinta" cx={CX} cy={CY} r="56" strokeWidth="3" />
+            <text className="fill-tinta font-display text-3xl font-bold" x={CX} y={CY + 6} textAnchor="middle">
                 R$ 0
             </text>
-            <text className="fill-musgo-600 text-sm" x={CX} y={CY + 30} textAnchor="middle">
+            <text className="fill-tinta text-xs" x={CX} y={CY + 30} textAnchor="middle">
                 de taxa surpresa
             </text>
         </svg>
     )
-}
+}

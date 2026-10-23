@@ -23,7 +23,7 @@ import type { Filtros, ItemCarrinho } from '../domain/boutique.ts'
 // Boutique: equipamentos e acessórios do piloto (porte da v1, da Ariely).
 // Este carrinho é só da boutique, separado dos acessórios da moto (reserva). O pedido é de demonstração.
 
-const selectFiltro = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-sm'
+const selectFiltro = 'campo text-sm'
 
 export default function Boutique() {
     const [filtros, setFiltros] = useState<Filtros>(FILTROS_INICIAIS)
@@ -66,9 +66,9 @@ export default function Boutique() {
     return (
         <section className="py-12">
             <div className="mx-auto max-w-site px-6">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-card bg-musgo-900 p-8 text-white">
+                <header className="folha folha-sombra fita flex flex-wrap items-center justify-between gap-4 p-8">
                     <div>
-                        <h1 className="text-4xl">Boutique Moto Imports</h1>
+                        <h1 className="text-4xl md:text-6xl">Boutique Moto Imports</h1>
                         <p className="mt-2">Equipamentos, acessórios e proteção para você e sua motocicleta.</p>
                     </div>
                     <button
@@ -76,10 +76,10 @@ export default function Boutique() {
                         onClick={() => setCarrinhoAberto((aberto) => !aberto)}
                         aria-expanded={carrinhoAberto}
                         aria-controls="carrinho-boutique"
-                        className="flex items-center gap-2 rounded-lg border border-white px-5 py-3 font-semibold hover:bg-musgo-600"
+                        className="botao-vazado flex min-h-11 items-center gap-2 px-5 py-3"
                     >
                         Carrinho
-                        <span className="rounded-full bg-white px-2 py-0.5 text-xs font-extrabold text-musgo-900">{quantidade}</span>
+                        <span className="bg-sangue px-2 py-0.5 text-xs font-bold text-papel">{quantidade}</span>
                         <span className="sr-only">{quantidade === 1 ? 'item' : 'itens'} no carrinho</span>
                     </button>
                 </header>
@@ -108,7 +108,7 @@ export default function Boutique() {
                         aria-label="Buscar produtos"
                         value={filtros.busca}
                         onChange={(e) => setFiltros((f) => ({ ...f, busca: e.target.value }))}
-                        className="w-full rounded-lg border border-musgo-400 bg-white px-4 py-3"
+                        className="campo w-full"
                     />
 
                     <nav className="my-5 flex flex-wrap gap-2" aria-label="Categorias de produtos">
@@ -118,10 +118,7 @@ export default function Boutique() {
                                 type="button"
                                 aria-pressed={filtros.categoria === categoria}
                                 onClick={() => trocarCategoria(categoria)}
-                                className={`rounded-lg border px-4 py-2 text-sm ${filtros.categoria === categoria
-                                        ? 'border-musgo-900 bg-musgo-900 text-white'
-                                        : 'border-musgo-400 hover:bg-musgo-200'
-                                    }`}
+                                className={`min-h-11 px-4 py-2 text-sm font-bold ${filtros.categoria === categoria ? 'opcao-marcada' : 'opcao'}`}
                             >
                                 {categoria}
                             </button>
@@ -130,9 +127,9 @@ export default function Boutique() {
 
                     {emCapacetes && (
                         <>
-                            <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-card border border-musgo-200 bg-white p-4">
+                            <div className="mb-6 flex flex-wrap items-end justify-between gap-4 folha folha-sombra p-4">
                                 <div className="flex flex-wrap gap-4">
-                                    <label className="flex flex-col gap-1 text-sm font-semibold">
+                                    <label className="flex flex-col gap-1 text-sm font-bold">
                                         Estilo
                                         <select
                                             className={selectFiltro}
@@ -145,7 +142,7 @@ export default function Boutique() {
                                             ))}
                                         </select>
                                     </label>
-                                    <label className="flex flex-col gap-1 text-sm font-semibold">
+                                    <label className="flex flex-col gap-1 text-sm font-bold">
                                         Certificação
                                         <select
                                             className={selectFiltro}
@@ -163,7 +160,7 @@ export default function Boutique() {
                                     type="button"
                                     aria-expanded={guiaAberto}
                                     onClick={() => setGuiaAberto((aberto) => !aberto)}
-                                    className="rounded-lg border border-musgo-600 px-4 py-2 text-sm font-semibold hover:bg-musgo-200"
+                                    className="botao-vazado min-h-11 px-4 py-2 text-sm"
                                 >
                                     {guiaAberto ? 'Fechar guia de tamanhos' : 'Guia de tamanhos'}
                                 </button>
@@ -188,11 +185,11 @@ export default function Boutique() {
                                 />
                             ))
                         ) : (
-                            <p className="col-span-full text-musgo-600">Nenhum produto encontrado com esses filtros.</p>
+                            <p className="col-span-full text-suave">Nenhum produto encontrado com esses filtros.</p>
                         )}
                     </section>
                 </div>
             </div>
         </section>
     )
-}
+}

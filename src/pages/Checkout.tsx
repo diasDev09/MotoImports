@@ -16,9 +16,9 @@ import { formatarPreco } from '../utils/formatters.ts'
 // RF-08: checkout fictício com voucher e escolha da loja de retirada (porte da v1, do Santos).
 // As regras (validação, voucher, prazos) ficam em domain/reservation.ts.
 
-const cartao = 'rounded-card border border-musgo-200 bg-white p-5'
-const titulo = 'mb-3 text-lg font-bold'
-const campo = 'rounded-lg border border-musgo-400 bg-white px-3 py-2 text-musgo-900'
+const cartao = 'folha folha-sombra p-5'
+const titulo = 'mb-4 text-2xl'
+const campo = 'campo'
 
 const FORMAS: { id: FormaPagamento; nome: string }[] = [
     { id: 'financiamento', nome: 'Financiamento bancário' },
@@ -70,16 +70,16 @@ export default function Checkout() {
         return (
             <section className="py-12">
                 <div className="mx-auto max-w-xl px-6">
-                    <h1 className="text-4xl">Reserva e retirada</h1>
-                    <p className="mt-3 text-musgo-600">
+                    <h1 className="text-5xl md:text-6xl">Reserva e retirada</h1>
+                    <p className="mt-3 text-suave">
                         Você ainda não escolheu uma moto. Veja o catálogo ou simule o financiamento de uma moto para
                         reservar.
                     </p>
                     <div className="mt-6 flex flex-wrap gap-3">
-                        <Link to="/catalogo" className="rounded-lg bg-musgo-900 px-6 py-3 text-sm font-semibold text-white hover:bg-musgo-600">
+                        <Link to="/catalogo" className="botao inline-flex min-h-11 items-center px-6 py-3 text-sm">
                             Ver catálogo
                         </Link>
-                        <Link to="/simulador" className="rounded-lg border border-musgo-900 px-6 py-3 text-sm font-semibold hover:bg-musgo-200">
+                        <Link to="/simulador" className="botao-vazado inline-flex min-h-11 items-center px-6 py-3 text-sm">
                             Ir para o simulador
                         </Link>
                     </div>
@@ -141,8 +141,8 @@ export default function Checkout() {
         <section className="py-12">
             <div className="mx-auto max-w-site px-6">
                 <header className="max-w-2xl">
-                    <h1 className="text-4xl">Reserva e retirada em loja</h1>
-                    <p className="mt-3 text-musgo-600">
+                    <h1 className="text-4xl md:text-6xl">Reserva e retirada em loja</h1>
+                    <p className="mt-3 text-suave">
                         Escolha a loja, confira o resumo e gere o voucher da sua reserva.
                     </p>
                 </header>
@@ -155,7 +155,7 @@ export default function Checkout() {
                                 {LOJAS_RETIRADA.map((loja) => (
                                     <label
                                         key={loja.id}
-                                        className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm ${lojaId === loja.id ? 'border-musgo-900 bg-musgo-50' : 'border-musgo-200 hover:bg-musgo-50'
+                                        className={`flex cursor-pointer items-start gap-3 p-3 text-sm ${lojaId === loja.id ? 'opcao-card-marcada' : 'opcao'
                                             }`}
                                     >
                                         <input
@@ -164,13 +164,13 @@ export default function Checkout() {
                                             value={loja.id}
                                             checked={lojaId === loja.id}
                                             onChange={() => setLojaId(loja.id)}
-                                            className="mt-1 accent-musgo-600"
+                                            className="mt-1 accent-fg"
                                         />
                                         <span>
                                             <strong>{loja.nome}</strong>
                                             <span className="block">{loja.endereco}</span>
-                                            <span className="block text-musgo-600">Horário: {loja.horario} · Tel.: {loja.telefone}</span>
-                                            <span className="mt-1 inline-block rounded bg-musgo-200 px-2 py-0.5 text-xs">{prazo.prazoTexto}</span>
+                                            <span className="block text-suave">Horário: {loja.horario} · Tel.: {loja.telefone}</span>
+                                            <span className="mt-1 inline-block bg-fg/10 px-2 py-0.5 text-xs">{prazo.prazoTexto}</span>
                                         </span>
                                     </label>
                                 ))}
@@ -187,8 +187,7 @@ export default function Checkout() {
                                         type="button"
                                         aria-pressed={forma === f.id}
                                         onClick={() => setForma(f.id)}
-                                        className={`rounded-lg border px-4 py-2 text-sm font-semibold ${forma === f.id ? 'border-musgo-900 bg-musgo-900 text-white' : 'border-musgo-400 hover:bg-musgo-200'
-                                            }`}
+                                        className={`min-h-11 px-4 py-2 text-sm font-bold ${forma === f.id ? 'opcao-marcada' : 'opcao'}`}
                                     >
                                         {f.nome}
                                     </button>
@@ -203,9 +202,9 @@ export default function Checkout() {
                                 </p>
                             )}
                             {forma !== 'a_vista' && !planoVinculado && (
-                                <p className="mt-3 text-sm text-musgo-600">
+                                <p className="mt-3 text-sm text-suave">
                                     Não há simulação de {forma === 'consorcio' ? 'consórcio' : 'financiamento'} para esta moto.{' '}
-                                    <Link to={`/simulador?moto=${moto.id}`} className="font-semibold underline">
+                                    <Link to={`/simulador?moto=${moto.id}`} className="font-bold underline">
                                         Simular agora
                                     </Link>
                                 </p>
@@ -246,7 +245,7 @@ export default function Checkout() {
                                         setConsentimento(e.target.checked)
                                         setErros((anterior) => ({ ...anterior, consentimentoLGPD: undefined }))
                                     }}
-                                    className="mt-1 size-4 accent-musgo-600"
+                                    className="mt-1 size-5 accent-fg"
                                     {...acessivel('consentimentoLGPD')}
                                 />
                                 <label htmlFor="lgpd" className="text-sm">
@@ -258,19 +257,19 @@ export default function Checkout() {
                         </fieldset>
                     </div>
 
-                    <aside className="h-fit rounded-card border border-musgo-200 bg-white p-5 lg:sticky lg:top-24" aria-label="Resumo do pedido">
+                    <aside className="h-fit folha folha-sombra p-5 lg:sticky lg:top-24" aria-label="Resumo do pedido">
                         <h2 className={titulo}>Resumo</h2>
                         <div className="flex items-center gap-3">
-                            {moto.imagem && <img src={moto.imagem} alt="" className="h-14 w-20 rounded-lg object-cover" />}
+                            {moto.imagem && <img src={moto.imagem} alt="" className="h-14 w-20 object-cover" />}
                             <div>
-                                <p className="font-semibold">{moto.marca} {moto.nome}</p>
-                                <p className="text-sm text-musgo-600">{moto.categoria} · {formatarPreco(moto.preco)}</p>
+                                <p className="font-bold">{moto.marca} {moto.nome}</p>
+                                <p className="text-sm text-suave">{moto.categoria} · {formatarPreco(moto.preco)}</p>
                             </div>
                         </div>
 
                         <h3 className="mt-4 text-sm font-bold">Acessórios ({acessorios.length})</h3>
                         {acessorios.length === 0 ? (
-                            <p className="mt-1 text-sm italic text-musgo-600">Nenhum acessório adicionado.</p>
+                            <p className="mt-1 text-sm text-suave">Nenhum acessório adicionado.</p>
                         ) : (
                             <ul className="mt-2 flex flex-col gap-2">
                                 {acessorios.map((a) => (
@@ -282,7 +281,7 @@ export default function Checkout() {
                                                 type="button"
                                                 aria-label={`Remover ${a.nome}`}
                                                 onClick={() => removerAcessorio(a.id)}
-                                                className="rounded-lg border border-musgo-600 px-2 text-sm hover:bg-musgo-200"
+                                                className="botao-vazado inline-flex size-11 items-center justify-center text-sm"
                                             >
                                                 ✕
                                             </button>
@@ -292,31 +291,31 @@ export default function Checkout() {
                             </ul>
                         )}
 
-                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t border-musgo-200 pt-4 text-sm">
+                        <dl className="mt-4 grid grid-cols-[1fr_auto] gap-2 border-t-2 border-dashed border-linha pt-4 text-sm">
                             <dt>Motocicleta</dt>
-                            <dd className="font-semibold">{formatarPreco(moto.preco)}</dd>
+                            <dd className="font-bold">{formatarPreco(moto.preco)}</dd>
                             {totalAcessorios > 0 && (
                                 <>
                                     <dt>Acessórios</dt>
-                                    <dd className="font-semibold">{formatarPreco(totalAcessorios)}</dd>
+                                    <dd className="font-bold">{formatarPreco(totalAcessorios)}</dd>
                                 </>
                             )}
                             <dt className="text-base font-bold">Valor total</dt>
                             <dd className="text-base font-bold">{formatarPreco(moto.preco + totalAcessorios)}</dd>
                         </dl>
 
-                        <p className="mt-4 rounded-lg bg-aviso/40 p-3 text-xs">
+                        <p className="mt-4 bg-fita p-3 text-xs text-tinta">
                             Esta é uma reserva de demonstração: nenhuma cobrança é feita.
                         </p>
 
                         <button
                             type="submit"
-                            className="mt-4 w-full rounded-lg bg-musgo-900 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-musgo-600"
+                            className="botao mt-4 min-h-11 w-full px-6 py-3 text-sm"
                         >
                             Confirmar reserva e gerar voucher
                         </button>
                         <p className="mt-3 text-center text-sm">
-                            <Link to={`/simulador?moto=${moto.id}`} className="underline">
+                            <Link to={`/simulador?moto=${moto.id}`} className="inline-flex min-h-11 items-center underline">
                                 ← Ajustar parcelas no simulador
                             </Link>
                         </p>
@@ -325,4 +324,4 @@ export default function Checkout() {
             </div>
         </section>
     )
-}
+}
