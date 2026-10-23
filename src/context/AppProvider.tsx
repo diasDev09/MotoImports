@@ -3,12 +3,13 @@ import type { ReactNode } from 'react'
 import type { Moto } from '../data/motos.ts'
 import type { LeadRegistrado } from '../domain/lead.ts'
 import { AppContext } from './AppContext.ts'
-import type { Acessorio, AppContextValue } from './AppContext.ts'
+import type { Acessorio, AppContextValue, Simulacao } from './AppContext.ts'
 
 export function AppProvider({ children }: { children: ReactNode }) {
     const [motoSelecionada, setMotoSelecionada] = useState<Moto | null>(null)
     const [acessorios, setAcessorios] = useState<Acessorio[]>([])
     const [lead, setLead] = useState<LeadRegistrado | null>(null)
+    const [simulacao, setSimulacao] = useState<Simulacao | null>(null)
 
     // não deixa adicionar o mesmo acessório duas vezes
     function adicionarAcessorio(item: Acessorio) {
@@ -36,6 +37,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         totalAcessorios,
         lead,
         registrarLead: setLead,
+        simulacao,
+        salvarSimulacao: setSimulacao,
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

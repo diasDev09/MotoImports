@@ -39,7 +39,7 @@ describe('layout e rotas', () => {
         // o mesmo texto existe no rodapé; por isso a busca fica dentro da navegação principal
         const menu = screen.getByRole('navigation', { name: 'Principal' })
         await user.click(within(menu).getByRole('link', { name: 'Simulador' }))
-        expect(screen.getByRole('heading', { level: 1, name: 'Simulador de financiamento' })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { level: 1, name: /simulador de financiamento e consórcio/i })).toBeInTheDocument()
     })
 })
 

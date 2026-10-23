@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { AppProvider } from './AppProvider.tsx'
 import { useApp } from './AppContext.ts'
 import { motos } from '../data/motos.ts'
+import { simularOperacao } from '../domain/financing.ts'
 
 const wrapper = ({ children }: { children: ReactNode }) => <AppProvider>{children}</AppProvider>
 
@@ -42,6 +43,18 @@ describe('AppContext', () => {
         expect(result.current.totalAcessorios).toBe(50)
         act(() => result.current.limparAcessorios())
         expect(result.current.acessorios).toEqual([])
+    })
+
+    it('guarda a simulação e permite limpar', () => {
+        const { result } = renderHook(() => useApp(), { wrapper })
+        expect(result.current.simulacao).toBeNull()
+
+        const simulacao = simularOperacao({ moto: { preco: 100000 }, meses: 24 })
+        act(() => result.current.salvarSimulacao(simulacao))
+        expect(result.current.simulacao?.meses).toBe(24)
+
+        act(() => result.current.salvarSimulacao(null))
+        expect(result.current.simulacao).toBeNull()
     })
 
     it('guarda o lead registrado', () => {
