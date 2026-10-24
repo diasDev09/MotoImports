@@ -1,123 +1,102 @@
-# MotoImports
+# MotoImports v2
 
-Site de uma loja de motos importadas: catálogo, ficha da moto com preço "tudo incluso", simulador de financiamento e consórcio, reserva com voucher (fictícia), pós-venda e boutique. Projeto acadêmico em grupo — **a v2 é uma reconstrução da [v1](https://github.com/diasDev09/MotoImports)**, feita passo a passo, com testes e lint desde o início.
+Site de uma loja de motos importadas: catálogo, ficha com preço final, simulador de financiamento e consórcio, reserva com voucher, oficina e boutique. Projeto acadêmico de demonstração: nenhuma reserva ou pedido gera cobrança.
 
-> **Aviso:** é um projeto de demonstração. Reservas, vouchers, carrinho da boutique e agendamentos **não** geram cobrança nem compromisso real, e os dados de lojas, preços e taxas são fictícios ou provisórios (veja [Pendências](#pendências-e-decisões-em-aberto)).
-
-## Funcionalidades
-
-| Página        | Rota         | O que faz                                                                                                     | Requisitos                         |
-| ------------- | ------------ | ------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| Início        | `/`          | Vitrine, conta-giros e destaques                                                                              | —                                  |
-| Catálogo      | `/catalogo`  | Filtros por categoria, modo de pilotagem e cilindrada                                                         | RF-01                              |
-| Ficha da moto | `/moto/:id`  | Ficha técnica, preço final e sua composição, selo de estoque, atalhos para simular, reservar e pedir proposta | RF-02, RF-05, RF-09                |
-| Contato       | `/contato`   | Formulário de lead, proposta e vídeo de test-ride                                                             | RF-05, RF-06                       |
-| Simulador     | `/simulador` | Financiamento (Tabela Price) e consórcio, entrada, prazo de 12 a 72 meses e acessórios                        | RF-07, RN-03, RN-04, RN-07         |
-| Checkout      | `/checkout`  | Loja de retirada, forma de pagamento e voucher de reserva de demonstração                                     | RF-08, RN-02, RN-05, RN-06, RNF-05 |
-| Pós-venda     | `/pos-venda` | Agendamento na oficina com calendário e horários ocupados bloqueados                                          | RF-10                              |
-| Boutique      | `/boutique`  | Produtos, filtros e carrinho de demonstração                                                                  | —                                  |
+- Relatório do projeto: https://diasdev09.github.io/MotoImports/
+- Mapa interativo do código: https://diasdev09.github.io/MotoImports/mapa/
+- Versão 1 (legado): branch `v1-legado`
 
 ## Stack
 
-- **Vite + React 19 + TypeScript** (modo estrito)
-- **Tailwind CSS v4**, com a paleta "musgo" definida em `@theme`
-- **React Router** · **React Hook Form + Zod 4** nos formulários · **react-day-picker** no calendário
-- **Vitest + jsdom + Testing Library** (unidade e componentes) · **Playwright** (E2E)
-- **oxlint** (com as regras de React) · **Husky** (pre-commit) · **GitHub Actions**
+Vite 8, React 19, TypeScript estrito, React Router 7, Tailwind CSS 4, React Hook Form com Zod, Firebase (Authentication e Firestore), Vitest, Testing Library, Playwright e oxlint.
 
 ## Como rodar
-
-Pré-requisito: Node.js em versão atual (LTS) e npm.
 
 ```bash
 git clone https://github.com/diasDev09/MotoImports.git
 cd MotoImports
 npm install
-npm run dev        # servidor de desenvolvimento
+cp .env.example .env.local   # preencha as 4 variáveis VITE_FIREBASE_*
+npm run dev
 ```
 
-Scripts do dia a dia:
+Sem o `.env.local` o site funciona, mas sem login nem gravação de dados. Configuração do Firebase: [docs/LOGIN-GOOGLE.md](docs/LOGIN-GOOGLE.md) e [docs/FIRESTORE.md](docs/FIRESTORE.md).
 
-```bash
-npm test           # testes (Vitest)
-npm run lint       # oxlint
-npx tsc -b         # checagem de tipos
-npm run build      # build de produção
-```
+| Comando | O que faz |
+| --- | --- |
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm test` | Testes unitários e de componentes (Vitest) |
+| `npm run lint` | oxlint |
+| `npm run build` | Checagem de tipos e build de produção |
+| `npx playwright test` | Testes E2E |
 
-Antes de abrir um PR, rode `npm run lint`, `npm test` e `npx tsc -b`; os três precisam passar sem erros nem avisos.
+## Telas
+
+| Rota | Tela | Requisitos |
+| --- | --- | --- |
+| `/` | Início | RF-01 |
+| `/catalogo` | Catálogo com filtros na URL | RF-03 |
+| `/moto/:id` | Ficha, preço composto e simulador | RF-02, RF-07 |
+| `/checkout` | Reserva e voucher (exige login) | RF-08 |
+| `/oficina` | Agendamento de serviço (exige login) | RF-10 |
+| `/boutique` | Equipamentos e carrinho | |
+| `/contato` | Contato e proposta | RF-01, RF-05, RF-06 |
+| `*` | Página não encontrada | |
 
 ## Estrutura
 
 ```
 src/
-  domain/       regras de negócio em TypeScript puro (sem React), com teste ao lado
-  data/         dados e configuração (motos, acessórios, boutique, contato, parâmetros)
-  context/      estado compartilhado (AppContext / AppProvider)
-  components/   componentes reutilizáveis
   pages/        uma página por rota
-  features/     lógica de tela reutilizável (ex.: filtros do catálogo)
-  utils/        formatadores (preço, cilindrada, WhatsApp)
-  test/         configuração dos testes
+  components/   menu, formulários, cartões, modal, voucher
+  context/      estado global (moto, acessórios, lead, simulação)
+  features/     filtros do catálogo
+  domain/       regras puras: preço, financiamento, reserva
+  utils/        validações, agenda, formatadores
+  data/         motos, acessórios, boutique, serviços, alíquotas
+  auth/         login com Google e barreira ExigeLogin
+  storage/      interface Repositorio e implementação em Firestore
+  lib/          inicialização do Firebase
+  test/         utilitários de teste (login e repositório falsos)
+public/img/     fotos em WebP (motos 4:3, boutique 1:1)
+e2e/            testes Playwright
+site/           relatório e mapa do código (GitHub Pages)
 ```
 
-Princípios: regra de negócio fica em `domain/` e é testada sem interface; valores que podem mudar (alíquotas, taxas, contatos) ficam em `data/`, nunca dentro das funções; formatação de valores sempre via `utils/formatters.ts`.
+Regra de negócio fica em funções puras, sem React. As telas só conhecem as interfaces de login e de `Repositorio`, ambas injetáveis, por isso os testes rodam sem rede.
 
-## Regras de negócio em resumo
+## Login e dados
 
-- **Preço (RN-01):** o campo `preco` das motos é o **valor final**, com frete, despacho, imposto de importação e impostos fiscais. A composição é calculada por `decomporPrecoFinal` e a soma sempre fecha no preço do catálogo.
-- **Financiamento:** Tabela Price, 1,49% a.m. Entrada de 20% a 80%.
-- **Consórcio:** 12% de taxa administrativa + 2% de fundo de reserva, sem juros bancários. Entrada (lance) de 10% a 70%. A contemplação depende de sorteio ou lance.
-- **Prazos:** 12, 24, 36, 48, 60 ou 72 meses; qualquer outro valor é recusado.
-- **Reserva (RN-05/06):** validade de 7 dias e sempre com aviso de que é uma simulação, sem cobrança.
-- **Estoque (RN-02, RF-09):** pronta entrega, em trânsito aduaneiro ou sob pedido; o selo usa ícone e texto, nunca só cor.
-- **LGPD (RNF-05):** checkout e pós-venda pedem consentimento explícito antes de enviar.
-- **Agendamento (RF-10):** só datas de hoje em diante; horários já ocupados são bloqueados.
+O login usa o Google. Ele é exigido para reservar, confirmar pedido na boutique e agendar na oficina. Os dados vão para o Firestore:
+
+- `users/{uid}/reservas/{código}`
+- `users/{uid}/pedidosBoutique/{id}`
+- `users/{uid}/agendamentos/{id}`
+- `leads/{id}` (contato, criação pública)
+
+As regras estão em `firestore.rules`: cada pessoa lê e cria só o que está sob o próprio `uid`; não há edição nem exclusão. As chaves do Firebase não são segredos, quem protege os dados são as regras.
+
+## Visual
+
+Paleta Ivory `#F9F8F7` (página), Almond `#EDEAE4` (cartões), Mist `#ADB8BB`, Navy `#153147` (ação e faixas) e Noir `#232A2F` (texto). Títulos em Georgia, texto na fonte do sistema. Os tokens ficam em `src/index.css`.
+
+## Qualidade
+
+343 testes em 35 arquivos, mais E2E. O Husky roda lint e testes no commit. O CI (`.github/workflows/ci.yml`) roda lint, testes e build em todo push e PR para a `main`. A pasta `site/` é publicada pelo workflow `pages.yml`.
 
 ## Como contribuir
 
-1. Crie um branch a partir da `main` e faça **um commit por passo**, em mensagens no padrão Conventional Commits (`feat(...)`, `fix(...)`).
-2. Código portado da v1 mantém o comportamento original e leva `Co-authored-by` da pessoa que o escreveu. Correções e melhorias nossas entram em commit separado.
-3. Toda mudança de regra vem com teste. Regras em `domain/`, comportamento de tela em `pages/` e `components/`.
-4. Se mudar o nome de um campo compartilhado (por exemplo em `data/motos.ts` ou no `AppContext`), avise o grupo.
+1. Crie uma branch a partir da `main` (`feat/...`, `fix/...`, `docs/...`).
+2. Um commit por passo, com mensagem no padrão Conventional Commits.
+3. Rode `npm test`, `npm run lint` e `npm run build` antes do PR.
+4. Versões são tags no formato `vX.Y.Z`, criadas na `main` depois do merge.
+
+## Pendências
+
+Do cliente: WhatsApp e e-mail comerciais, lojas de retirada reais, alíquotas e taxas reais, vídeos de test-ride, serviços e dias da oficina.
+
+Técnicas: testar as regras do Firestore no emulador e publicá-las; proteger o formulário de contato (App Check ou login); validar preços no servidor se os pedidos deixarem de ser demonstração; política de privacidade e retenção (LGPD); página de minhas reservas; agenda real da oficina; reduzir o pacote principal (cerca de 556 kB); revisar as fotos, que são geradas por IA; escolher a licença. Lista completa no [relatório](https://diasdev09.github.io/MotoImports/#pendencias).
 
 ## Equipe
 
-| Pessoa              | Trabalho principal                                                                            |
-| ------------------- | --------------------------------------------------------------------------------------------- |
-| Emilly Marrocos     | Layout, Home, conta-giros, cartão de destaque, tema, contexto, formatadores e dados das motos |
-| Ariely Lopes        | Pós-venda e Boutique                                                                          |
-| Santos (`rhawan81`) | Simulador, financiamento e reserva                                                            |
-| Mylena Monteiro     | Formulário de lead, vídeo de test-ride e proposta                                             |
-| Caio Dias           | Reconstrução da v2 e integração                                                               |
-
-## Pendências e decisões em aberto
-
-O código roda e está testado, mas estes pontos dependem de decisão do cliente ou do grupo. Até lá, o site usa valores provisórios.
-
-### Cliente
-
-| Tema                                                                                | Situação atual                                                                                                                                     | Onde mudar                                           |
-| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| WhatsApp e e-mail comerciais (destino das propostas)                                | Vazios: o WhatsApp abre sem contato e o e-mail sem destinatário                                                                                    | `src/data/contato.ts`                                |
-| Lojas de retirada reais                                                             | 5 lojas fictícias                                                                                                                                  | `src/domain/reservation.ts` (`LOJAS_RETIRADA`)       |
-| Preços e alíquotas reais (frete, despacho, imposto de importação, impostos fiscais) | Valores **provisórios** (risco R2 do roadmap); só a divisão do preço depende deles, o total é o preço do catálogo                                  | `src/data/parametros-precificacao.ts`                |
-| Taxas reais de financiamento e consórcio                                            | 1,49% a.m.; 12% + 2%                                                                                                                               | `src/domain/financing.ts` (`PARAMETROS_FINANCEIROS`) |
-| Fotos das motos e vídeos de test-ride                                               | Campos `imagem` e `videoUrl` vazios; a ficha mostra a cilindrada no lugar da foto e esconde o botão de vídeo                                       | `src/data/motos.ts`                                  |
-| Serviços e dias de funcionamento da oficina                                         | Segue a v1 (revisão, óleo, freios, diagnóstico); a ERS cita revisão, fluidos, pista e vistoria. O calendário aceita qualquer dia, domingo incluído | `src/data/posVenda.ts`                               |
-
-### Grupo
-
-| Tema                                              | Observação                                                                                     |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Página da política de privacidade                 | Os checkboxes de LGPD precisam apontar para ela                                                |
-| Confirmar os e-mails de git do Santos e da Mylena | Usados no `Co-authored-by` dos commits                                                         |
-| Carrinho da Boutique × acessórios da reserva      | Hoje são separados; decidir se unifica                                                         |
-| Visualizador 360°                                 | Só quando houver as imagens (`imagens360`)                                                     |
-| Agenda real da oficina                            | A ocupação dos horários hoje é simulada (`src/domain/agenda.ts`); trocar quando houver sistema |
-| Aviso visual de "entrada ajustada" no Simulador   | O domínio já informa (`entradaAjustada`); falta mostrar na tela                                |
-| Comparativo de consórcio × financiamento          | Decidir como apresentar sem sugerir que o consórcio é sempre mais barato                       |
-
-## Licença
-
-A definir pelo grupo.
+Projeto do grupo MotoImports. A v1 foi feita em grupo e a v2 reconstrói o projeto passo a passo, mantendo o crédito de quem escreveu cada parte portada.
