@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Relatório atualizado do MotoImports v2: stack, arquitetura, login, armazenamento, design, testes e pendências.">
+<title>Relatório MotoImports v2</title>
+<style>
+/* Layout: documento de leitura em coluna única, navegação fixa no topo e sumário lateral em telas largas.
+   Visual do próprio projeto: Ivory/Almond/Mist/Navy/Noir, Georgia nos títulos, fonte do sistema no texto. */
+:root{
+  --ivory:#F9F8F7; --almond:#EDEAE4; --mist:#ADB8BB; --navy:#153147; --noir:#232A2F;
+  --bg:var(--ivory); --surface:var(--almond); --fg:var(--noir); --muted:#4A565C; --line:#C9CFD0; --accent:var(--navy); --on-accent:var(--ivory);
+  --warn:#8a5a00; --warn-bg:#f3e7c9;
+  --display:Georgia,"Times New Roman",Times,serif;
+  --sans:ui-sans-serif,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171d21; --surface:#1f272c; --fg:#ECE8E1; --muted:#AEB9BD; --line:#34414a; --accent:#ADB8BB; --on-accent:#171d21;
+  --warn:#e8c26a; --warn-bg:#3a3118; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#171d21; --surface:#1f272c; --fg:#ECE8E1; --muted:#AEB9BD; --line:#34414a; --accent:#ADB8BB; --on-accent:#171d21;
+  --warn:#e8c26a; --warn-bg:#3a3118; color-scheme:dark;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.015em}
+h2{font-size:1.65rem;letter-spacing:-.01em;margin-top:8px}
+h3{font-size:1.15rem;margin-top:22px}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+code{font-family:var(--mono);font-size:.88em;background:var(--surface);padding:1px 5px;overflow-wrap:anywhere}
+nav.top{position:sticky;top:0;z-index:5;background:var(--navy);color:#F9F8F7;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px))}
+nav.top div{max-width:1100px;margin-inline:auto;display:flex;flex-wrap:wrap;gap:4px 20px;align-items:center;min-height:48px}
+nav.top b{font-family:var(--display);font-size:1.1rem;margin-right:auto}
+nav.top a{color:#F9F8F7;padding:12px 2px;text-decoration:none;font-weight:600;border-bottom:3px solid transparent}
+nav.top a:hover,nav.top a[aria-current]{border-bottom-color:var(--mist)}
+.shell{max-width:1100px;margin-inline:auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px;padding-block:36px 72px}
+aside.toc{position:sticky;top:72px;align-self:start;font-size:.9rem}
+aside.toc p{margin:0 0 8px;text-transform:uppercase;letter-spacing:.08em;font-size:.75rem;color:var(--muted)}
+aside.toc a{display:block;padding:4px 0;text-decoration:none;color:var(--fg)}
+aside.toc a:hover{text-decoration:underline}
+article{min-width:0;display:flex;flex-direction:column;gap:18px;max-width:760px}
+article p,article ul,article ol{margin:0}
+article ul,article ol{padding-left:1.25rem;display:flex;flex-direction:column;gap:6px}
+section{display:flex;flex-direction:column;gap:14px;padding-top:28px;border-top:1.5px solid var(--line)}
+section:first-of-type{border-top:0;padding-top:0}
+.lead{font-size:1.15rem;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border:1.5px solid var(--line)}
+.facts div{padding:12px 14px;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);margin:0 -1.5px -1.5px 0}
+.facts dt{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.facts dd{margin:0;font-family:var(--display);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--surface);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+tr:last-child td{border-bottom:0}
+.sw{display:flex;flex-wrap:wrap;gap:0;border:1.5px solid var(--line)}
+.sw div{flex:1 1 120px;min-width:0}
+.sw i{display:block;height:64px;border-bottom:1.5px solid var(--line)}
+.sw span{display:block;padding:8px 10px;font-size:.85rem}
+.sw b{display:block;font-family:var(--display);font-size:1rem}
+.note{background:var(--warn-bg);color:var(--fg);border-left:4px solid var(--warn);padding:12px 14px}
+.map{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--surface);padding:16px;border:1.5px solid var(--line)}
+.map p{flex:1 1 260px}
+.btn{display:inline-block;padding:10px 16px;background:var(--accent);color:var(--on-accent);font-weight:700;text-decoration:none;border:1.5px solid var(--accent)}
+.btn:hover{opacity:.9}
+.tag{display:inline-block;font-size:.75rem;padding:1px 7px;border:1.5px solid var(--line);text-transform:uppercase;letter-spacing:.05em;margin-right:4px;white-space:nowrap}
+.tag.ok{border-color:var(--accent)}
+footer{max-width:1100px;margin-inline:auto;padding-block:0 40px;color:var(--muted);font-size:.88rem}
+@media (max-width:860px){.shell{grid-template-columns:minmax(0,1fr);gap:20px}aside.toc{position:static}aside.toc nav{display:flex;flex-wrap:wrap;gap:2px 14px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Principal"><div><b>MotoImports v2</b><a href="./" aria-current="page">Relatório</a><a href="mapa/">Mapa do código</a><a href="https://github.com/diasDev09/MotoImports">Repositório</a></div></nav>
+
+<div class="shell">
+<aside class="toc"><p>Neste relatório</p><nav aria-label="Seções">
+<a href="#resumo">Resumo</a><a href="#historia">História</a><a href="#arquitetura">Arquitetura</a><a href="#fluxos">Fluxos</a><a href="#login">Login e dados</a><a href="#visual">Sistema visual</a><a href="#qualidade">Qualidade</a><a href="#rodar">Como rodar</a><a href="#pendencias">Pendências</a><a href="#documentos">Documentos</a></nav></aside>
+
+<article>
+<header>
+<h1>Relatório do projeto MotoImports v2</h1>
+<p class="lead" style="margin-top:12px">Estado do projeto na versão 2.0.2: o que existe, como está organizado, o que foi decidido e o que ainda depende de alguém.</p>
+</header>
+
+<section id="resumo">
+<h2>Resumo</h2>
+<p>MotoImports é o site de uma loja de motos importadas. O visitante vê o catálogo, abre a ficha com preço final (frete, despacho e impostos inclusos), simula financiamento ou consórcio, reserva a moto com um voucher, agenda serviço na oficina e compra equipamentos na boutique. Tudo é demonstração: nenhuma reserva ou pedido gera cobrança.</p>
+<dl class="facts">
+<div><dt>Telas</dt><dd>8 rotas</dd></div>
+<div><dt>Motos</dt><dd>8</dd></div>
+<div><dt>Boutique</dt><dd>11 produtos</dd></div>
+<div><dt>Código</dt><dd>54 arquivos</dd></div>
+<div><dt>Testes</dt><dd>343 em 35 arquivos</dd></div>
+<div><dt>Banco</dt><dd>Firestore</dd></div>
+</dl>
+<p>Stack: Vite 8, React 19, TypeScript estrito, React Router 7, Tailwind CSS 4, React Hook Form com Zod, Firebase (login e Firestore), Vitest, Testing Library, Playwright e oxlint.</p>
+<div class="map"><p>Para ver como os arquivos se ligam, abra o mapa interativo do código, com camadas, requisitos e um tour de 12 paradas.</p><a class="btn" href="mapa/">Abrir o mapa do código</a></div>
+</section>
+
+<section id="historia">
+<h2>História</h2>
+<p>A v1 foi feita em grupo e provou o conceito, mas acumulou validações com <code>alert()</code>, regras misturadas aos componentes e textos fixos dentro das funções. A v2 reconstrói o projeto passo a passo, com um commit por passo, testes desde o início, e mantém o crédito de quem escreveu cada parte portada. A v1 continua na branch <code>v1-legado</code>.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Fase</th><th>O que entrou</th></tr></thead>
+<tbody>
+<tr><td>Fundação</td><td>Vite, React, TypeScript estrito, Vitest, lint, Husky, CI e E2E.</td></tr>
+<tr><td>Partes 1 a 5</td><td>Layout, estado global, catálogo e filtros, preço composto, simulador, reserva com voucher, lead e proposta, pós-venda com calendário, boutique e ficha da moto.</td></tr>
+<tr><td>Design grunge</td><td>Redesenho completo no estilo dos anos 90, aplicado ao código real.</td></tr>
+<tr><td>Ajustes visuais</td><td>Impressão só do voucher, novo layout do resultado do simulador, favicon novo e remoção do conta-giros.</td></tr>
+<tr><td>Login com Google</td><td>Firebase Authentication. Só quem entrou reserva, confirma pedido na boutique e agenda na oficina.</td></tr>
+<tr><td>Armazenamento</td><td>Reservas, pedidos, agendamentos e contatos gravados no Firestore, com regras de segurança.</td></tr>
+<tr><td>Nova paleta e fotos</td><td>Paleta Ivory, Almond, Mist, Navy e Noir, e fotos das 8 motos e dos 11 produtos em WebP.</td></tr>
+<tr><td>Documentação</td><td>README, mapa do código e este relatório, publicados no GitHub Pages.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="arquitetura">
+<h2>Arquitetura</h2>
+<p>O código segue uma regra simples: regra de negócio em funções puras, sem React, e a tela só monta e mostra.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Camada</th><th>Pasta</th><th>Função</th></tr></thead>
+<tbody>
+<tr><td>Telas</td><td><code>src/pages</code></td><td>Uma página por rota.</td></tr>
+<tr><td>Componentes</td><td><code>src/components</code></td><td>Menu, formulários, cartões, modal, voucher.</td></tr>
+<tr><td>Estado</td><td><code>src/context</code>, <code>src/features</code></td><td>Moto escolhida, acessórios, lead e simulação; filtros do catálogo na URL.</td></tr>
+<tr><td>Regras</td><td><code>src/domain</code>, <code>src/utils</code></td><td>Preço, financiamento, reserva, validações, agenda, formatadores.</td></tr>
+<tr><td>Dados</td><td><code>src/data</code></td><td>Motos, acessórios, boutique, serviços, alíquotas. Valores que mudam ficam aqui.</td></tr>
+<tr><td>Login</td><td><code>src/auth</code></td><td>Provider, hook <code>useAuth</code> e a barreira <code>ExigeLogin</code>.</td></tr>
+<tr><td>Armazenamento</td><td><code>src/storage</code>, <code>src/lib/firestore.ts</code></td><td>Interface <code>Repositorio</code> e implementação em Firestore.</td></tr>
+<tr><td>Testes</td><td>ao lado de cada arquivo</td><td>Vitest e Testing Library, com login e repositório falsos.</td></tr>
+</tbody></table></div>
+<p>As telas só conhecem a interface <code>Repositorio</code> e o serviço de login. Os dois são injetáveis, por isso os testes rodam sem rede e sem Firebase.</p>
+</section>
+
+<section id="fluxos">
+<h2>Fluxos principais</h2>
+<ul>
+<li><b>Preço final (RN-01, RF-02).</b> O campo <code>preco</code> de cada moto já é o valor final. A composição é calculada de trás para frente com as alíquotas de <code>parametros-precificacao.ts</code> e sempre fecha no preço do catálogo.</li>
+<li><b>Simulador (RF-07).</b> Financiamento (Tabela Price, 1,49% a.m., entrada de 20% a 80%) e consórcio (12% de taxa mais 2% de fundo, lance de 10% a 70%), prazos de 12 a 72 meses, com acessórios no saldo (RN-07).</li>
+<li><b>Reserva (RF-08).</b> O checkout valida o cliente, escolhe a loja e grava no Firestore. Só depois emite o voucher, com validade de 7 dias e aviso de simulação (RN-05, RN-06). Se a gravação falha, não há voucher.</li>
+<li><b>Oficina (RF-10).</b> Calendário sem datas passadas e horários ocupados bloqueados. A ocupação ainda é simulada.</li>
+<li><b>Boutique.</b> Carrinho próprio, separado dos acessórios da moto. O pedido é de demonstração e é gravado ao confirmar.</li>
+<li><b>Contato (RF-01, RF-06).</b> Formulário público com consentimento LGPD (RNF-05). Gera a proposta por WhatsApp ou e-mail. Se guardar no banco falhar, a pessoa não é barrada.</li>
+</ul>
+</section>
+
+<section id="login">
+<h2>Login e armazenamento</h2>
+<p>O login usa o Google, via Firebase Authentication. Ele é exigido para <code>/checkout</code>, para confirmar o pedido da boutique e para agendar na oficina. Navegar, simular e pedir proposta continuam abertos.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Ação</th><th>Caminho no Firestore</th></tr></thead>
+<tbody>
+<tr><td>Reserva</td><td><code>users/{uid}/reservas/{código do voucher}</code></td></tr>
+<tr><td>Pedido da boutique</td><td><code>users/{uid}/pedidosBoutique/{id}</code></td></tr>
+<tr><td>Agendamento</td><td><code>users/{uid}/agendamentos/{id}</code></td></tr>
+<tr><td>Contato</td><td><code>leads/{id}</code></td></tr>
+</tbody></table></div>
+<p>As regras (<code>firestore.rules</code>) deixam cada pessoa criar e ler só o que está sob o próprio <code>uid</code>, não permitem editar nem apagar, e deixam qualquer pessoa criar um contato sem poder lê-lo. As chaves do Firebase no <code>.env.local</code> não são segredos. Quem protege os dados são as regras.</p>
+<p class="note"><b>Limites conhecidos.</b> As regras não foram testadas em emulador. O preço do pedido vem do navegador e não pode ser conferido pelas regras. O formulário de contato aceita envio sem login e pode receber spam.</p>
+</section>
+
+<section id="visual">
+<h2>Sistema visual</h2>
+<p>A paleta tem cinco cores. A página é Ivory, os cartões e formulários são Almond, e menu, rodapé e chamadas usam Navy. As cores de texto, linha, erro e sombra mudam conforme a superfície, e os componentes usam esses nomes em vez de cores fixas.</p>
+<div class="sw" role="img" aria-label="Paleta: Ivory F9F8F7, Almond EDEAE4, Mist ADB8BB, Navy 153147, Noir 232A2F">
+<div><i style="background:#F9F8F7"></i><span><b>Ivory</b>#F9F8F7 · página</span></div>
+<div><i style="background:#EDEAE4"></i><span><b>Almond</b>#EDEAE4 · cartões</span></div>
+<div><i style="background:#ADB8BB"></i><span><b>Mist</b>#ADB8BB · destaques</span></div>
+<div><i style="background:#153147"></i><span><b>Navy</b>#153147 · ação e faixas</span></div>
+<div><i style="background:#232A2F"></i><span><b>Noir</b>#232A2F · texto</span></div>
+</div>
+<p>Títulos em Georgia e texto na fonte do sistema, sem baixar fontes. Os contrastes de texto ficam acima de 4,5:1 e as bordas de campos e opções acima de 3:1. As fotos ficam em <code>public/img</code>, em WebP: 4:3 nas motos e 1:1 na boutique.</p>
+</section>
+
+<section id="qualidade">
+<h2>Qualidade</h2>
+<ul>
+<li><b>343 testes</b> em 35 arquivos, mais 2 especificações de E2E com Playwright.</li>
+<li><b>Lint e tipos:</b> oxlint com as regras de React e TypeScript em modo estrito.</li>
+<li><b>Husky:</b> o commit roda lint e testes. Quem falha não entra.</li>
+<li><b>CI no GitHub Actions:</b> lint, testes e build em todo push e PR para a <code>main</code>.</li>
+<li><b>Teste de imagens:</b> falha se algum caminho de foto apontar para um arquivo que não existe.</li>
+<li><b>Acessibilidade:</b> foco preso no modal, rótulos ligados aos campos, erros anunciados, selo de estoque com ícone e texto, respeito a <code>prefers-reduced-motion</code>.</li>
+</ul>
+</section>
+
+<section id="rodar">
+<h2>Como rodar</h2>
+<ol>
+<li><code>git clone https://github.com/diasDev09/MotoImports.git</code> e <code>npm install</code>.</li>
+<li>Para o login e o armazenamento, copie <code>.env.example</code> para <code>.env.local</code> e preencha as quatro variáveis <code>VITE_FIREBASE_*</code>. Sem elas o site funciona, mas sem login nem gravação.</li>
+<li><code>npm run dev</code> para desenvolver; <code>npm test</code>, <code>npm run lint</code> e <code>npm run build</code> antes de abrir um PR.</li>
+</ol>
+<p>A configuração do Firebase está em <code>docs/LOGIN-GOOGLE.md</code> e <code>docs/FIRESTORE.md</code>.</p>
+</section>
+
+<section id="pendencias">
+<h2>Pendências</h2>
+<h3>Do cliente</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Tema</th><th>Hoje</th></tr></thead>
+<tbody>
+<tr><td>WhatsApp e e-mail comerciais</td><td>Vazios. O WhatsApp abre sem contato e o e-mail sem destinatário (<code>src/data/contato.ts</code>).</td></tr>
+<tr><td>Lojas de retirada reais</td><td>5 lojas fictícias (<code>LOJAS_RETIRADA</code>).</td></tr>
+<tr><td>Alíquotas e custos reais</td><td>Provisórios. Só a divisão do preço depende deles.</td></tr>
+<tr><td>Taxas de financiamento e consórcio</td><td>1,49% a.m.; 12% mais 2%.</td></tr>
+<tr><td>Vídeos de test-ride</td><td>Campo <code>videoUrl</code> vazio; o botão de vídeo fica escondido.</td></tr>
+<tr><td>Serviços e dias da oficina</td><td>Seguem a v1. O calendário aceita qualquer dia, domingo incluído.</td></tr>
+<tr><td>Fotos</td><td>São imagens geradas por IA, que aproximam os modelos reais. Conferir detalhes e o uso das marcas antes de publicar.</td></tr>
+</tbody></table></div>
+<h3>Técnicas e do grupo</h3>
+<ul>
+<li>Testar as regras do Firestore no emulador e publicá-las no console.</li>
+<li>Proteger o formulário de contato (App Check ou login).</li>
+<li>Validar preços e totais no servidor se os pedidos deixarem de ser demonstração.</li>
+<li>Página de política de privacidade e prazo de retenção dos dados (LGPD).</li>
+<li>Página "minhas reservas" para a pessoa logada ver o que gravou.</li>
+<li>Decidir se o carrinho da boutique e os acessórios da reserva se unem.</li>
+<li>Agenda real da oficina no lugar da simulada.</li>
+<li>Mostrar na tela o aviso de "entrada ajustada" do simulador.</li>
+<li>Reduzir o pacote principal (cerca de 556 kB); o Firebase já carrega sob demanda.</li>
+<li>Escolher a licença do projeto.</li>
+</ul>
+</section>
+
+<section id="documentos">
+<h2>Documentos</h2>
+<ul>
+<li><a href="mapa/">Mapa do código</a>: grafo interativo, com camadas e tour.</li>
+<li><a href="https://github.com/diasDev09/MotoImports#readme">README</a>: visão geral e como rodar.</li>
+<li><code>docs/LOGIN-GOOGLE.md</code> e <code>docs/FIRESTORE.md</code>: configuração do Firebase.</li>
+<li><code>docs/relatorio.md</code>: relatório original por passos, com o arquivo por arquivo. Foi escrito antes do redesenho, do login e do armazenamento, então a paleta "musgo", o conta-giros e as fotos externas que cita já não existem.</li>
+</ul>
+</section>
+</article>
+</div>
+<footer>MotoImports v2 · projeto acadêmico de demonstração · relatório gerado em 23/10/2026</footer>
+</body>
+</html>

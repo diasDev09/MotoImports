@@ -1,0 +1,3920 @@
+{
+ "version": "1.0.0",
+ "project": {
+  "name": "MotoImports v2",
+  "description": "Loja online de motos importadas com simulador, reserva, boutique e oficina.",
+  "languages": [
+   "TypeScript",
+   "CSS"
+  ],
+  "frameworks": [
+   "React 19",
+   "React Router 7",
+   "Vite 8",
+   "Tailwind CSS 4",
+   "Zod",
+   "React Hook Form",
+   "Firebase (Auth, Firestore)",
+   "Vitest",
+   "Playwright"
+  ],
+  "analyzedAt": "2026-10-23",
+  "source": "src/ da branch main após a v2.0.2"
+ },
+ "nodes": [
+  {
+   "id": ".env.example",
+   "type": "config",
+   "name": ".env.example",
+   "filePath": ".env.example",
+   "summary": "Modelo das variáveis VITE_FIREBASE_* (as reais ficam em .env.local, ignorado pelo Git).",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "docs/FIRESTORE.md",
+   "type": "document",
+   "name": "FIRESTORE.md",
+   "filePath": "docs/FIRESTORE.md",
+   "summary": "Como configurar o Firestore, o que é gravado, o que as regras garantem e os limites.",
+   "layer": "armazenamento",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "docs/LOGIN-GOOGLE.md",
+   "type": "document",
+   "name": "LOGIN-GOOGLE.md",
+   "filePath": "docs/LOGIN-GOOGLE.md",
+   "summary": "Passo a passo para configurar o login com Google no Firebase.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "firebase.json",
+   "type": "config",
+   "name": "firebase.json",
+   "filePath": "firebase.json",
+   "summary": "Aponta a CLI do Firebase para o arquivo de regras.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "firestore.rules",
+   "type": "schema",
+   "name": "firestore.rules",
+   "filePath": "firestore.rules",
+   "summary": "Regras de segurança: cada pessoa lê e cria só o que é dela; leads só podem ser criados.",
+   "layer": "armazenamento",
+   "tags": [
+    "armazenamento"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "index.html",
+   "type": "config",
+   "name": "index.html",
+   "filePath": "index.html",
+   "summary": "Documento HTML raiz da aplicação.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "package.json",
+   "type": "config",
+   "name": "package.json",
+   "filePath": "package.json",
+   "summary": "Dependências (React 19, Router 7, Firebase, Zod, Tailwind 4) e scripts de build, teste e lint.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/App.test.tsx",
+   "type": "file",
+   "name": "App.test.tsx",
+   "filePath": "src/App.test.tsx",
+   "summary": "Testes de App.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/App.tsx",
+   "type": "file",
+   "name": "App.tsx",
+   "filePath": "src/App.tsx",
+   "summary": "Define o layout (menu, conteúdo, rodapé) e as rotas; /checkout só abre para quem está logado.",
+   "layer": "telas",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/auth/AuthContext.ts",
+   "type": "file",
+   "name": "AuthContext.ts",
+   "filePath": "src/auth/AuthContext.ts",
+   "summary": "Tipos de usuário e serviço de login e hooks useAuth/useAuthOpcional.",
+   "layer": "login",
+   "tags": [
+    "login"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/auth/AuthProvider.test.tsx",
+   "type": "file",
+   "name": "AuthProvider.test.tsx",
+   "filePath": "src/auth/AuthProvider.test.tsx",
+   "summary": "Testes de AuthProvider.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/auth/AuthProvider.tsx",
+   "type": "file",
+   "name": "AuthProvider.tsx",
+   "filePath": "src/auth/AuthProvider.tsx",
+   "summary": "Guarda quem está logado e expõe entrar() com Google e sair().",
+   "layer": "login",
+   "tags": [
+    "login"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/auth/ExigeLogin.test.tsx",
+   "type": "file",
+   "name": "ExigeLogin.test.tsx",
+   "filePath": "src/auth/ExigeLogin.test.tsx",
+   "summary": "Testes de ExigeLogin.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/auth/ExigeLogin.tsx",
+   "type": "file",
+   "name": "ExigeLogin.tsx",
+   "filePath": "src/auth/ExigeLogin.tsx",
+   "summary": "Barreira de interface: só mostra o conteúdo a quem está logado; senão convida a entrar.",
+   "layer": "login",
+   "tags": [
+    "login"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/CartaoDestaque.test.tsx",
+   "type": "file",
+   "name": "CartaoDestaque.test.tsx",
+   "filePath": "src/components/CartaoDestaque.test.tsx",
+   "summary": "Testes de CartaoDestaque.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/CartaoDestaque.tsx",
+   "type": "file",
+   "name": "CartaoDestaque.tsx",
+   "filePath": "src/components/CartaoDestaque.tsx",
+   "summary": "Cartão de moto da vitrine e do catálogo (foto 4:3, ficha curta, preço).",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/Footer.tsx",
+   "type": "file",
+   "name": "Footer.tsx",
+   "filePath": "src/components/Footer.tsx",
+   "summary": "Rodapé com links de navegação e contato.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/LeadForm.test.tsx",
+   "type": "file",
+   "name": "LeadForm.test.tsx",
+   "filePath": "src/components/LeadForm.test.tsx",
+   "summary": "Testes de LeadForm.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/LeadForm.tsx",
+   "type": "file",
+   "name": "LeadForm.tsx",
+   "filePath": "src/components/LeadForm.tsx",
+   "summary": "Formulário de lead com validação Zod, máscara de telefone e consentimento LGPD.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/Modal.test.tsx",
+   "type": "file",
+   "name": "Modal.test.tsx",
+   "filePath": "src/components/Modal.test.tsx",
+   "summary": "Testes de Modal.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/Modal.tsx",
+   "type": "file",
+   "name": "Modal.tsx",
+   "filePath": "src/components/Modal.tsx",
+   "summary": "Modal acessível: foco preso, Esc fecha, rolagem travada.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/Navbar.tsx",
+   "type": "file",
+   "name": "Navbar.tsx",
+   "filePath": "src/components/Navbar.tsx",
+   "summary": "Menu superior responsivo, contador de acessórios da reserva e botões Entrar/Sair.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/NotaPreco.test.tsx",
+   "type": "file",
+   "name": "NotaPreco.test.tsx",
+   "filePath": "src/components/NotaPreco.test.tsx",
+   "summary": "Testes de NotaPreco.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/NotaPreco.tsx",
+   "type": "file",
+   "name": "NotaPreco.tsx",
+   "filePath": "src/components/NotaPreco.tsx",
+   "summary": "Nota de preço que mostra de onde vem o preço final, com selo \"Sem taxa surpresa\".",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/Placeholder.tsx",
+   "type": "file",
+   "name": "Placeholder.tsx",
+   "filePath": "src/components/Placeholder.tsx",
+   "summary": "Página provisória usada na rota 404.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/ProposalModal.test.tsx",
+   "type": "file",
+   "name": "ProposalModal.test.tsx",
+   "filePath": "src/components/ProposalModal.test.tsx",
+   "summary": "Testes de ProposalModal.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/ProposalModal.tsx",
+   "type": "file",
+   "name": "ProposalModal.tsx",
+   "filePath": "src/components/ProposalModal.tsx",
+   "summary": "Modal da proposta, com envio por WhatsApp ou e-mail.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/StockBadge.test.tsx",
+   "type": "file",
+   "name": "StockBadge.test.tsx",
+   "filePath": "src/components/StockBadge.test.tsx",
+   "summary": "Testes de StockBadge.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/StockBadge.tsx",
+   "type": "file",
+   "name": "StockBadge.tsx",
+   "filePath": "src/components/StockBadge.tsx",
+   "summary": "Selo de estoque com ícone e texto (não depende só de cor).",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/VideoTestRide.test.tsx",
+   "type": "file",
+   "name": "VideoTestRide.test.tsx",
+   "filePath": "src/components/VideoTestRide.test.tsx",
+   "summary": "Testes de VideoTestRide.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/VideoTestRide.tsx",
+   "type": "file",
+   "name": "VideoTestRide.tsx",
+   "filePath": "src/components/VideoTestRide.tsx",
+   "summary": "Botão e modal de vídeo de test-ride; o player só carrega com o modal aberto.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/components/VoucherReserva.tsx",
+   "type": "file",
+   "name": "VoucherReserva.tsx",
+   "filePath": "src/components/VoucherReserva.tsx",
+   "summary": "Comprovante da reserva, com código, validade, WhatsApp da loja e impressão.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/components/boutique/CarrinhoBoutique.tsx",
+   "type": "file",
+   "name": "CarrinhoBoutique.tsx",
+   "filePath": "src/components/boutique/CarrinhoBoutique.tsx",
+   "summary": "Carrinho da boutique: itens, quantidades, pagamento e confirmação do pedido.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/boutique/CartaoProduto.tsx",
+   "type": "file",
+   "name": "CartaoProduto.tsx",
+   "filePath": "src/components/boutique/CartaoProduto.tsx",
+   "summary": "Cartão de produto da boutique, com foto 1:1, tamanho e botão de adicionar.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/components/boutique/GuiaTamanhos.tsx",
+   "type": "file",
+   "name": "GuiaTamanhos.tsx",
+   "filePath": "src/components/boutique/GuiaTamanhos.tsx",
+   "summary": "Tabela de tamanhos de capacete.",
+   "layer": "componentes",
+   "tags": [
+    "componente"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/context/AppContext.ts",
+   "type": "file",
+   "name": "AppContext.ts",
+   "filePath": "src/context/AppContext.ts",
+   "summary": "Contexto global: moto escolhida, acessórios, lead e simulação; hook useApp.",
+   "layer": "estado",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/context/AppProvider.test.tsx",
+   "type": "file",
+   "name": "AppProvider.test.tsx",
+   "filePath": "src/context/AppProvider.test.tsx",
+   "summary": "Testes de AppProvider.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/context/AppProvider.tsx",
+   "type": "file",
+   "name": "AppProvider.tsx",
+   "filePath": "src/context/AppProvider.tsx",
+   "summary": "Provedor do estado global, com ações de escolher moto, adicionar acessório e guardar lead.",
+   "layer": "estado",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/data/acessorios.test.ts",
+   "type": "file",
+   "name": "acessorios.test.ts",
+   "filePath": "src/data/acessorios.test.ts",
+   "summary": "Testes de acessorios.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/data/acessorios.ts",
+   "type": "config",
+   "name": "acessorios.ts",
+   "filePath": "src/data/acessorios.ts",
+   "summary": "Catálogo de acessórios técnicos compatíveis com as motos.",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/data/boutique.ts",
+   "type": "config",
+   "name": "boutique.ts",
+   "filePath": "src/data/boutique.ts",
+   "summary": "11 produtos da boutique (capacetes, vestuário, acessórios, manutenção) e guia de tamanhos.",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/data/contato.ts",
+   "type": "config",
+   "name": "contato.ts",
+   "filePath": "src/data/contato.ts",
+   "summary": "Destino comercial das propostas (WhatsApp e e-mail), ainda em aberto.",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/data/imagens.test.ts",
+   "type": "file",
+   "name": "imagens.test.ts",
+   "filePath": "src/data/imagens.test.ts",
+   "summary": "Testes de fluxo entre telas.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/data/motos.test.ts",
+   "type": "file",
+   "name": "motos.test.ts",
+   "filePath": "src/data/motos.test.ts",
+   "summary": "Testes de motos.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/data/motos.ts",
+   "type": "config",
+   "name": "motos.ts",
+   "filePath": "src/data/motos.ts",
+   "summary": "Catálogo de 8 motos com preço final, ficha técnica, estoque e foto.",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/data/parametros-precificacao.ts",
+   "type": "config",
+   "name": "parametros-precificacao.ts",
+   "filePath": "src/data/parametros-precificacao.ts",
+   "summary": "Alíquotas e custos de importação, provisórios (RN-01).",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/data/posVenda.ts",
+   "type": "config",
+   "name": "posVenda.ts",
+   "filePath": "src/data/posVenda.ts",
+   "summary": "Serviços e horários da oficina.",
+   "layer": "dados",
+   "tags": [
+    "dados"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/domain/agenda.test.ts",
+   "type": "file",
+   "name": "agenda.test.ts",
+   "filePath": "src/domain/agenda.test.ts",
+   "summary": "Testes de agenda.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/agenda.ts",
+   "type": "module",
+   "name": "agenda.ts",
+   "filePath": "src/domain/agenda.ts",
+   "summary": "Horários livres e ocupados da oficina (agenda simulada).",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/domain/agendamento.test.ts",
+   "type": "file",
+   "name": "agendamento.test.ts",
+   "filePath": "src/domain/agendamento.test.ts",
+   "summary": "Testes de agendamento.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/agendamento.ts",
+   "type": "module",
+   "name": "agendamento.ts",
+   "filePath": "src/domain/agendamento.ts",
+   "summary": "Schema de validação do agendamento e datas locais.",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/boutique.test.ts",
+   "type": "file",
+   "name": "boutique.test.ts",
+   "filePath": "src/domain/boutique.test.ts",
+   "summary": "Testes de boutique.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/boutique.ts",
+   "type": "module",
+   "name": "boutique.ts",
+   "filePath": "src/domain/boutique.ts",
+   "summary": "Filtros e carrinho da boutique (funções puras).",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/catalogFilters.test.ts",
+   "type": "file",
+   "name": "catalogFilters.test.ts",
+   "filePath": "src/domain/catalogFilters.test.ts",
+   "summary": "Testes de catalogFilters.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/catalogFilters.ts",
+   "type": "module",
+   "name": "catalogFilters.ts",
+   "filePath": "src/domain/catalogFilters.ts",
+   "summary": "Filtros cumulativos do catálogo (função pura).",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/financing.test.ts",
+   "type": "file",
+   "name": "financing.test.ts",
+   "filePath": "src/domain/financing.test.ts",
+   "summary": "Testes de financing.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/domain/financing.ts",
+   "type": "module",
+   "name": "financing.ts",
+   "filePath": "src/domain/financing.ts",
+   "summary": "Cálculo de financiamento e consórcio, limites de entrada e simulação com acessórios.",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/domain/lead.test.ts",
+   "type": "file",
+   "name": "lead.test.ts",
+   "filePath": "src/domain/lead.test.ts",
+   "summary": "Testes de lead.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/lead.ts",
+   "type": "module",
+   "name": "lead.ts",
+   "filePath": "src/domain/lead.ts",
+   "summary": "Validação do lead com Zod, telefone e consentimento LGPD.",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/pricing.test.ts",
+   "type": "file",
+   "name": "pricing.test.ts",
+   "filePath": "src/domain/pricing.test.ts",
+   "summary": "Testes de pricing.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/pricing.ts",
+   "type": "module",
+   "name": "pricing.ts",
+   "filePath": "src/domain/pricing.ts",
+   "summary": "Preço final all-inclusive e sua composição (frete, despacho, impostos).",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/proposal.test.ts",
+   "type": "file",
+   "name": "proposal.test.ts",
+   "filePath": "src/domain/proposal.test.ts",
+   "summary": "Testes de proposal.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/proposal.ts",
+   "type": "module",
+   "name": "proposal.ts",
+   "filePath": "src/domain/proposal.ts",
+   "summary": "Monta a mensagem e os links de WhatsApp e e-mail da proposta.",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/domain/reservation.test.ts",
+   "type": "file",
+   "name": "reservation.test.ts",
+   "filePath": "src/domain/reservation.test.ts",
+   "summary": "Testes de reservation.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/domain/reservation.ts",
+   "type": "module",
+   "name": "reservation.ts",
+   "filePath": "src/domain/reservation.ts",
+   "summary": "Regras da reserva: schema do cliente, voucher, validade de 7 dias, prazo por estoque e lojas.",
+   "layer": "regras",
+   "tags": [
+    "regra",
+    "função pura"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/features/catalogo/useCatalogFilters.ts",
+   "type": "file",
+   "name": "useCatalogFilters.ts",
+   "filePath": "src/features/catalogo/useCatalogFilters.ts",
+   "summary": "Hook que lê e escreve os filtros do catálogo na URL.",
+   "layer": "estado",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/index.css",
+   "type": "config",
+   "name": "index.css",
+   "filePath": "src/index.css",
+   "summary": "Sistema visual: tokens da paleta Ivory/Almond/Mist/Navy/Noir, superfícies (página, folha, escuro) e utilitários (botão, campo, folha, carimbo) e regras de impressão do voucher.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/lib/firebase.ts",
+   "type": "file",
+   "name": "firebase.ts",
+   "filePath": "src/lib/firebase.ts",
+   "summary": "Configuração do Firebase por variáveis VITE_*, carregamento sob demanda e serviço de login com Google.",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/lib/firestore.ts",
+   "type": "file",
+   "name": "firestore.ts",
+   "filePath": "src/lib/firestore.ts",
+   "summary": "Implementação do repositório em Firestore (users/{uid}/..., leads).",
+   "layer": "armazenamento",
+   "tags": [
+    "armazenamento"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/main.tsx",
+   "type": "file",
+   "name": "main.tsx",
+   "filePath": "src/main.tsx",
+   "summary": "Ponto de entrada: monta os provedores (login, armazenamento, estado) e o roteador em volta do App.",
+   "layer": "telas",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/pages/Boutique.test.tsx",
+   "type": "file",
+   "name": "Boutique.test.tsx",
+   "filePath": "src/pages/Boutique.test.tsx",
+   "summary": "Testes de Boutique.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/Boutique.tsx",
+   "type": "file",
+   "name": "Boutique.tsx",
+   "filePath": "src/pages/Boutique.tsx",
+   "summary": "Loja de equipamentos: busca, filtros, carrinho próprio e pedido de demonstração gravado no Firestore.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/Catalogo.test.tsx",
+   "type": "file",
+   "name": "Catalogo.test.tsx",
+   "filePath": "src/pages/Catalogo.test.tsx",
+   "summary": "Testes de Catalogo.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Catalogo.tsx",
+   "type": "file",
+   "name": "Catalogo.tsx",
+   "filePath": "src/pages/Catalogo.tsx",
+   "summary": "Catálogo de motos com filtros técnicos (categoria, modo de pilotagem, cilindrada) guardados na URL.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Checkout.test.tsx",
+   "type": "file",
+   "name": "Checkout.test.tsx",
+   "filePath": "src/pages/Checkout.test.tsx",
+   "summary": "Testes de Checkout.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/Checkout.tsx",
+   "type": "file",
+   "name": "Checkout.tsx",
+   "filePath": "src/pages/Checkout.tsx",
+   "summary": "Reserva fictícia: formulário do cliente, loja de retirada, grava no Firestore e emite o voucher.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/Contato.test.tsx",
+   "type": "file",
+   "name": "Contato.test.tsx",
+   "filePath": "src/pages/Contato.test.tsx",
+   "summary": "Testes de Contato.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Contato.tsx",
+   "type": "file",
+   "name": "Contato.tsx",
+   "filePath": "src/pages/Contato.tsx",
+   "summary": "Formulário público de contato; guarda o lead no app e no Firestore sem barrar a pessoa se falhar.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Home.test.tsx",
+   "type": "file",
+   "name": "Home.test.tsx",
+   "filePath": "src/pages/Home.test.tsx",
+   "summary": "Testes de Home.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Home.tsx",
+   "type": "file",
+   "name": "Home.tsx",
+   "filePath": "src/pages/Home.tsx",
+   "summary": "Página inicial: hero com a nota de preço, vitrine de 4 motos, estilos de pilotagem, passos e chamada.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/MotoDetalhe.test.tsx",
+   "type": "file",
+   "name": "MotoDetalhe.test.tsx",
+   "filePath": "src/pages/MotoDetalhe.test.tsx",
+   "summary": "Testes de MotoDetalhe.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/MotoDetalhe.tsx",
+   "type": "file",
+   "name": "MotoDetalhe.tsx",
+   "filePath": "src/pages/MotoDetalhe.tsx",
+   "summary": "Ficha da moto (/moto/:id): foto, preço final, selo de estoque, ficha técnica, composição do preço e atalhos.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/PosVenda.test.tsx",
+   "type": "file",
+   "name": "PosVenda.test.tsx",
+   "filePath": "src/pages/PosVenda.test.tsx",
+   "summary": "Testes de PosVenda.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/PosVenda.tsx",
+   "type": "file",
+   "name": "PosVenda.tsx",
+   "filePath": "src/pages/PosVenda.tsx",
+   "summary": "Agendamento de serviço na oficina com calendário e horários; grava o pedido no Firestore.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/pages/Simulador.test.tsx",
+   "type": "file",
+   "name": "Simulador.test.tsx",
+   "filePath": "src/pages/Simulador.test.tsx",
+   "summary": "Testes de Simulador.tsx.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/pages/Simulador.tsx",
+   "type": "file",
+   "name": "Simulador.tsx",
+   "filePath": "src/pages/Simulador.tsx",
+   "summary": "Simulador de financiamento e consórcio: moto, modalidade, entrada, prazo, acessórios e parcela estimada.",
+   "layer": "telas",
+   "tags": [
+    "tela",
+    "rota"
+   ],
+   "complexity": "complex"
+  },
+  {
+   "id": "src/storage/Repositorio.ts",
+   "type": "file",
+   "name": "Repositorio.ts",
+   "filePath": "src/storage/Repositorio.ts",
+   "summary": "Contrato de armazenamento (reserva, pedido, agendamento, lead) e hook useRepositorio.",
+   "layer": "armazenamento",
+   "tags": [
+    "armazenamento"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/storage/RepositorioProvider.tsx",
+   "type": "file",
+   "name": "RepositorioProvider.tsx",
+   "filePath": "src/storage/RepositorioProvider.tsx",
+   "summary": "Fornece o repositório (Firestore por padrão, falso nos testes).",
+   "layer": "armazenamento",
+   "tags": [
+    "armazenamento"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/storage/documentos.test.ts",
+   "type": "file",
+   "name": "documentos.test.ts",
+   "filePath": "src/storage/documentos.test.ts",
+   "summary": "Testes de documentos.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/storage/documentos.ts",
+   "type": "file",
+   "name": "documentos.ts",
+   "filePath": "src/storage/documentos.ts",
+   "summary": "Monta os documentos que vão ao banco e remove campos undefined.",
+   "layer": "armazenamento",
+   "tags": [
+    "armazenamento"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/storage/persistencia.test.tsx",
+   "type": "file",
+   "name": "persistencia.test.tsx",
+   "filePath": "src/storage/persistencia.test.tsx",
+   "summary": "Testes de fluxo entre telas.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/test/ComLogin.tsx",
+   "type": "file",
+   "name": "ComLogin.tsx",
+   "filePath": "src/test/ComLogin.tsx",
+   "summary": "Envolve os testes com login e repositório falsos.",
+   "layer": "testes",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/test/servicoAuth.ts",
+   "type": "file",
+   "name": "servicoAuth.ts",
+   "filePath": "src/test/servicoAuth.ts",
+   "summary": "Login falso e repositório falso para os testes.",
+   "layer": "testes",
+   "tags": [],
+   "complexity": "moderate"
+  },
+  {
+   "id": "src/test/setup.test.ts",
+   "type": "file",
+   "name": "setup.test.ts",
+   "filePath": "src/test/setup.test.ts",
+   "summary": "Testes de setup.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/test/setup.ts",
+   "type": "file",
+   "name": "setup.ts",
+   "filePath": "src/test/setup.ts",
+   "summary": "Configuração global dos testes (jest-dom).",
+   "layer": "testes",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/utils/formatters.test.ts",
+   "type": "file",
+   "name": "formatters.test.ts",
+   "filePath": "src/utils/formatters.test.ts",
+   "summary": "Testes de formatters.ts.",
+   "layer": "testes",
+   "tags": [
+    "teste"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "src/utils/formatters.ts",
+   "type": "module",
+   "name": "formatters.ts",
+   "filePath": "src/utils/formatters.ts",
+   "summary": "Formatadores de preço, cilindrada e link de WhatsApp.",
+   "layer": "regras",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "vite.config.ts",
+   "type": "config",
+   "name": "vite.config.ts",
+   "filePath": "vite.config.ts",
+   "summary": "Configuração do Vite, plugins React e Tailwind e do Vitest (jsdom).",
+   "layer": "infra",
+   "tags": [],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/",
+   "type": "endpoint",
+   "name": "Rota /",
+   "filePath": "src/App.tsx",
+   "summary": "Rota / abre Home.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/catalogo",
+   "type": "endpoint",
+   "name": "Rota /catalogo",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /catalogo abre Catalogo.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/moto/:id",
+   "type": "endpoint",
+   "name": "Rota /moto/:id",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /moto/:id abre MotoDetalhe.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/simulador",
+   "type": "endpoint",
+   "name": "Rota /simulador",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /simulador abre Simulador.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/checkout",
+   "type": "endpoint",
+   "name": "Rota /checkout",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /checkout abre Checkout. Exige login (ExigeLogin).",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/pos-venda",
+   "type": "endpoint",
+   "name": "Rota /pos-venda",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /pos-venda abre PosVenda.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/boutique",
+   "type": "endpoint",
+   "name": "Rota /boutique",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /boutique abre Boutique.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "route:/contato",
+   "type": "endpoint",
+   "name": "Rota /contato",
+   "filePath": "src/App.tsx",
+   "summary": "Rota /contato abre Contato.",
+   "layer": "telas",
+   "tags": [
+    "rota"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "svc:firebase-auth",
+   "type": "service",
+   "name": "Firebase Authentication",
+   "filePath": "",
+   "summary": "Login com conta Google (popup).",
+   "layer": "login",
+   "tags": [
+    "externo"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "svc:firestore",
+   "type": "service",
+   "name": "Cloud Firestore",
+   "filePath": "",
+   "summary": "Banco de documentos: users/{uid}/reservas, pedidosBoutique, agendamentos e leads.",
+   "layer": "armazenamento",
+   "tags": [
+    "externo"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "svc:whatsapp",
+   "type": "service",
+   "name": "WhatsApp (wa.me)",
+   "filePath": "",
+   "summary": "Abre conversa com mensagem pronta para proposta e voucher.",
+   "layer": "infra",
+   "tags": [
+    "externo"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-01",
+   "type": "concept",
+   "name": "RF-01 · Captura de lead",
+   "filePath": "",
+   "summary": "Contato do interessado, validado e com consentimento.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-02",
+   "type": "concept",
+   "name": "RF-02 · Preço final e composição",
+   "filePath": "",
+   "summary": "Mostra o preço all-inclusive e de onde ele vem.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-03",
+   "type": "concept",
+   "name": "RF-03 · Filtros do catálogo",
+   "filePath": "",
+   "summary": "Filtros técnicos cumulativos no catálogo.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-05",
+   "type": "concept",
+   "name": "RF-05 · Vídeo de test-ride",
+   "filePath": "",
+   "summary": "Vídeo em modal, carregado só quando aberto.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-06",
+   "type": "concept",
+   "name": "RF-06 · Proposta por WhatsApp/e-mail",
+   "filePath": "",
+   "summary": "Monta e envia a proposta.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-07",
+   "type": "concept",
+   "name": "RF-07 · Simulador",
+   "filePath": "",
+   "summary": "Financiamento e consórcio de 12x a 72x.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-08",
+   "type": "concept",
+   "name": "RF-08 · Checkout e voucher",
+   "filePath": "",
+   "summary": "Reserva fictícia com comprovante.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-09",
+   "type": "concept",
+   "name": "RF-09 · Selo de estoque",
+   "filePath": "",
+   "summary": "Status de estoque com ícone e texto.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-10",
+   "type": "concept",
+   "name": "RF-10 · Agendamento na oficina",
+   "filePath": "",
+   "summary": "Calendário sem datas passadas e horários bloqueados.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RF-11",
+   "type": "concept",
+   "name": "RF-11 · Acessórios na reserva",
+   "filePath": "",
+   "summary": "Acessórios escolhidos entram na reserva.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-01",
+   "type": "concept",
+   "name": "RN-01 · Alíquotas em configuração",
+   "filePath": "",
+   "summary": "Impostos e custos nunca fixos dentro das funções.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-02",
+   "type": "concept",
+   "name": "RN-02 · Estoque define o prazo",
+   "filePath": "",
+   "summary": "Status de estoque determina prazo de retirada.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-03",
+   "type": "concept",
+   "name": "RN-03 · Parcelas parametrizadas",
+   "filePath": "",
+   "summary": "Cálculo por produto financeiro e prazo.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-04",
+   "type": "concept",
+   "name": "RN-04 · Limites de entrada",
+   "filePath": "",
+   "summary": "Entrada mínima e máxima parametrizadas.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-05",
+   "type": "concept",
+   "name": "RN-05 · Validade de 7 dias",
+   "filePath": "",
+   "summary": "Cotação e reserva têm validade pré-definida.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-06",
+   "type": "concept",
+   "name": "RN-06 · Sempre simulação",
+   "filePath": "",
+   "summary": "Deixa claro que não há cobrança real.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RN-07",
+   "type": "concept",
+   "name": "RN-07 · Acessórios no financiamento",
+   "filePath": "",
+   "summary": "Acessórios inclusos aumentam o saldo financiado.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  },
+  {
+   "id": "req:RNF-05",
+   "type": "concept",
+   "name": "RNF-05 · LGPD",
+   "filePath": "",
+   "summary": "Sem consentimento, não há envio nem voucher.",
+   "layer": "regras",
+   "tags": [
+    "requisito"
+   ],
+   "complexity": "simple"
+  }
+ ],
+ "edges": [
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/App.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/test/ComLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/App.test.tsx",
+   "target": "src/App.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/components/Navbar.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/components/Footer.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/MotoDetalhe.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/components/Placeholder.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Home.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Catalogo.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Contato.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Simulador.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Checkout.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/PosVenda.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/pages/Boutique.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "src/auth/ExigeLogin.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/auth/AuthProvider.test.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/AuthProvider.test.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/AuthProvider.test.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/AuthProvider.test.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/auth/AuthProvider.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/auth/AuthProvider.tsx",
+   "target": "src/lib/firebase.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/auth/ExigeLogin.test.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/ExigeLogin.test.tsx",
+   "target": "src/auth/ExigeLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/ExigeLogin.test.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/ExigeLogin.test.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/auth/ExigeLogin.test.tsx",
+   "target": "src/auth/ExigeLogin.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/auth/ExigeLogin.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/CartaoDestaque.test.tsx",
+   "target": "src/components/CartaoDestaque.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/CartaoDestaque.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/CartaoDestaque.test.tsx",
+   "target": "src/components/CartaoDestaque.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/CartaoDestaque.tsx",
+   "target": "src/components/StockBadge.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/CartaoDestaque.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/CartaoDestaque.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/LeadForm.test.tsx",
+   "target": "src/components/LeadForm.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/LeadForm.test.tsx",
+   "target": "src/components/LeadForm.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/LeadForm.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/Modal.test.tsx",
+   "target": "src/components/Modal.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/Modal.test.tsx",
+   "target": "src/components/Modal.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/Navbar.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/Navbar.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/NotaPreco.test.tsx",
+   "target": "src/components/NotaPreco.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/NotaPreco.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/NotaPreco.test.tsx",
+   "target": "src/components/NotaPreco.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/NotaPreco.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/NotaPreco.tsx",
+   "target": "src/data/parametros-precificacao.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/NotaPreco.tsx",
+   "target": "src/domain/pricing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/NotaPreco.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/ProposalModal.test.tsx",
+   "target": "src/components/ProposalModal.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/ProposalModal.test.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/ProposalModal.test.tsx",
+   "target": "src/components/ProposalModal.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/ProposalModal.tsx",
+   "target": "src/components/Modal.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/ProposalModal.tsx",
+   "target": "src/domain/proposal.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/ProposalModal.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/ProposalModal.tsx",
+   "target": "src/data/contato.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/StockBadge.test.tsx",
+   "target": "src/components/StockBadge.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/StockBadge.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/StockBadge.test.tsx",
+   "target": "src/components/StockBadge.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/StockBadge.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/VideoTestRide.test.tsx",
+   "target": "src/components/VideoTestRide.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/components/VideoTestRide.test.tsx",
+   "target": "src/components/VideoTestRide.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/components/VideoTestRide.tsx",
+   "target": "src/components/Modal.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/VoucherReserva.tsx",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/VoucherReserva.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CarrinhoBoutique.tsx",
+   "target": "src/auth/ExigeLogin.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CarrinhoBoutique.tsx",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CarrinhoBoutique.tsx",
+   "target": "src/domain/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CarrinhoBoutique.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CartaoProduto.tsx",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/CartaoProduto.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/boutique/GuiaTamanhos.tsx",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/context/AppProvider.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/data/acessorios.test.ts",
+   "target": "src/data/acessorios.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/data/acessorios.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/data/acessorios.test.ts",
+   "target": "src/data/acessorios.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/data/acessorios.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/data/imagens.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/data/imagens.test.ts",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/data/motos.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/data/motos.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/data/parametros-precificacao.ts",
+   "target": "src/domain/pricing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/agenda.test.ts",
+   "target": "src/data/posVenda.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/agenda.test.ts",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/agenda.test.ts",
+   "target": "src/domain/agenda.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/agenda.ts",
+   "target": "src/data/posVenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/agendamento.test.ts",
+   "target": "src/domain/agendamento.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/agendamento.test.ts",
+   "target": "src/domain/agendamento.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/agendamento.ts",
+   "target": "src/data/posVenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/agendamento.ts",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/agendamento.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/boutique.test.ts",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/boutique.test.ts",
+   "target": "src/domain/boutique.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/boutique.test.ts",
+   "target": "src/domain/boutique.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/boutique.ts",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/catalogFilters.test.ts",
+   "target": "src/domain/catalogFilters.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/catalogFilters.test.ts",
+   "target": "src/domain/catalogFilters.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/financing.test.ts",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/financing.test.ts",
+   "target": "src/domain/financing.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/lead.test.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/lead.test.ts",
+   "target": "src/domain/lead.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/pricing.test.ts",
+   "target": "src/domain/pricing.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/pricing.test.ts",
+   "target": "src/data/parametros-precificacao.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/pricing.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/pricing.test.ts",
+   "target": "src/domain/pricing.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/proposal.test.ts",
+   "target": "src/domain/proposal.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/proposal.test.ts",
+   "target": "src/domain/proposal.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/proposal.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/proposal.ts",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/reservation.test.ts",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/reservation.test.ts",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/reservation.test.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/domain/reservation.test.ts",
+   "target": "src/domain/reservation.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/features/catalogo/useCatalogFilters.ts",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/features/catalogo/useCatalogFilters.ts",
+   "target": "src/domain/catalogFilters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/lib/firebase.ts",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/lib/firestore.ts",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/lib/firestore.ts",
+   "target": "src/storage/documentos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/lib/firestore.ts",
+   "target": "src/lib/firebase.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/main.tsx",
+   "target": "src/App.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/main.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/main.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/main.tsx",
+   "target": "src/storage/RepositorioProvider.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.test.tsx",
+   "target": "src/pages/Boutique.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Boutique.test.tsx",
+   "target": "src/test/ComLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Boutique.test.tsx",
+   "target": "src/pages/Boutique.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/storage/documentos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/components/boutique/CartaoProduto.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/components/boutique/CarrinhoBoutique.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/components/boutique/GuiaTamanhos.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Boutique.tsx",
+   "target": "src/domain/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Catalogo.test.tsx",
+   "target": "src/pages/Catalogo.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Catalogo.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Catalogo.test.tsx",
+   "target": "src/pages/Catalogo.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Catalogo.tsx",
+   "target": "src/components/CartaoDestaque.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Catalogo.tsx",
+   "target": "src/features/catalogo/useCatalogFilters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Catalogo.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Catalogo.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/pages/Checkout.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/test/ComLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Checkout.test.tsx",
+   "target": "src/pages/Checkout.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/components/VoucherReserva.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Contato.test.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Contato.test.tsx",
+   "target": "src/pages/Contato.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Contato.test.tsx",
+   "target": "src/pages/Contato.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/components/LeadForm.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/components/ProposalModal.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/components/VideoTestRide.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Contato.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Home.test.tsx",
+   "target": "src/pages/Home.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Home.test.tsx",
+   "target": "src/pages/Home.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "src/components/CartaoDestaque.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "src/components/NotaPreco.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/pages/MotoDetalhe.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/MotoDetalhe.test.tsx",
+   "target": "src/pages/MotoDetalhe.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/components/StockBadge.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/components/VideoTestRide.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/data/parametros-precificacao.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/domain/pricing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/domain/agendamento.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/data/posVenda.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/pages/PosVenda.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/test/ComLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/PosVenda.test.tsx",
+   "target": "src/pages/PosVenda.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/auth/ExigeLogin.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/data/posVenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/domain/agenda.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/domain/agendamento.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Simulador.test.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Simulador.test.tsx",
+   "target": "src/pages/Simulador.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/pages/Simulador.test.tsx",
+   "target": "src/pages/Simulador.tsx",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/context/AppContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/data/acessorios.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/data/contato.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/domain/financing.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/domain/proposal.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/Repositorio.ts",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/Repositorio.ts",
+   "target": "src/domain/agendamento.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/Repositorio.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/Repositorio.ts",
+   "target": "src/storage/documentos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/RepositorioProvider.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/RepositorioProvider.tsx",
+   "target": "src/lib/firestore.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/documentos.test.ts",
+   "target": "src/storage/documentos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/documentos.test.ts",
+   "target": "src/domain/boutique.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/documentos.test.ts",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/documentos.test.ts",
+   "target": "src/storage/documentos.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/storage/documentos.ts",
+   "target": "src/data/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/documentos.ts",
+   "target": "src/domain/boutique.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/context/AppProvider.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/data/motos.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/pages/Checkout.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/pages/Boutique.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/pages/Contato.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/test/ComLogin.tsx",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/storage/persistencia.test.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/test/ComLogin.tsx",
+   "target": "src/auth/AuthProvider.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/ComLogin.tsx",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/ComLogin.tsx",
+   "target": "src/storage/RepositorioProvider.tsx",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/ComLogin.tsx",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/ComLogin.tsx",
+   "target": "src/test/servicoAuth.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/auth/AuthContext.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/storage/Repositorio.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/storage/documentos.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/domain/reservation.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/domain/agendamento.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/servicoAuth.ts",
+   "target": "src/domain/lead.ts",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/test/setup.test.ts",
+   "target": "src/test/setup.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "src/utils/formatters.test.ts",
+   "target": "src/utils/formatters.ts",
+   "type": "imports",
+   "weight": 0.3
+  },
+  {
+   "source": "src/utils/formatters.test.ts",
+   "target": "src/utils/formatters.ts",
+   "type": "tests",
+   "weight": 0.9
+  },
+  {
+   "source": "vite.config.ts",
+   "target": "src/test/setup.ts",
+   "type": "configures",
+   "weight": 0.6
+  },
+  {
+   "source": "index.html",
+   "target": "src/main.tsx",
+   "type": "depends_on",
+   "weight": 0.8
+  },
+  {
+   "source": "vite.config.ts",
+   "target": "package.json",
+   "type": "depends_on",
+   "weight": 0.3
+  },
+  {
+   "source": "src/main.tsx",
+   "target": "src/index.css",
+   "type": "imports",
+   "weight": 0.6
+  },
+  {
+   "source": "src/lib/firestore.ts",
+   "target": "firestore.rules",
+   "type": "related",
+   "weight": 0.8
+  },
+  {
+   "source": "firebase.json",
+   "target": "firestore.rules",
+   "type": "configures",
+   "weight": 0.9
+  },
+  {
+   "source": ".env.example",
+   "target": "src/lib/firebase.ts",
+   "type": "configures",
+   "weight": 0.8
+  },
+  {
+   "source": "docs/LOGIN-GOOGLE.md",
+   "target": "src/lib/firebase.ts",
+   "type": "documents",
+   "weight": 0.7
+  },
+  {
+   "source": "docs/FIRESTORE.md",
+   "target": "firestore.rules",
+   "type": "documents",
+   "weight": 0.8
+  },
+  {
+   "source": "docs/FIRESTORE.md",
+   "target": "src/lib/firestore.ts",
+   "type": "documents",
+   "weight": 0.7
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/",
+   "target": "src/pages/Home.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/catalogo",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/catalogo",
+   "target": "src/pages/Catalogo.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/moto/:id",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/moto/:id",
+   "target": "src/pages/MotoDetalhe.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/simulador",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/simulador",
+   "target": "src/pages/Simulador.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/checkout",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/checkout",
+   "target": "src/pages/Checkout.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/pos-venda",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/pos-venda",
+   "target": "src/pages/PosVenda.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/boutique",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/boutique",
+   "target": "src/pages/Boutique.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/App.tsx",
+   "target": "route:/contato",
+   "type": "contains",
+   "weight": 0.7
+  },
+  {
+   "source": "route:/contato",
+   "target": "src/pages/Contato.tsx",
+   "type": "routes_to",
+   "weight": 0.9
+  },
+  {
+   "source": "src/lib/firebase.ts",
+   "target": "svc:firebase-auth",
+   "type": "calls",
+   "weight": 0.9
+  },
+  {
+   "source": "src/lib/firestore.ts",
+   "target": "svc:firestore",
+   "type": "calls",
+   "weight": 0.9
+  },
+  {
+   "source": "firestore.rules",
+   "target": "svc:firestore",
+   "type": "protects",
+   "weight": 0.9
+  },
+  {
+   "source": "src/utils/formatters.ts",
+   "target": "svc:whatsapp",
+   "type": "calls",
+   "weight": 0.6
+  },
+  {
+   "source": "src/domain/proposal.ts",
+   "target": "svc:whatsapp",
+   "type": "calls",
+   "weight": 0.6
+  },
+  {
+   "source": "src/components/Modal.tsx",
+   "target": "req:RF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/Modal.tsx",
+   "target": "req:RF-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/Navbar.tsx",
+   "target": "req:RF-11",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/NotaPreco.tsx",
+   "target": "req:RF-02",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/ProposalModal.tsx",
+   "target": "req:RF-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/StockBadge.tsx",
+   "target": "req:RF-09",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/VideoTestRide.tsx",
+   "target": "req:RF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/VoucherReserva.tsx",
+   "target": "req:RF-08",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/components/VoucherReserva.tsx",
+   "target": "req:RN-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/context/AppContext.ts",
+   "target": "req:RF-07",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/context/AppProvider.tsx",
+   "target": "req:RF-10",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/data/acessorios.ts",
+   "target": "req:RF-11",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/data/contato.ts",
+   "target": "req:RF-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/data/motos.ts",
+   "target": "req:RF-09",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/data/parametros-precificacao.ts",
+   "target": "req:RN-01",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/agenda.ts",
+   "target": "req:RF-10",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/agendamento.ts",
+   "target": "req:RNF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/agendamento.ts",
+   "target": "req:RF-10",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/catalogFilters.ts",
+   "target": "req:RF-03",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/financing.ts",
+   "target": "req:RN-04",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/financing.ts",
+   "target": "req:RN-03",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/financing.ts",
+   "target": "req:RN-07",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/financing.ts",
+   "target": "req:RF-11",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/financing.ts",
+   "target": "req:RF-07",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/lead.ts",
+   "target": "req:RF-01",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/lead.ts",
+   "target": "req:RNF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/pricing.ts",
+   "target": "req:RF-02",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/pricing.ts",
+   "target": "req:RN-01",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/proposal.ts",
+   "target": "req:RF-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RF-01",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RN-02",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RN-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RNF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RF-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RF-08",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/domain/reservation.ts",
+   "target": "req:RN-06",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "req:RF-01",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Checkout.tsx",
+   "target": "req:RF-08",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "req:RF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "req:RF-07",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "req:RF-08",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Home.tsx",
+   "target": "req:RF-02",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "req:RF-05",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "req:RF-09",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/MotoDetalhe.tsx",
+   "target": "req:RF-02",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/PosVenda.tsx",
+   "target": "req:RF-10",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "req:RN-04",
+   "type": "implements",
+   "weight": 0.5
+  },
+  {
+   "source": "src/pages/Simulador.tsx",
+   "target": "req:RF-07",
+   "type": "implements",
+   "weight": 0.5
+  }
+ ],
+ "layers": [
+  {
+   "id": "telas",
+   "name": "Telas e rotas",
+   "description": "Páginas completas e o ponto de entrada; cada rota monta componentes e usa regras.",
+   "nodeIds": [
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/pages/Boutique.tsx",
+    "src/pages/Catalogo.tsx",
+    "src/pages/Checkout.tsx",
+    "src/pages/Contato.tsx",
+    "src/pages/Home.tsx",
+    "src/pages/MotoDetalhe.tsx",
+    "src/pages/PosVenda.tsx",
+    "src/pages/Simulador.tsx",
+    "route:/",
+    "route:/catalogo",
+    "route:/moto/:id",
+    "route:/simulador",
+    "route:/checkout",
+    "route:/pos-venda",
+    "route:/boutique",
+    "route:/contato"
+   ]
+  },
+  {
+   "id": "componentes",
+   "name": "Componentes",
+   "description": "Peças reutilizáveis da interface: menu, formulários, cartões, modal, voucher.",
+   "nodeIds": [
+    "src/components/CartaoDestaque.tsx",
+    "src/components/Footer.tsx",
+    "src/components/LeadForm.tsx",
+    "src/components/Modal.tsx",
+    "src/components/Navbar.tsx",
+    "src/components/NotaPreco.tsx",
+    "src/components/Placeholder.tsx",
+    "src/components/ProposalModal.tsx",
+    "src/components/StockBadge.tsx",
+    "src/components/VideoTestRide.tsx",
+    "src/components/VoucherReserva.tsx",
+    "src/components/boutique/CarrinhoBoutique.tsx",
+    "src/components/boutique/CartaoProduto.tsx",
+    "src/components/boutique/GuiaTamanhos.tsx"
+   ]
+  },
+  {
+   "id": "estado",
+   "name": "Estado e hooks",
+   "description": "Estado global do app e hooks de filtros ligados à URL.",
+   "nodeIds": [
+    "src/context/AppContext.ts",
+    "src/context/AppProvider.tsx",
+    "src/features/catalogo/useCatalogFilters.ts"
+   ]
+  },
+  {
+   "id": "regras",
+   "name": "Regras de negócio",
+   "description": "Funções puras sem React: preço, financiamento, reserva, validações, formatadores.",
+   "nodeIds": [
+    "src/domain/agenda.ts",
+    "src/domain/agendamento.ts",
+    "src/domain/boutique.ts",
+    "src/domain/catalogFilters.ts",
+    "src/domain/financing.ts",
+    "src/domain/lead.ts",
+    "src/domain/pricing.ts",
+    "src/domain/proposal.ts",
+    "src/domain/reservation.ts",
+    "src/utils/formatters.ts",
+    "req:RF-01",
+    "req:RF-02",
+    "req:RF-03",
+    "req:RF-05",
+    "req:RF-06",
+    "req:RF-07",
+    "req:RF-08",
+    "req:RF-09",
+    "req:RF-10",
+    "req:RF-11",
+    "req:RN-01",
+    "req:RN-02",
+    "req:RN-03",
+    "req:RN-04",
+    "req:RN-05",
+    "req:RN-06",
+    "req:RN-07",
+    "req:RNF-05"
+   ]
+  },
+  {
+   "id": "dados",
+   "name": "Dados estáticos",
+   "description": "Catálogos e parâmetros em arquivos TypeScript (motos, boutique, serviços, alíquotas).",
+   "nodeIds": [
+    "src/data/acessorios.ts",
+    "src/data/boutique.ts",
+    "src/data/contato.ts",
+    "src/data/motos.ts",
+    "src/data/parametros-precificacao.ts",
+    "src/data/posVenda.ts"
+   ]
+  },
+  {
+   "id": "login",
+   "name": "Login",
+   "description": "Login com Google (Firebase Auth) e barreira de interface.",
+   "nodeIds": [
+    "src/auth/AuthContext.ts",
+    "src/auth/AuthProvider.tsx",
+    "src/auth/ExigeLogin.tsx",
+    "svc:firebase-auth"
+   ]
+  },
+  {
+   "id": "armazenamento",
+   "name": "Armazenamento",
+   "description": "Contrato do repositório, implementação em Firestore e regras de segurança.",
+   "nodeIds": [
+    "docs/FIRESTORE.md",
+    "firestore.rules",
+    "src/lib/firestore.ts",
+    "src/storage/Repositorio.ts",
+    "src/storage/RepositorioProvider.tsx",
+    "src/storage/documentos.ts",
+    "svc:firestore"
+   ]
+  },
+  {
+   "id": "infra",
+   "name": "Configuração e estilo",
+   "description": "Build, dependências, Firebase, variáveis de ambiente e sistema visual.",
+   "nodeIds": [
+    ".env.example",
+    "docs/LOGIN-GOOGLE.md",
+    "firebase.json",
+    "index.html",
+    "package.json",
+    "src/index.css",
+    "src/lib/firebase.ts",
+    "vite.config.ts",
+    "svc:whatsapp"
+   ]
+  },
+  {
+   "id": "testes",
+   "name": "Testes",
+   "description": "Testes unitários e de interface com Vitest e Testing Library.",
+   "nodeIds": [
+    "src/App.test.tsx",
+    "src/auth/AuthProvider.test.tsx",
+    "src/auth/ExigeLogin.test.tsx",
+    "src/components/CartaoDestaque.test.tsx",
+    "src/components/LeadForm.test.tsx",
+    "src/components/Modal.test.tsx",
+    "src/components/NotaPreco.test.tsx",
+    "src/components/ProposalModal.test.tsx",
+    "src/components/StockBadge.test.tsx",
+    "src/components/VideoTestRide.test.tsx",
+    "src/context/AppProvider.test.tsx",
+    "src/data/acessorios.test.ts",
+    "src/data/imagens.test.ts",
+    "src/data/motos.test.ts",
+    "src/domain/agenda.test.ts",
+    "src/domain/agendamento.test.ts",
+    "src/domain/boutique.test.ts",
+    "src/domain/catalogFilters.test.ts",
+    "src/domain/financing.test.ts",
+    "src/domain/lead.test.ts",
+    "src/domain/pricing.test.ts",
+    "src/domain/proposal.test.ts",
+    "src/domain/reservation.test.ts",
+    "src/pages/Boutique.test.tsx",
+    "src/pages/Catalogo.test.tsx",
+    "src/pages/Checkout.test.tsx",
+    "src/pages/Contato.test.tsx",
+    "src/pages/Home.test.tsx",
+    "src/pages/MotoDetalhe.test.tsx",
+    "src/pages/PosVenda.test.tsx",
+    "src/pages/Simulador.test.tsx",
+    "src/storage/documentos.test.ts",
+    "src/storage/persistencia.test.tsx",
+    "src/test/ComLogin.tsx",
+    "src/test/servicoAuth.ts",
+    "src/test/setup.test.ts",
+    "src/test/setup.ts",
+    "src/utils/formatters.test.ts"
+   ]
+  }
+ ],
+ "tour": [
+  {
+   "order": 1,
+   "title": "Ponto de entrada",
+   "description": "O index.html carrega main.tsx, que envolve o App com login, armazenamento, estado global e roteador.",
+   "nodeIds": [
+    "index.html",
+    "src/main.tsx",
+    "src/App.tsx"
+   ]
+  },
+  {
+   "order": 2,
+   "title": "Rotas e proteção",
+   "description": "App.tsx liga cada rota a uma página. Só /checkout está dentro de ExigeLogin; boutique e pós-venda pedem login só ao confirmar.",
+   "nodeIds": [
+    "src/App.tsx",
+    "route:/checkout",
+    "src/auth/ExigeLogin.tsx"
+   ]
+  },
+  {
+   "order": 3,
+   "title": "Estado compartilhado",
+   "description": "AppProvider guarda a moto escolhida, os acessórios, o lead e a última simulação; as páginas leem pelo hook useApp.",
+   "nodeIds": [
+    "src/context/AppContext.ts",
+    "src/context/AppProvider.tsx"
+   ]
+  },
+  {
+   "order": 4,
+   "title": "Dados e preço final",
+   "description": "Os catálogos ficam em src/data. O preço de cada moto é final; pricing.ts o decompõe usando as alíquotas de parametros-precificacao.ts (RN-01).",
+   "nodeIds": [
+    "src/data/motos.ts",
+    "src/data/parametros-precificacao.ts",
+    "src/domain/pricing.ts",
+    "src/components/NotaPreco.tsx"
+   ]
+  },
+  {
+   "order": 5,
+   "title": "Catálogo e ficha",
+   "description": "O catálogo filtra por URL (useCatalogFilters + catalogFilters); a ficha mostra foto, selo de estoque, composição do preço e atalhos.",
+   "nodeIds": [
+    "src/pages/Catalogo.tsx",
+    "src/features/catalogo/useCatalogFilters.ts",
+    "src/domain/catalogFilters.ts",
+    "src/pages/MotoDetalhe.tsx"
+   ]
+  },
+  {
+   "order": 6,
+   "title": "Simulador",
+   "description": "Financiamento e consórcio saem de financing.ts, com limites de entrada (RN-04) e acessórios no saldo (RN-07). O resultado vai para o estado global.",
+   "nodeIds": [
+    "src/pages/Simulador.tsx",
+    "src/domain/financing.ts"
+   ]
+  },
+  {
+   "order": 7,
+   "title": "Reserva e voucher",
+   "description": "Checkout valida o cliente (reservation.ts + Zod), grava no repositório e só então emite o voucher imprimível.",
+   "nodeIds": [
+    "src/pages/Checkout.tsx",
+    "src/domain/reservation.ts",
+    "src/components/VoucherReserva.tsx"
+   ]
+  },
+  {
+   "order": 8,
+   "title": "Login com Google",
+   "description": "AuthProvider conversa com o Firebase Auth por um serviço injetável; ExigeLogin decide o que mostrar a quem não entrou.",
+   "nodeIds": [
+    "src/auth/AuthContext.ts",
+    "src/auth/AuthProvider.tsx",
+    "src/lib/firebase.ts",
+    "svc:firebase-auth"
+   ]
+  },
+  {
+   "order": 9,
+   "title": "Armazenamento",
+   "description": "As telas só conhecem a interface Repositorio. A implementação real grava no Firestore; as regras de segurança garantem que cada pessoa só lê e cria o que é dela.",
+   "nodeIds": [
+    "src/storage/Repositorio.ts",
+    "src/storage/documentos.ts",
+    "src/lib/firestore.ts",
+    "firestore.rules",
+    "svc:firestore"
+   ]
+  },
+  {
+   "order": 10,
+   "title": "Oficina e boutique",
+   "description": "Pós-venda usa agenda.ts e agendamento.ts; a boutique tem filtros e carrinho em boutique.ts. Os dois gravam o pedido ao confirmar.",
+   "nodeIds": [
+    "src/pages/PosVenda.tsx",
+    "src/domain/agenda.ts",
+    "src/pages/Boutique.tsx",
+    "src/domain/boutique.ts"
+   ]
+  },
+  {
+   "order": 11,
+   "title": "Sistema visual",
+   "description": "index.css define os tokens da paleta e três superfícies (página, folha, escuro). Os componentes usam cores semânticas e trocam de superfície sozinhos.",
+   "nodeIds": [
+    "src/index.css",
+    "src/components/Navbar.tsx"
+   ]
+  },
+  {
+   "order": 12,
+   "title": "Testes",
+   "description": "Cada módulo tem seu .test; persistencia.test.tsx cobre gravação e falhas com um repositório falso.",
+   "nodeIds": [
+    "src/storage/persistencia.test.tsx",
+    "src/test/servicoAuth.ts",
+    "src/test/ComLogin.tsx"
+   ]
+  }
+ ]
+}
